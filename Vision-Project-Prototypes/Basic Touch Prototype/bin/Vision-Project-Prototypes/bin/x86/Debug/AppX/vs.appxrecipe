@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Machine>CURTIS-SURFACE</Machine>
+    <WindowsUser>Curtis</WindowsUser>
+    <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
+    <SolutionConfiguration>Debug|x86</SolutionConfiguration>
+    <PackageArchitecture>x86</PackageArchitecture>
+    <PackageIdentityName>Vision-Project-Prototypes</PackageIdentityName>
+    <IntermediateOutputPath>C:\Users\Curtis\Dropbox\Child Vision Project\Vision-Project-Prototypes\bin\Vision-Project-Prototypes\obj\x86\Debug\</IntermediateOutputPath>
+    <RegisteredManifestChecksum>EBFF8421D873E3A1F17744B6AE6F8B5AF47E07292A512B02DA9774E09B756467</RegisteredManifestChecksum>
+    <RegisteredPackageMoniker>Vision-Project-Prototypes_1.0.0.0_x86__pzq3xp76mxafg</RegisteredPackageMoniker>
+    <RegisteredUserModeAppID>Vision-Project-Prototypes_pzq3xp76mxafg!App</RegisteredUserModeAppID>
+    <RegisteredPackageID>Vision-Project-Prototypes</RegisteredPackageID>
+    <RegisteredPackagePublisher>CN=DefaultCompany</RegisteredPackagePublisher>
+    <RegisteredVersion>1.0.0.0</RegisteredVersion>
+    <JitOptimizationSuppressed>True</JitOptimizationSuppressed>
+  </PropertyGroup>
+  <ItemGroup>
+    <AppXManifest Include="C:\Users\Curtis\Dropbox\Child Vision Project\Vision-Project-Prototypes\bin\Vision-Project-Prototypes\bin\x86\Debug\AppxManifest.xml">
+      <PackagePath>AppxManifest.xml</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2015-04-13T22:38:31.284</Modified>
+    </AppXManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxPackagedFile Include="C:\Users\Curtis\Dropbox\Child Vision Project\Vision-Project-Prototypes\bin\Vision-Project-Prototypes\bin\x86\Debug\Template.exe">
+      <PackagePath>Template.exe</PackagePath>
+      <Modified>2015-04-13T22:52:21.740</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Curtis\Dropbox\Child Vision Project\Vision-Project-Prototypes\bin\Vision-Project-Prototypes\Assembly-CSharp-firstpass.dll">
+      <PackagePath>Assembly-CSharp-firstpass.dll</PackagePath>
+      <Modified>2015-04-13T22:52:21.474</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Curtis\Dropbox\Child Vision Project\Vision-Project-Prototypes\bin\Vision-Project-Prototypes\UnityEngine.dll">
+      <PackagePath>UnityEngine.dll</PackagePath>
+      <Modified>2015-04-13T22:52:21.411</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Curtis\Dropbox\Child Vision Project\Vision-Project-Prototypes\bin\Vision-Project-Prototypes\UnityEngine.UI.dll">
+      <PackagePath>UnityEngine.UI.dll</PackagePath>
+      <Modified>2015-04-13T22:52:21.536</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Curtis\Dropbox\Child Vision Project\Vision-Project-Prototypes\bin\Players\Windows81\x86\Debug\UnityEngineProxy.dll">
+      <PackagePath>UnityEngineProxy.dll</PackagePath>
+      <Modified>2015-03-27T09:39:06.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Curtis\Dropbox\Child Vision Project\Vision-Project-Prototypes\bin\Vision-Project-Prototypes\WinRTLegacy.dll">
+      <PackagePath>WinRTLegacy.dll</PackagePath>
+      <Modified>2015-04-13T22:52:21.458</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Curtis\Dropbox\Child Vision Project\Vision-Project-Prototypes\bin\Players\Windows81\x86\Debug\UnityPlayer.dll">
+      <PackagePath>UnityPlayer.dll</PackagePath>
+      <Modified>2015-03-27T09:41:46.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Curtis\Dropbox\Child Vision Project\Vision-Project-Prototypes\bin\Players\Windows81\x86\Debug\BridgeInterface.dll">
+      <PackagePath>BridgeInterface.dll</PackagePath>
+      <Modified>2015-03-27T09:39:04.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Curtis\Dropbox\Child Vision Project\Vision-Project-Prototypes\bin\Players\Windows81\x86\Debug\UnityEngineDelegates.dll">
+      <PackagePath>UnityEngineDelegates.dll</PackagePath>
+      <Modified>2015-03-27T09:39:06.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Curtis\Dropbox\Child Vision Project\Vision-Project-Prototypes\bin\Players\Windows81\x86\Debug\BridgeInterface.winmd">
+      <PackagePath>BridgeInterface.winmd</PackagePath>
+      <Modified>2015-03-27T09:39:04.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Curtis\Dropbox\Child Vision Project\Vision-Project-Prototypes\bin\Players\Windows81\x86\Debug\UnityEngineDelegates.winmd">
+      <PackagePath>UnityEngineDelegates.winmd</PackagePath>
+      <Modified>2015-03-27T09:39:04.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Curtis\Dropbox\Child Vision Project\Vision-Project-Prototypes\bin\Players\Windows81\x86\Debug\UnityPlayer.winmd">
+      <PackagePath>UnityPlayer.winmd</PackagePath>
+      <Modified>2015-03-27T09:41:22.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Curtis\Dropbox\Child Vision Project\Vision-Project-Prototypes\bin\Players\Windows81\x86\Debug\WinRTBridge.winmd">
+      <PackagePath>WinRTBridge.winmd</PackagePath>
+      <Modified>2015-03-27T09:39:06.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Curtis\Dropbox\Child Vision Project\Vision-Project-Prototypes\bin\Vision-Project-Prototypes\Assets\MediumTile.scale-100.png">
+      <PackagePath>Assets\MediumTile.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2015-03-14T08:35:36.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Curtis\Dropbox\Child Vision Project\Vision-Project-Prototypes\bin\Vision-Project-Prototypes\Assets\SmallLogo.scale-100.png">
+      <PackagePath>Assets\SmallLogo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2015-03-26T11:08:32.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Curtis\Dropbox\Child Vision Project\Vision-Project-Prototypes\bin\Vision-Project-Prototypes\Assets\SplashScreen.scale-100.png">
+      <PackagePath>Assets\SplashScreen.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2015-03-26T11:08:32.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Curtis\Dropbox\Child Vision Project\Vision-Project-Prototypes\bin\Vision-Project-Prototypes\Assets\StoreLogo.scale-100.png">
+      <PackagePath>Assets\StoreLogo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2015-03-14T08:35:36.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Curtis\Dropbox\Child Vision Project\Vision-Project-Prototypes\bin\Vision-Project-Prototypes\Assets\WideTile.scale-100.png">
+      <PackagePath>Assets\WideTile.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2015-03-14T08:35:36.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Curtis\Dropbox\Child Vision Project\Vision-Project-Prototypes\bin\Vision-Project-Prototypes\Data\mainData">
+      <PackagePath>Data\mainData</PackagePath>
+      <Modified>2015-04-13T22:37:44.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Curtis\Dropbox\Child Vision Project\Vision-Project-Prototypes\bin\Vision-Project-Prototypes\Data\Resources\unity default resources">
+      <PackagePath>Data\Resources\unity default resources</PackagePath>
+      <Modified>2015-03-27T09:57:24.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Curtis\Dropbox\Child Vision Project\Vision-Project-Prototypes\bin\Vision-Project-Prototypes\Data\Resources\unity_builtin_extra">
+      <PackagePath>Data\Resources\unity_builtin_extra</PackagePath>
+      <Modified>2015-04-13T22:37:44.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Curtis\Dropbox\Child Vision Project\Vision-Project-Prototypes\bin\Vision-Project-Prototypes\Data\managedAssemblies.txt">
+      <PackagePath>Data\managedAssemblies.txt</PackagePath>
+      <Modified>2015-04-13T22:37:50.027</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Curtis\Dropbox\Child Vision Project\Vision-Project-Prototypes\bin\Vision-Project-Prototypes\Data\sharedassets0.assets">
+      <PackagePath>Data\sharedassets0.assets</PackagePath>
+      <Modified>2015-04-13T22:37:44.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Curtis\Dropbox\Child Vision Project\Vision-Project-Prototypes\bin\Vision-Project-Prototypes\bin\x86\Debug\App.xbf">
+      <PackagePath>App.xbf</PackagePath>
+      <Modified>2015-04-13T22:21:23.165</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Curtis\Dropbox\Child Vision Project\Vision-Project-Prototypes\bin\Vision-Project-Prototypes\bin\x86\Debug\MainPage.xbf">
+      <PackagePath>MainPage.xbf</PackagePath>
+      <Modified>2015-04-13T22:21:23.165</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Curtis\Dropbox\Child Vision Project\Vision-Project-Prototypes\bin\Vision-Project-Prototypes\bin\x86\Debug\Template.xr.xml">
+      <PackagePath>Template.xr.xml</PackagePath>
+      <Modified>2015-04-13T22:21:23.086</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Curtis\Dropbox\Child Vision Project\Vision-Project-Prototypes\bin\Vision-Project-Prototypes\bin\x86\Debug\resources.pri">
+      <PackagePath>resources.pri</PackagePath>
+      <Modified>2015-04-13T22:38:28.628</Modified>
+    </AppxPackagedFile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResolvedSDKReference Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\Microsoft.VCLibs\12.0\">
+      <Name>Microsoft.VCLibs.120.00.Debug</Name>
+      <Version>12.0.21005.1</Version>
+      <Architecture>ARM</Architecture>
+      <FrameworkIdentity>Name = Microsoft.VCLibs.120.00.Debug, MinVersion = 12.0.21005.1</FrameworkIdentity>
+      <AppxLocation>C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\Microsoft.VCLibs\12.0\.\AppX\Debug\ARM\Microsoft.VCLibs.ARM.Debug.12.00.appx</AppxLocation>
+      <MoreInfo>
+      </MoreInfo>
+    </ResolvedSDKReference>
+    <ResolvedSDKReference Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\Microsoft.VCLibs\12.0\">
+      <Name>Microsoft.VCLibs.120.00.Debug</Name>
+      <Version>12.0.21005.1</Version>
+      <Architecture>x64</Architecture>
+      <FrameworkIdentity>Name = Microsoft.VCLibs.120.00.Debug, MinVersion = 12.0.21005.1</FrameworkIdentity>
+      <AppxLocation>C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\Microsoft.VCLibs\12.0\.\AppX\Debug\x64\Microsoft.VCLibs.x64.Debug.12.00.appx</AppxLocation>
+      <MoreInfo>
+      </MoreInfo>
+    </ResolvedSDKReference>
+    <ResolvedSDKReference Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\Microsoft.VCLibs\12.0\">
+      <Name>Microsoft.VCLibs.120.00.Debug</Name>
+      <Version>12.0.21005.1</Version>
+      <Architecture>x86</Architecture>
+      <FrameworkIdentity>Name = Microsoft.VCLibs.120.00.Debug, MinVersion = 12.0.21005.1</FrameworkIdentity>
+      <AppxLocation>C:\Program Files %28x86%29\Microsoft SDKs\Windows\v8.1\ExtensionSDKs\Microsoft.VCLibs\12.0\.\AppX\Debug\x86\Microsoft.VCLibs.x86.Debug.12.00.appx</AppxLocation>
+      <MoreInfo>
+      </MoreInfo>
+    </ResolvedSDKReference>
+  </ItemGroup>
+</Project>
