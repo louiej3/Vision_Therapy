@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class QuitButton : MonoBehaviour 
+public class QuitButton : Target 
 {
 
 	// Use this for initialization
@@ -10,17 +10,8 @@ public class QuitButton : MonoBehaviour
 	
 	}
 	
-	// Update is called once per frame
-	void Update () 
+	protected override void tapBehavior()
     {
-        if (Input.touchCount > 0)
-        {
-            Vector3 wp = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-            Vector2 touchPos = new Vector2(wp.x, wp.y);
-            if (GetComponent<Collider2D>() == Physics2D.OverlapPoint(touchPos))
-            {
-                Application.Quit();
-            }
-        }
-	}
+        Application.Quit();
+    }
 }
