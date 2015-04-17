@@ -15,8 +15,8 @@ public class Target : MonoBehaviour
     {
 	    if (Input.touchCount > 0)
         {
-            Vector3 wp = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-            Vector2 touchPos = new Vector2(wp.x, wp.y);
+            Vector3 worldPoint = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+            Vector2 touchPos = new Vector2(worldPoint.x, worldPoint.y);
             if (GetComponent<Collider2D>() == Physics2D.OverlapPoint(touchPos))
             {
                 Destroy(gameObject);
