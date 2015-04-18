@@ -3,13 +3,11 @@ using System.Collections;
 
 public abstract class Target : MonoBehaviour 
 {
-    protected float startTime;
-    protected float currentTime;
+    protected float startTime = 0f;
+    protected float currentTime = 0f;
 	
     // Use this for initialization
-	void Start () 
-    {
-	}
+	void Start () { }
 	
 	// Update is called once per frame
 	public virtual void Update () 
@@ -21,7 +19,6 @@ public abstract class Target : MonoBehaviour
             if (GetComponent<Collider2D>() == Physics2D.OverlapPoint(touchPos))
             {
                 tapBehavior();
-                currentTime = Time.realtimeSinceStartup;
             }
         }
 
@@ -30,15 +27,27 @@ public abstract class Target : MonoBehaviour
 
     protected abstract void tapBehavior();
 
-    protected virtual void movement() { }
+	protected virtual void movement() { }
 
-    protected void timeStart()
+    protected void setStartTime()
     {
         startTime = Time.realtimeSinceStartup;
     }
 
+	protected void setCurrentTime()
+	{
+		currentTime = Time.realtimeSinceStartup;
+	}
+
     public float getEndTime()
     {
-        return currentTime - startTime;
+		if (currentTime == 0f)
+		{
+			return 0f;
+		} 
+		else 
+		{
+			return currentTime - startTime;
+		}	
     }
 }

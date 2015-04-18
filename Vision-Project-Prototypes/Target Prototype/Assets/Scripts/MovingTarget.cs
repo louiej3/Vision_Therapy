@@ -3,16 +3,25 @@ using System.Collections;
 
 public class MovingTarget : Target 
 {
+	private TargetManager tm;
 
 	// Use this for initialization
 	void Start () 
-    {
-	
+	{
+		setStartTime();
+
+		if (tm == null)
+		{
+			tm = GameObject.Find("TargetManager").GetComponent<TargetManager>();
+		}
+
+		tm.addTarget(this);
 	}
 
     protected override void tapBehavior()
     {
-        Destroy(gameObject);
+		setCurrentTime();
+		gameObject.SetActive(false);
     }
 
     protected override void movement()
