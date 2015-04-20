@@ -16,14 +16,17 @@ public class TargetManager : MonoBehaviour
 
 	public void addTarget(Target t)
 	{
-		targets.Add(t);
+        if (t != null)
+        {
+            targets.Add(t);
+        }
 	}
 
 	public float getAverage()
 	{
 		float average = 0f;
 		
-		foreach(Target t in targets)
+		foreach (Target t in targets)
 		{
 			average += t.getEndTime();
 		}
