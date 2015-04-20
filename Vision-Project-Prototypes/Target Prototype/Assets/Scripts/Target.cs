@@ -14,9 +14,12 @@ public abstract class Target : MonoBehaviour
     {
 	    if (Input.touchCount > 0)
         {
+            Touch touch = Input.GetTouch(0);
             Vector3 worldPoint = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
             Vector2 touchPos = new Vector2(worldPoint.x, worldPoint.y);
-            if (GetComponent<Collider2D>() == Physics2D.OverlapPoint(touchPos))
+            
+            if (GetComponent<Collider2D>() == Physics2D.OverlapPoint(touchPos)
+                && touch.phase == TouchPhase.Ended)
             {
                 tapBehavior();
             }
