@@ -6,15 +6,11 @@ public class DragTile : MonoBehaviour
 
 	private bool pickedUp = false;
 	protected float maxFollowSpeed = 200f;
-	private DragManager dm = null;
 	
 	// Use this for initialization
-	public virtual void Start () 
+	void Start () 
 	{
-		if (dm == null)
-		{
-			dm = GameObject.Find("GameManager").GetComponent<DragManager>();
-		}
+		
 	}
 	
 	// Update is called once per frame
@@ -27,16 +23,14 @@ public class DragTile : MonoBehaviour
 			Vector2 touchPos = new Vector2(worldPoint.x, worldPoint.y);
 
 			if (GetComponent<Collider2D>() == Physics2D.OverlapPoint(touchPos)
-				&& !dm.isDragging())
+				&& touch.phase == TouchPhase.Began)
 			{
 				pickedUp = true;
-				dm.draggingTile = true;
 				pickUpBehavior();
 			}
 			else if (pickedUp && touch.phase == TouchPhase.Ended)
 			{
 				pickedUp = false;
-				dm.draggingTile = false;
 				releaseBehavior();
 			}	
 
