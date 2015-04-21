@@ -19,7 +19,7 @@ public abstract class Target : MonoBehaviour
             Vector2 touchPos = new Vector2(worldPoint.x, worldPoint.y);
             
             if (GetComponent<Collider2D>() == Physics2D.OverlapPoint(touchPos)
-                && touch.phase == TouchPhase.Ended)
+                && touch.phase == TouchPhase.Began)
             {
                 tapBehavior();
             }
