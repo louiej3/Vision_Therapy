@@ -6,10 +6,10 @@ public class DragTile : MonoBehaviour
 
 	private bool pickedUp = false;
 	protected float maxFollowSpeed = 200f;
-	private DragManager dm;
+	private DragManager dm = null;
 	
 	// Use this for initialization
-	void Start () 
+	public virtual void Start () 
 	{
 		if (dm == null)
 		{
@@ -26,17 +26,19 @@ public class DragTile : MonoBehaviour
 			Vector3 worldPoint = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 			Vector2 touchPos = new Vector2(worldPoint.x, worldPoint.y);
 
-			if (GetComponent<Collider2D>() == Physics2D.OverlapPoint(touchPos))
+			if (GetComponent<Collider2D>() == Physics2D.OverlapPoint(touchPos)
+				&& !dm.isDragging())
 			{
 				pickedUp = true;
+				dm.draggingTile = true;
 				pickUpBehavior();
-
-				if (touch.phase == TouchPhase.Ended)
-				{
-					pickedUp = false;
-					releaseBehavior();
-				}	
 			}
+			else if (pickedUp && touch.phase == TouchPhase.Ended)
+			{
+				pickedUp = false;
+				dm.draggingTile = false;
+				releaseBehavior();
+			}	
 
 			if (pickedUp)
 			{
