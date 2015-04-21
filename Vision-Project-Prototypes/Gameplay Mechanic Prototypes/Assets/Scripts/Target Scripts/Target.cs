@@ -28,7 +28,7 @@ public abstract class Target : MonoBehaviour
         movement();
 	}
 
-    protected abstract void tapBehavior();
+	protected virtual void tapBehavior() { }
 
 	protected virtual void movement() { }
 
