@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
-using System.Data;
-using System.Data.SQLite;
+using SQLite4Unity3d;
 
 public class Button_Behavior : MonoBehaviour {
+
 
 	// Use this for initialization
 	void Start () {
