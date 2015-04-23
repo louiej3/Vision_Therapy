@@ -4,11 +4,9 @@ using System.Collections;
 public class Trace : MonoBehaviour 
 {
 
-	private GameObject trail;
-	private float maxFollowSpeed = 400f;
-	private int previousFingerId = -1;
-	private int currentFingerId = -1;
-	private bool firstTouch = false;
+	protected GameObject trail;
+	protected float maxFollowSpeed = 400f;
+	private int traceFingerId = -1;
 	
 	// Use this for initialization
 	void Start () 
@@ -30,30 +28,23 @@ public class Trace : MonoBehaviour
 
 			if (Input.touchCount == 1)
 			{
-				currentFingerId = touch.fingerId;
+				traceFingerId = touch.fingerId;
 			}
 
-			if (touch.phase == TouchPhase.Began && currentFingerId == touch.fingerId)
+			if (touch.phase == TouchPhase.Began && traceFingerId == touch.fingerId)
 			{
 				trail.GetComponent<TrailRenderer>().time = 0f;
 				trail.transform.position = touchPos;
 				trail.GetComponent<TrailRenderer>().time = 5f;
-				Debug.Log("Began touch");
 			}
 			else if (touch.phase == TouchPhase.Ended)
 			{
 				trail.GetComponent<TrailRenderer>().time = 0f;
-				Debug.Log("Ended touch");
 			}
-			else if (currentFingerId == touch.fingerId)
+			else if (traceFingerId == touch.fingerId)
 			{
 				trail.transform.position = Vector2.MoveTowards(transform.position, touchPos, maxFollowSpeed);
-				Debug.Log("Moved touch");
 			}
-		}
-		else
-		{
-			currentFingerId = -1;
 		}
 	}
 }
