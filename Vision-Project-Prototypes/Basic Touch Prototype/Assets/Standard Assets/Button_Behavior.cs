@@ -1,7 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+<<<<<<< HEAD
 using SQLite4Unity3d;
+=======
+// System.Data;
+// using System.Data.SQLite;
+>>>>>>> 1da984db75d266c0ae7b319857722ef91ca3d63e
 
 public class Button_Behavior : MonoBehaviour {
 
