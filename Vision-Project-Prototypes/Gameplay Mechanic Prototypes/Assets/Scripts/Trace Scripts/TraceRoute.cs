@@ -22,16 +22,18 @@ public class TraceRoute : MonoBehaviour
 
 	public void createSegment(Vector2 point1, Vector2 point2)
 	{
-		p1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-		p1.transform.position = point1;
-		p2 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-		p2.transform.position = point2;
-		
+		// Create the trace segment
 		segment = GameObject.CreatePrimitive(PrimitiveType.Cube);
+
+		// Position the segment halfway between point1 and point2
 		Vector2 newPoint = (point1 + point2) / 2;
 		segment.transform.position = newPoint;
+
+		// Stretch the cube to fit between point1 and point2
 		float stretch = Vector2.Distance(point1, point2);
 		segment.transform.localScale = new Vector3(1f, 1f, stretch);
+		
+		// Turn the cube to face point2
 		segment.transform.LookAt(point2);
 	}
 }
