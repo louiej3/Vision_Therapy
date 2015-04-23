@@ -12,7 +12,8 @@ public class Trace : MonoBehaviour
 	void Start () 
 	{
 		trail = new GameObject();
-		trail.transform.position = Vector2.zero;
+		// Z axis is -1 so the trail is drawn on top of objects
+		trail.transform.position = new Vector3(0f, 0f, -1f);
 		trail.AddComponent<TrailRenderer>();
 		trail.GetComponent<TrailRenderer>().time = 0f;
 	}
@@ -24,7 +25,7 @@ public class Trace : MonoBehaviour
 		{
 			Touch touch = Input.GetTouch(0);
 			Vector3 worldPoint = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-			Vector2 touchPos = new Vector2(worldPoint.x, worldPoint.y);
+			Vector3 touchPos = new Vector3(worldPoint.x, worldPoint.y, -1f);
 
 			if (Input.touchCount == 1)
 			{
@@ -43,7 +44,7 @@ public class Trace : MonoBehaviour
 			}
 			else if (traceFingerId == touch.fingerId)
 			{
-				trail.transform.position = Vector2.MoveTowards(transform.position, touchPos, maxFollowSpeed);
+				trail.transform.position = Vector3.MoveTowards(trail.transform.position, touchPos, maxFollowSpeed);
 			}
 		}
 	}
