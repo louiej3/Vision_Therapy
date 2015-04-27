@@ -6,6 +6,8 @@ public class Trace : MonoBehaviour
 
 	protected GameObject trail;
 	protected float maxFollowSpeed = 400f;
+	protected float minLifeTime = 0f;
+	protected float maxLifeTime = 5f;
 	private int traceFingerId = -1;
 	
 	// Use this for initialization
@@ -34,13 +36,13 @@ public class Trace : MonoBehaviour
 
 			if (touch.phase == TouchPhase.Began && traceFingerId == touch.fingerId)
 			{
-				trail.GetComponent<TrailRenderer>().time = 0f;
+				trail.GetComponent<TrailRenderer>().time = minLifeTime;
 				trail.transform.position = touchPos;
-				trail.GetComponent<TrailRenderer>().time = 5f;
+				trail.GetComponent<TrailRenderer>().time = maxLifeTime;
 			}
 			else if (touch.phase == TouchPhase.Ended)
 			{
-				trail.GetComponent<TrailRenderer>().time = 0f;
+				trail.GetComponent<TrailRenderer>().time = minLifeTime;
 			}
 			else if (traceFingerId == touch.fingerId)
 			{
