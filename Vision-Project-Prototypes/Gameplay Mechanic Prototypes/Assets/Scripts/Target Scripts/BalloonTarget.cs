@@ -8,7 +8,8 @@ public class BalloonTarget : Target
 	// Use this for initialization
 	void Start () 
     {
-        setStartTime();
+        timer = new StopWatch();
+        timer.start();
 		
 		if (tm == null)
 		{
@@ -20,7 +21,6 @@ public class BalloonTarget : Target
 	
     protected override void tapBehavior()
     {
-		setCurrentTime();
 		gameObject.SetActive(false);
     }
 }

@@ -6,10 +6,10 @@ public class MovingTarget : Target
 	private TargetManager tm;
 
 	// Use this for initialization
-	void Start () 
-	{
-		setStartTime();
-
+	void Start ()
+    {
+        timer = new StopWatch();
+        timer.start();
 		if (tm == null)
 		{
 			tm = GameObject.Find("TargetManager").GetComponent<TargetManager>();
@@ -20,12 +20,11 @@ public class MovingTarget : Target
 
     protected override void tapBehavior()
     {
-		setCurrentTime();
 		gameObject.SetActive(false);
     }
 
-    protected override void movement()
-    {
-        transform.position += new Vector3(0f, 0.05f, 0f);
-    }
+    //protected override void movement()
+    //{
+    //    transform.position += new Vector3(0f, 0.05f, 0f);
+    //}
 }

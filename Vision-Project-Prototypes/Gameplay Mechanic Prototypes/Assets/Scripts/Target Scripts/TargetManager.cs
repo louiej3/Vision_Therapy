@@ -3,6 +3,7 @@ using System.Collections;
 
 public class TargetManager : MonoBehaviour 
 {
+    public Movement moveType;
 	private ArrayList targets;
 	
 	// Use this for initialization
@@ -12,12 +13,16 @@ public class TargetManager : MonoBehaviour
 	}
 	
 	// Update is called once per frame
-	void Update () { }
+	void Update () { 
+    }
 
 	public void addTarget(Target t)
 	{
         if (t != null)
         {
+            // create a copy of the prefab
+            // set the movement type
+            // add it to the arraylist
             targets.Add(t);
         }
 	}
@@ -28,7 +33,7 @@ public class TargetManager : MonoBehaviour
 		
 		foreach (Target t in targets)
 		{
-			average += t.getEndTime();
+			average += t.lapTime;
 		}
 
 		return average / targets.Count;

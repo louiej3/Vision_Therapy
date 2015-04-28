@@ -5,7 +5,8 @@ using System.Data;
 public class SelectScript : MonoBehaviour {
 
     Database db;
-    IDataReader reader;
+    IEnumerable reader;
+    IEnumerator addresses;
     string sql;
 
 	// Use this for initialization
@@ -13,7 +14,6 @@ public class SelectScript : MonoBehaviour {
     {
         db = GameObject.Find("Data").GetComponent<Database>();
         reader = null;
-        sql = string.Format(Database.SELECT_ALL, "Address");
 	}
 	
 	// Update is called once per frame
@@ -27,19 +27,20 @@ public class SelectScript : MonoBehaviour {
                 if (reader == null)
                 {
                     Debug.Log("Creating Reader");
-                    reader = db.select(sql);
+                    reader = db.getAddress();
+                    addresses = reader.GetEnumerator();
                 }
-                if (reader.Read())
+                
+                if (addresses.MoveNext())
                 {
-                    transform.Find("Zip").GetComponent<TextMesh>().text = reader.GetValue(1).ToString();
-                    transform.Find("Street").GetComponent<TextMesh>().text = reader.GetString(2);
-                    transform.Find("State").GetComponent<TextMesh>().text = reader.GetString(3);
-                    transform.Find("City").GetComponent<TextMesh>().text = reader.GetString(4);
+                    Address addr = (Address)addresses.Current;
+                    transform.Find("Zip").GetComponent<TextMesh>().text = addr.zip.ToString();
+                    transform.Find("Street").GetComponent<TextMesh>().text = addr.street;
+                    transform.Find("State").GetComponent<TextMesh>().text = addr.state;
+                    transform.Find("City").GetComponent<TextMesh>().text = addr.city;
                 }
                 else
                 {
-                    Debug.Log("Destroying Reader");
-                    reader.Dispose();
                     reader = null;
                 }
                 

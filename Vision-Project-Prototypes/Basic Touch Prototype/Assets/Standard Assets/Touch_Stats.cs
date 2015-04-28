@@ -7,7 +7,6 @@ public class Touch_Stats : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
 		tm = GetComponent<TextMesh> ();
 
 	}

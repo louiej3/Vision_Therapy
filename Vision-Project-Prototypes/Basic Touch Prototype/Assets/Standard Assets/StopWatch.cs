@@ -18,8 +18,8 @@ public class StopWatch
     /// </summary>
 	public StopWatch()
 	{
-        startTime = 0;
-        endTime = 0;
+        startTime = 0f;
+        endTime = 0f;
 	}
     /// <summary>
     /// Returns the time (in seconds since the game started) that the stopwatch was last started.

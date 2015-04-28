@@ -23,27 +23,14 @@ public class InsertScript : MonoBehaviour {
             Vector2 touchPos = new Vector2(wp.x, wp.y);
             if (GetComponent<Collider2D>() == Physics2D.OverlapPoint(touchPos) &&Input.GetTouch(0).phase == TouchPhase.Began)
             {
-                string str, st, c, z;
-                str = streetNum + "Main St.";
+                Address addr = new Address();
+                addr.street = streetNum + " First Ave";
                 ++streetNum;
-                c = "Bothell";
-                st = "WA";
-                z = "98033";
-
-                if (str != "" && c != "" && st != "" && z != "")    
-                {
-                    string addrIn = "zip, street, state, city";
-                    string addrData = z + ", \"" + str + "\", \"" + st + "\", \"" + c + "\"";
-                    Debug.Log(addrData);
-                    string sql = string.Format(Database.INSERT_ROW, "Address", addrIn, addrData);
-                    bool success = db.insertFail(sql);
-                }
-                else
-                {
-                    Debug.Log("Invalid insert");
-                }
+                addr.city = "Marysville";
+                addr.state = "WA";
+                addr.zip = 98270;
+                db.insertAddress(addr);
             }
-
         }
     }
 }
