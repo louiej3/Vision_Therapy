@@ -4,10 +4,10 @@ using System.Collections;
 public class Trace : MonoBehaviour 
 {
 
-	protected GameObject trail;
-	protected float maxFollowSpeed = 400f;
-	protected float minLifeTime = 0f;
-	protected float maxLifeTime = 5f;
+	public GameObject trail;
+	public float maxFollowSpeed = 400f;
+	public float minLifeTime = 0f;
+	public float maxLifeTime = 5f;
 	private int traceFingerId = -1;
 	
 	// Use this for initialization
