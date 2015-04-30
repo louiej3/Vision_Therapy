@@ -72,6 +72,27 @@ public class Target : MonoBehaviour
         }
         return false;   
     }
+    /// <summary>
+    /// Checks if the target was almost hit, based on its own size and a given threshold
+    /// </summary>
+    /// <param name="tap">The touch to test against</param>
+    /// <param name="threshold">The threshold of what a near miss is</param>
+    /// <returns>Returns true if the hit counts as a near miss.</returns>
+    public bool checkNearMiss(Touch tap, float threshold)
+    {
+        // take the given threshold
+        float myThreshold = threshold;
+
+        // add the distance from the middle of the object to the edge of the object
+        Transform t = GetComponent<Transform>();
+        myThreshold += t.localScale.x / 2;
+
+        Vector3 worldPoint = Camera.main.ScreenToWorldPoint(tap.position);
+        Vector2 touchPos = new Vector2(worldPoint.x, worldPoint.y);
+
+        float dist = Vector2.Distance(GetComponent<Transform>().position, touchPos);
+        return dist < threshold;
+    }
     
 }
 // Target Data
@@ -139,7 +160,6 @@ public class TargetData
     /// </summary>
     public float blue { get; set; }
 
-    [Ignore]
     const string targetTable = "Target";
 
     /// <summary>

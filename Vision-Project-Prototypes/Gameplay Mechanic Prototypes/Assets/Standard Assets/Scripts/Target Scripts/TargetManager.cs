@@ -1,13 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
-// Target Manager Data
-// Total Targets
-// Total Hits
-// Total Misses
-// Near Misses
-// Target Manager ID
-// GameSession ID
+using SQLite4Unity3d;
 
 /// <summary>
 /// The Target manager controls a group of Targets, most likely all targets in a specific level
@@ -15,15 +8,17 @@ using System.Collections;
 /// </summary>
 public class TargetManager : MonoBehaviour 
 {
-    private int hits, misses;
+    private int hits, misses, nearMisses;
     public Movement moveType;
 	private ArrayList targets;
+    public float nearMissThreshold = 5f;
 	
 	// Use this for initialization
 	void Start () 
 	{
         hits = 0;
         misses = 0;
+        nearMisses = 0;
 		targets = new ArrayList();
 	}
 	
@@ -31,6 +26,35 @@ public class TargetManager : MonoBehaviour
 	void Update () 
     {
         Touch[] taps = Input.touches;
+        if (Input.touchCount > 0)
+        {
+            foreach (Touch tap in taps)
+            {
+                if (tap.phase == TouchPhase.Began)
+                {
+                    bool hit = false;
+
+                    foreach (Target target in targets)
+                    {
+                        if (target.checkTouch(tap))
+                        {
+                            hit = true;
+                            break;
+                        } else {
+                            if (target.checkNearMiss(tap, nearMissThreshold))
+                            {
+                                nearMissAnimation(target);
+                                ++nearMisses;
+                            }
+                        }
+                    }
+                    if (hit)
+                    {
+                        hits++;
+                    }
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -77,5 +101,36 @@ public class TargetManager : MonoBehaviour
 	public int getNumberOfTargets()
 	{
 		return targets.Count;
-	}
+    }
+
+    /// <summary>
+    /// The animation
+    /// </summary>
+    /// <param name="target"></param>
+    public void nearMissAnimation(Target target)
+    {
+
+    }
+}
+
+// Target Manager Data
+// Total Targets
+// Total Hits
+// Total Misses
+// Near Misses
+// Target Manager ID
+// GameSession ID
+public class TargetManData
+{
+    [PrimaryKey, AutoIncrement]
+    public int targetManID;
+    [NotNull]
+    public int GameManID;
+    [NotNull]
+    public int totalTargets;
+    [NotNull]
+    public int hits;
+    [NotNull]
+    public int misses;
+    public int nearMisses;
 }
