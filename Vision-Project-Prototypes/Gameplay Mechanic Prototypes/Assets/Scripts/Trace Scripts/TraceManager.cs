@@ -1,21 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TraceRoute : MonoBehaviour 
+public class TraceManager : MonoBehaviour
 {
 
-	protected GameObject seg;
-	protected GameObject segment;
+	private ArrayList traceRoute;
 
 	// Use this for initialization
-	void Start () 
+	void Start()
 	{
-		seg = Resources.Load("Trace Prefabs/Segment") as GameObject;
-		segment = Instantiate(seg) as GameObject;
+		traceRoute = new ArrayList();
 	}
-	
+
 	// Update is called once per frame
-	void Update () 
+	void Update()
+	{
+	}
+
+	public bool onRoute()
 	{
 		if (Input.touchCount > 0)
 		{
@@ -23,15 +25,23 @@ public class TraceRoute : MonoBehaviour
 			Vector3 worldPoint = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 			Vector2 touchPos = new Vector2(worldPoint.x, worldPoint.y);
 
-			if (segment.GetComponent<Collider2D>() == Physics2D.OverlapPoint(touchPos))
+			foreach (GameObject g in traceRoute)
 			{
-				Debug.Log("On segment");
+				if (g.GetComponent<Collider2D>() == Physics2D.OverlapPoint(touchPos))
+				{
+					Debug.Log("On route");
+					return true;
+				}
 			}
+			Debug.Log("Off route - touch not colliding");
+			return false;
 		}
+		Debug.Log("Off route - no touch present");
+		return false;
 	}
 
-	public void createSegment(Vector2 point1, Vector2 point2)
-	{	
+	public void addSegment(GameObject segment, Vector2 point1, Vector2 point2)
+	{
 		// Position the segment halfway between point1 and point2
 		Vector2 newPoint = (point1 + point2) / 2;
 		segment.transform.position = newPoint;
@@ -43,5 +53,7 @@ public class TraceRoute : MonoBehaviour
 		// Turn the cube to face point2
 		Vector2 faceDirection = (Vector2)segment.transform.position - point2;
 		segment.transform.LookAt(segment.transform.position + new Vector3(0, 0, 1), faceDirection);
+
+		traceRoute.Add(segment);
 	}
 }

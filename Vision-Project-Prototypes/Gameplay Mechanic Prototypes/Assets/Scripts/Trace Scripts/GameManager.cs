@@ -4,21 +4,22 @@ using System.Collections;
 public class GameManager : MonoBehaviour 
 {
 
-	TraceRoute tr;
+	TraceManager traceMan;
 
 	// Use this for initialization
 	void Start () 
 	{
-		tr = GameObject.Find("GameManager").GetComponent<TraceRoute>();
-		
-		Vector2 p1 = new Vector2(1, 0);
-		Vector2 p2 = new Vector2(4, 4);
-		tr.createSegment(p1, p2);
+		traceMan = GetComponent<TraceManager>();
+
+		GameObject segment1 = Instantiate(Resources.Load("Trace Prefabs/Segment", typeof(GameObject))) as GameObject;
+		traceMan.addSegment(segment1, new Vector2(-2, -2), new Vector2(3, 3));
+		GameObject segment2 = Instantiate(Resources.Load("Trace Prefabs/Segment", typeof(GameObject))) as GameObject;
+		traceMan.addSegment(segment2, new Vector2(3, 3), new Vector2(3, -3));
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-	
+		traceMan.onRoute();
 	}
 }
