@@ -104,9 +104,10 @@ public class TargetManager : MonoBehaviour
     }
 
     /// <summary>
-    /// The animation
+    /// The animation to be played when a near miss happens
+    /// can trigger on multiple objects
     /// </summary>
-    /// <param name="target"></param>
+    /// <param name="target">The target that was almost hit.</param>
     public void nearMissAnimation(Target target)
     {
 
@@ -133,4 +134,22 @@ public class TargetManData
     [NotNull]
     public int misses;
     public int nearMisses;
+
+    const string targetTable = "TargetManagers";
+
+    /// <summary>
+    /// Generate an SQL insert statement for the Class
+    /// This is not needed for inserting into the local database
+    /// </summary>
+    /// <param name="ManID">The FK id for the Game Manager class</param>
+    /// <returns>An SQL statement in the form of a string</returns>
+    public string generateInsert(int ManID)
+    {
+        var insert = "INSERT into "
+        insert += targetTable;
+        insert += "(";
+
+        return insert;
+    }
 }
+
