@@ -5,7 +5,7 @@ public class GameManager : MonoBehaviour
 {
 
 	private StopWatch timer;
-	public float owlInterval = 5f;
+	public float owlInterval = 3f;
 	private TargetManager targetMan;
 	
 	// Use this for initialization
@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		if (timer.lap() >= 5f)
+		if (timer.lap() >= owlInterval)
 		{
 			spawnOwl();
 		}
