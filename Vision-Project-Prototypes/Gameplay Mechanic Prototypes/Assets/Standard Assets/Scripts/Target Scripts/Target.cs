@@ -139,7 +139,6 @@ public class TargetData
     /// </summary>
     public float blue { get; set; }
 
-    [Ignore]
     const string targetTable = "Target";
 
     /// <summary>
