@@ -19,4 +19,10 @@ public class Movement : MonoBehaviour
     {
 
     }
+    public virtual float getVelocity()
+    {
+        float v = 0f;
+
+        return v;
+    }
 }//

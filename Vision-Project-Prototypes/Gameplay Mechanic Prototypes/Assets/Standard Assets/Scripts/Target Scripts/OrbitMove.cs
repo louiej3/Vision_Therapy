@@ -3,7 +3,7 @@ using System.Collections;
 
 public class OrbitMove : Movement {
 
-    public float TIMEFACTOR = 1f;
+    public float SPEEDFACTOR = 1f;
 
     protected float curTime;
 
@@ -24,7 +24,7 @@ public class OrbitMove : Movement {
 	
 	// Update is called once per frame
 	void Update () {
-        angle += Time.smoothDeltaTime * TIMEFACTOR * (isClockwise ? -1 : 1);
+        angle += Time.smoothDeltaTime * SPEEDFACTOR * (isClockwise ? -1 : 1);
         float x, y;
         x = center.x + (float)System.Math.Cos(angle) * radius;
         y = center.x + (float)System.Math.Sin(angle) * radius;
@@ -35,4 +35,9 @@ public class OrbitMove : Movement {
         //}
         location.position = new Vector2(x, y);
 	}
+
+    public override float getVelocity()
+    {
+        return radius * SPEEDFACTOR;
+    }
 }
