@@ -123,15 +123,15 @@ public class TargetManager : MonoBehaviour
 // GameSession ID
 public class TargetManData
 {
-    [PrimaryKey, AutoIncrement]
+    //[PrimaryKey, AutoIncrement]
     public int targetManID;
-    [NotNull]
+    //[NotNull]
     public int GameManID;
-    [NotNull]
+    //[NotNull]
     public int totalTargets;
-    [NotNull]
+    //[NotNull]
     public int hits;
-    [NotNull]
+    //[NotNull]
     public int misses;
     public int nearMisses;
 
@@ -145,7 +145,7 @@ public class TargetManData
     /// <returns>An SQL statement in the form of a string</returns>
     public string generateInsert(int ManID)
     {
-        var insert = "INSERT into "
+		var insert = "INSERT into ";
         insert += targetTable;
         insert += "(";
 
