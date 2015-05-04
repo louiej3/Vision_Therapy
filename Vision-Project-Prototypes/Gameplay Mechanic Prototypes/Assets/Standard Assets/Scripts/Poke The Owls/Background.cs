@@ -4,7 +4,7 @@ using System.Collections;
 public class Background : MonoBehaviour 
 {
 
-	public float speed = -50f;
+	public float speed = -80f;
 
 	// Use this for initialization
 	void Start () 
