@@ -5,8 +5,15 @@ public class GameManager : MonoBehaviour
 {
 
 	private StopWatch timer;
-	public float owlInterval = 3f;
+	
 	private TargetManager targetMan;
+	
+	// Determines the owls' speed
+	public float minSpeed = 0.5f;
+	public float maxSpeed = 1.5f;
+
+	// Owl spawn time in seconds
+	public float owlInterval = 3f;
 	
 	// Use this for initialization
 	void Start () 
@@ -34,7 +41,10 @@ public class GameManager : MonoBehaviour
 		float worldWidth = Mathf.Sqrt(Mathf.Pow(worldHeight, 2) - Mathf.Pow(x, 2));
 		float y = Random.Range(-worldWidth, worldWidth);
 
+		float speed = Random.Range(minSpeed, maxSpeed);
+
 		owl.transform.position = new Vector2(x, y);
+		owl.GetComponent<OrbitMove>().SPEEDFACTOR = speed;
 
 		targetMan.addTarget(owl);
 		
