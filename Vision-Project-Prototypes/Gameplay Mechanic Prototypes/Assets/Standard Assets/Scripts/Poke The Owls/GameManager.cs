@@ -14,8 +14,6 @@ public class GameManager : MonoBehaviour
 	// The range that the owls' speed can be
 	private float minOwlSpeed;
 	private float maxOwlSpeed;
-	// The time before an owl disappears
-	private float owlTimeout;
 	// The time between each new owl being spawned
 	private float owlSpawnInterval;
 
@@ -39,7 +37,6 @@ public class GameManager : MonoBehaviour
 		owlOpacity = GetComponent<DifficultySettings>().owlOpacity;
 		minOwlSpeed = GetComponent<DifficultySettings>().minOwlSpeed;
 		maxOwlSpeed = GetComponent<DifficultySettings>().maxOwlSpeed;
-		owlTimeout = GetComponent<DifficultySettings>().owlTimeout;
 		owlSpawnInterval = GetComponent<DifficultySettings>().owlSpawnInterval;
 		spiralOpacity = GetComponent<DifficultySettings>().spiralOpacity;
 		owlsToWin = GetComponent<DifficultySettings>().owlsToWin;

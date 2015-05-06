@@ -23,7 +23,7 @@ public class Target : MonoBehaviour
     }
 
     // Use this for initialization
-	void Start () 
+	protected virtual void Start () 
     { 
         timer = new StopWatch();
         timer.start();
