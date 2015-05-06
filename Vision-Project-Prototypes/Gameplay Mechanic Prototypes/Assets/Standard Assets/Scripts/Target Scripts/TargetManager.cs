@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using SQLite4Unity3d;
 
 /// <summary>
@@ -12,6 +14,7 @@ public class TargetManager : MonoBehaviour
     public Movement moveType;
 	private ArrayList targets;
     public float nearMissThreshold = 5f;
+    private string manID;
 	
 	// Use this for initialization
 	void Start () 
@@ -20,6 +23,7 @@ public class TargetManager : MonoBehaviour
         misses = 0;
         nearMisses = 0;
 		targets = new ArrayList();
+        manID = Guid.NewGuid().ToString();
 	}
 	
 	// Update is called once per frame
@@ -112,44 +116,39 @@ public class TargetManager : MonoBehaviour
     {
 
     }
-}
-
-// Target Manager Data
-// Total Targets
-// Total Hits
-// Total Misses
-// Near Misses
-// Target Manager ID
-// GameSession ID
-public class TargetManData
-{
-    //[PrimaryKey, AutoIncrement]
-    public int targetManID;
-    //[NotNull]
-    public int GameManID;
-    //[NotNull]
-    public int totalTargets;
-    //[NotNull]
-    public int hits;
-    //[NotNull]
-    public int misses;
-    public int nearMisses;
-
-    const string targetTable = "TargetManagers";
 
     /// <summary>
-    /// Generate an SQL insert statement for the Class
-    /// This is not needed for inserting into the local database
+    /// Pack all the data into a IEnumerator to 
     /// </summary>
-    /// <param name="ManID">The FK id for the Game Manager class</param>
-    /// <returns>An SQL statement in the form of a string</returns>
-    public string generateInsert(int ManID)
+    /// <returns></returns>
+    public IEnumerable packTargetData()
     {
-		var insert = "INSERT into ";
-        insert += targetTable;
-        insert += "(";
+        if (targets.Count == 0) 
+        {
+            return null;
+        }
+        ArrayList data = new ArrayList();
+        foreach (Target t in targets)
+        {
+            data.Add(t.packData(manID));
+        }
 
-        return insert;
+        return data;
+    }
+
+    public TargetManData getData(string gameManID)
+    {
+        TargetManData data = new TargetManData();
+
+        data.targetManID = manID;
+        data.GameManID = gameManID;
+        data.totalTargets = targets.Count;
+        data.hits = hits;
+        data.misses = misses;
+        data.nearMisses = nearMisses;
+
+        return null;
     }
 }
+
 

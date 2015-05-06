@@ -17,6 +17,7 @@ public class Target : MonoBehaviour
     protected bool isTapped;
     protected float velocityAtTap;
     public float tapPrecision = -1f;
+    public string targetID;
     void Awake()
     {
         
@@ -30,6 +31,7 @@ public class Target : MonoBehaviour
         lapTime = 0f;
         isTapped = false;
         velocityAtTap = 0f;
+        targetID = Guid.NewGuid().ToString();
     }
 	
 	// Update is called once per frame
@@ -110,7 +112,7 @@ public class Target : MonoBehaviour
         Movement m = GetComponent<Movement>();
         SpriteRenderer r = GetComponent<SpriteRenderer>();
 
-        data.targetID = Guid.NewGuid().ToString();
+        data.targetID = targetID;
         data.managerID = manID;
         data.timeAlive = lapTime;
         data.wasHit = isTapped;
@@ -126,91 +128,4 @@ public class Target : MonoBehaviour
 
         return data;
     }
-}
-// Target Data
-// timeAlive
-// hitPrecision
-// wasHit
-// Velocity
-// Contrast
-// Scale
-// Color/Colour (r,g,b)
-// targetData ID
-// target Manager ID
-/// <summary>
-/// The Schema for storing data, may be possible to abstract it later.
-/// </summary>
-public class TargetData
-{
-    
-    /// <summary>
-    /// The Primary key of the Target
-    /// </summary>
-    [PrimaryKey, AutoIncrement, NotNull]
-    public string targetID { get; set; }
-    /// <summary>
-    /// The time the target spent alive.
-    /// </summary>
-    [NotNull]
-    public float timeAlive { get; set; }
-    /// <summary>
-    /// The FK for the manager of this Target
-    /// </summary>
-    [NotNull]
-    public string managerID { get; set; }
-    /// <summary>
-    /// The distance to from the touch point to the exact center of the object.
-    /// </summary>
-    public float hitPrecision { get; set; }
-    /// <summary>
-    /// True if the object was tapped, false if the object timmed out.
-    /// </summary>
-    public bool wasHit { get; set; }
-    /// <summary>
-    /// The actual speed the target was moving, in Game units / second.
-    /// </summary>
-    [NotNull]
-    public float velocity { get; set; }
-    /// <summary>
-    /// The alpha value of the sprite, rangeing between 0 and 1 ( 1 being completely opaque ).
-    /// </summary>
-    public float opacity { get; set; }
-    /// <summary>
-    /// The size of the object in terms of the x/y scale attribute
-    /// </summary>
-    public float scale { get; set; }
-    /// <summary>
-    /// the value of red color, rangeing between 0 and 1 ( 1 being completely saturated ).
-    /// </summary>
-    public float red { get; set; }
-    /// <summary>
-    /// the value of green color, rangeing between 0 and 1 ( 1 being completely saturated ).
-    /// </summary>
-    public float green { get; set; }
-    /// <summary>
-    /// the value of blue color, rangeing between 0 and 1 ( 1 being completely saturated ).
-    /// </summary>
-    public float blue { get; set; }
-
-    const string targetTable = "Target";
-
-    /// <summary>
-    /// Generate an SQL insert statement for the Class
-    /// This is not needed for inserting into the local database
-    /// </summary>
-    /// <param name="ManID">The FK id for the Target Manager class</param>
-    /// <returns>An SQL statement in the form of a string</returns>
-    public string generateInsert(int ManID) {
-        // Generate first segment
-        var insert = "INSERT into ";
-        insert += targetTable;
-        insert += "(targetID, managerID, timeAlive, hitPrecision, wasHit, velocity, opacity, red, green, blue, scale) ";
-        insert += "Values";
-        insert += string.Format( "( {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11} );", 
-            targetID, managerID, timeAlive, hitPrecision, wasHit, velocity
-            , opacity, red, green, blue, scale );
-
-        return insert;
-    }
-    
 }
