@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Owl : Target 
+public class MovingTarget : Target 
 {
 
 	private float timeout;

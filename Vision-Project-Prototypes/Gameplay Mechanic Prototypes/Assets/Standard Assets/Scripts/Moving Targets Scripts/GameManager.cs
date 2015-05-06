@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour
 	public void spawnOwl()
 	{
 		// Instantiate the owl prefab
-		Target owl = Instantiate(Resources.Load("Poke The Owls/Owl", typeof(Target))) as Target;
+		Target owl = Instantiate(Resources.Load("Moving Targets Prefabs/Owl", typeof(Target))) as Target;
 		
 		// Generate random x position
 		float worldHeight = Camera.main.orthographicSize - owl.transform.lossyScale.y / 2;
