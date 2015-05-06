@@ -1,20 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Game manager for moving targets game
+/// </summary>
 public class GameManager : MonoBehaviour 
 {
 
-	// The maximum number of owls that can be on the
+	// The maximum number of targets that can be on the
 	// screen at once.
-	private int maxOwlsOnScreen;
-	// The range that the owls' speed can be
-	private float minOwlSpeed;
-	private float maxOwlSpeed;
-	// The time between each new owl being spawned
-	private float owlSpawnInterval;
+	private int maxTargetsOnScreen;
+	// The range that the targets' speed can be
+	private float minTargetSpeed;
+	private float maxTargetSpeed;
+	// The time between each new target being spawned
+	private float targetSpawnInterval;
 
-	// The number of owls needed to win
-	private int owlsToWin;
+	// The number of targets needed to win
+	private int targetsToWin;
 
 	private StopWatch timer;
 
@@ -34,11 +37,11 @@ public class GameManager : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		maxOwlsOnScreen = GetComponent<DifficultySettings>().maxOwlsOnScreen;
-		minOwlSpeed = GetComponent<DifficultySettings>().minOwlSpeed;
-		maxOwlSpeed = GetComponent<DifficultySettings>().maxOwlSpeed;
-		owlSpawnInterval = GetComponent<DifficultySettings>().owlSpawnInterval;
-		owlsToWin = GetComponent<DifficultySettings>().owlsToWin;
+		maxTargetsOnScreen = GetComponent<DifficultySettings>().maxTargetsOnScreen;
+		minTargetSpeed = GetComponent<DifficultySettings>().minTargetSpeed;
+		maxTargetSpeed = GetComponent<DifficultySettings>().maxTargetSpeed;
+		targetSpawnInterval = GetComponent<DifficultySettings>().targetSpawnInterval;
+		targetsToWin = GetComponent<DifficultySettings>().targetsToWin;
 
 		timer = new StopWatch();
 		targetMan = GetComponent<TargetManager>();
@@ -66,7 +69,7 @@ public class GameManager : MonoBehaviour
 		ArrayList targets = targetMan.getTargets();
 		int activeTargets = 0;
 
-		if (targetMan.getHits() >= owlsToWin)
+		if (targetMan.getHits() >= targetsToWin)
 		{
 			currentState = state.WIN;
 		}
@@ -79,9 +82,9 @@ public class GameManager : MonoBehaviour
 			}
 		}
 
-		if (timer.lap() >= owlSpawnInterval && activeTargets < maxOwlsOnScreen)
+		if (timer.lap() >= targetSpawnInterval && activeTargets < maxTargetsOnScreen)
 		{
-			spawnOwl();
+			spawnTarget();
 		}
 	}
 
@@ -90,13 +93,13 @@ public class GameManager : MonoBehaviour
 
 	}
 
-	public void spawnOwl()
+	public void spawnTarget()
 	{
-		// Instantiate the owl prefab
-		Target owl = Instantiate(Resources.Load("Moving Targets Prefabs/Owl", typeof(Target))) as Target;
+		// Instantiate the target prefab
+		Target target = Instantiate(Resources.Load("Moving Targets Prefabs/Owl", typeof(Target))) as Target;
 		
 		// Generate random x position
-		float worldHeight = Camera.main.orthographicSize - owl.transform.lossyScale.y / 2;
+		float worldHeight = Camera.main.orthographicSize - target.transform.lossyScale.y / 2;
 		float x = Random.Range(-worldHeight, worldHeight);
 		
 		// Generate random y position
@@ -104,14 +107,14 @@ public class GameManager : MonoBehaviour
 		float y = Random.Range(-worldWidth, worldWidth);
 
 		// Generate random speed
-		float speed = Random.Range(minOwlSpeed, maxOwlSpeed);
+		float speed = Random.Range(minTargetSpeed, maxTargetSpeed);
 
-		// Position and set owl speed
-		owl.transform.position = new Vector2(x, y);
-		owl.GetComponent<OrbitMove>().SPEEDFACTOR = speed;
+		// Position and set target speed
+		target.transform.position = new Vector2(x, y);
+		target.GetComponent<OrbitMove>().SPEEDFACTOR = speed;
 
-		// Add owl to target manager
-		targetMan.addTarget(owl);
+		// Add target to target manager
+		targetMan.addTarget(target);
 		
 		// Restart the spawn timer
 		timer.start();
