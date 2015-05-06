@@ -4,12 +4,12 @@ using System.Collections;
 public class Background : MonoBehaviour 
 {
 
-	public float speed = -80f;
+	public float speed;
 
 	// Use this for initialization
 	void Start () 
 	{
-	
+		speed = GameObject.Find("GameManager").GetComponent<DifficultySettings>().spiralSpeed;
 	}
 	
 	// Update is called once per frame
