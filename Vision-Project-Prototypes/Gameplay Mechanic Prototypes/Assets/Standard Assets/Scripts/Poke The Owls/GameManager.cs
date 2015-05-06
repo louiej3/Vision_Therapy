@@ -49,29 +49,45 @@ public class GameManager : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		if (currentState == state.PLAY)
+		switch (currentState)
+		{ 
+			case state.PLAY:
+				playBehavior();
+				break;
+
+			case state.WIN:
+				winBehavior();
+				break;
+		}
+	}
+
+	private void playBehavior()
+	{
+		ArrayList targets = targetMan.getTargets();
+		int activeTargets = 0;
+
+		if (targetMan.getHits() >= owlsToWin)
 		{
-			ArrayList targets = targetMan.getTargets();
-			int activeTargets = 0;
+			currentState = state.WIN;
+		}
 
-			if (targetMan.getHits() >= owlsToWin)
+		foreach (Target t in targets)
+		{
+			if (t.isActiveAndEnabled)
 			{
-				currentState = state.WIN;
-			}
-
-			foreach (Target t in targets)
-			{
-				if (t.isActiveAndEnabled)
-				{
-					activeTargets++;
-				}
-			}
-
-			if (timer.lap() >= owlSpawnInterval && activeTargets < maxOwlsOnScreen)
-			{
-				spawnOwl();
+				activeTargets++;
 			}
 		}
+
+		if (timer.lap() >= owlSpawnInterval && activeTargets < maxOwlsOnScreen)
+		{
+			spawnOwl();
+		}
+	}
+
+	private void winBehavior()
+	{
+
 	}
 
 	public void spawnOwl()
