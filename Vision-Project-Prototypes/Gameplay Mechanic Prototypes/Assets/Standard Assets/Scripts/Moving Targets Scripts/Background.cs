@@ -14,9 +14,9 @@ public class Background : MonoBehaviour
 	{
 		gameMan = GameObject.Find("GameManager").GetComponent<GameManager>();
 
-		speed = gameMan.GetComponent<DifficultySettings>().backgroundSpeed;
+		speed = MovingTargetsSettings.backgroundSpeed;
 
-		opacity = gameMan.GetComponent<DifficultySettings>().backgroundOpacity;
+		opacity = MovingTargetsSettings.backgroundOpacity;
 		GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, opacity);
 	}
 	

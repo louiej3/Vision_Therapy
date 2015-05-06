@@ -39,11 +39,11 @@ public class GameManager : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		maxTargetsOnScreen = GetComponent<DifficultySettings>().maxTargetsOnScreen;
-		minTargetSpeed = GetComponent<DifficultySettings>().minTargetSpeed;
-		maxTargetSpeed = GetComponent<DifficultySettings>().maxTargetSpeed;
-		targetSpawnInterval = GetComponent<DifficultySettings>().targetSpawnInterval;
-		targetsToWin = GetComponent<DifficultySettings>().targetsToWin;
+		maxTargetsOnScreen = MovingTargetsSettings.maxTargetsOnScreen;
+		minTargetSpeed = MovingTargetsSettings.minTargetSpeed;
+		maxTargetSpeed = MovingTargetsSettings.maxTargetSpeed;
+		targetSpawnInterval = MovingTargetsSettings.targetSpawnInterval;
+		targetsToWin = MovingTargetsSettings.targetsToWin;
 
 		timer = new StopWatch();
 		targetMan = GetComponent<TargetManager>();

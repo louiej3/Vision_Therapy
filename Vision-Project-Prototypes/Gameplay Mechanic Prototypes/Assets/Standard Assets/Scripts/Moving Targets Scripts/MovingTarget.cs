@@ -16,12 +16,12 @@ public class MovingTarget : Target
 
 		gameMan = GameObject.Find("GameManager").GetComponent<GameManager>();
 		
-		timeout = gameMan.GetComponent<DifficultySettings>().targetTimeout;
+		timeout = MovingTargetsSettings.targetTimeout;
 
-		scale = gameMan.GetComponent<DifficultySettings>().targetScale;
+		scale = MovingTargetsSettings.targetScale;
 		transform.localScale = new Vector2(scale, scale);
 
-		opacity = gameMan.GetComponent<DifficultySettings>().targetOpacity;
+		opacity = MovingTargetsSettings.targetOpacity;
 		GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, opacity);
 	}
 
