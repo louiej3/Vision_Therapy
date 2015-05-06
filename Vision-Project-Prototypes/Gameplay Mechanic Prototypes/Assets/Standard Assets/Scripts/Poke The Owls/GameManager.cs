@@ -19,6 +19,17 @@ public class GameManager : MonoBehaviour
 	private StopWatch timer;
 
 	private TargetManager targetMan;
+
+	// The current state of the game
+	private state currentState;
+
+	public enum state
+	{
+		PLAY,
+		PAUSE,
+		WIN,
+		LOSE
+	}
 	
 	// Use this for initialization
 	void Start () 
@@ -31,14 +42,35 @@ public class GameManager : MonoBehaviour
 
 		timer = new StopWatch();
 		targetMan = GetComponent<TargetManager>();
+
+		currentState = state.PLAY;
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		if (timer.lap() >= owlSpawnInterval)
+		if (currentState == state.PLAY)
 		{
-			spawnOwl();
+			ArrayList targets = targetMan.getTargets();
+			int activeTargets = 0;
+
+			if (targetMan.getHits() >= owlsToWin)
+			{
+				currentState = state.WIN;
+			}
+
+			foreach (Target t in targets)
+			{
+				if (t.isActiveAndEnabled)
+				{
+					activeTargets++;
+				}
+			}
+
+			if (timer.lap() >= owlSpawnInterval && activeTargets < maxOwlsOnScreen)
+			{
+				spawnOwl();
+			}
 		}
 	}
 
@@ -67,5 +99,10 @@ public class GameManager : MonoBehaviour
 		
 		// Restart the spawn timer
 		timer.start();
+	}
+
+	public state getState()
+	{
+		return currentState;
 	}
 }

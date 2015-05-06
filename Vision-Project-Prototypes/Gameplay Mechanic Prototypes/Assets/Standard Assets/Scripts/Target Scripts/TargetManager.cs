@@ -112,6 +112,15 @@ public class TargetManager : MonoBehaviour
     {
 
     }
+
+	/// <summary>
+	/// The total number of targets that were hit
+	/// </summary>
+	/// <returns></returns>
+	public int getHits()
+	{
+		return hits;
+	}
 }
 
 // Target Manager Data

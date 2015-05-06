@@ -18,7 +18,7 @@ public class DifficultySettings : MonoBehaviour
 	public float minOwlSpeed = 0.5f;
 	public float maxOwlSpeed = 1.5f;
 	// The time before an owl disappears
-	public float owlTimeout = 5f;
+	public float owlTimeout = 20f;
 	// The time between each new owl being spawned
 	public float owlSpawnInterval = 3f;
 
