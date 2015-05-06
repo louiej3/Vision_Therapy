@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
 
 	private TargetManager targetMan;
 
+	private Background background;
+
 	// The current state of the game
 	private state currentState;
 
@@ -45,6 +47,7 @@ public class GameManager : MonoBehaviour
 
 		timer = new StopWatch();
 		targetMan = GetComponent<TargetManager>();
+		background = GameObject.Find("Background").GetComponent<Background>();
 
 		currentState = state.PLAY;
 	}
@@ -56,6 +59,7 @@ public class GameManager : MonoBehaviour
 		{ 
 			case state.PLAY:
 				playBehavior();
+				background.spin();
 				break;
 
 			case state.WIN:

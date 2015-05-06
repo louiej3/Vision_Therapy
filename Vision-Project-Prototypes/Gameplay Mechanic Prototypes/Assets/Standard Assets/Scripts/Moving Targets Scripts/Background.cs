@@ -23,9 +23,11 @@ public class Background : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		if (gameMan.getState() == GameManager.state.PLAY)
-		{
-			transform.Rotate(Vector3.forward, speed * Time.deltaTime);
-		}
+		
+	}
+
+	public void spin()
+	{
+		transform.Rotate(Vector3.forward, speed * Time.deltaTime);
 	}
 }
