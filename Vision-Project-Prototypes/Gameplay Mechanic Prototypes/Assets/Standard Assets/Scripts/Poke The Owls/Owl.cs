@@ -8,23 +8,27 @@ public class Owl : Target
 	private float scale;
 	private float opacity;
 
+	GameManager gameMan;
+
 	protected override void Start()
 	{
 		base.Start();
+
+		gameMan = GameObject.Find("GameManager").GetComponent<GameManager>();
 		
-		timeout = GameObject.Find("GameManager").GetComponent<DifficultySettings>().owlTimeout;
-		
-		scale = GameObject.Find("GameManager").GetComponent<DifficultySettings>().owlScale;
+		timeout = gameMan.GetComponent<DifficultySettings>().owlTimeout;
+
+		scale = gameMan.GetComponent<DifficultySettings>().owlScale;
 		transform.localScale = new Vector2(scale, scale);
 
-		opacity = GameObject.Find("GameManager").GetComponent<DifficultySettings>().owlOpacity;
+		opacity = gameMan.GetComponent<DifficultySettings>().owlOpacity;
 		GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, opacity);
 	}
 
 	// Update is called once per frame
 	void Update () 
 	{
-		if (timer.lap() >= timeout)
+		if (timer.lap() >= timeout && gameMan.getState() == GameManager.state.PLAY)
 		{
 			gameObject.SetActive(false);
 		}
