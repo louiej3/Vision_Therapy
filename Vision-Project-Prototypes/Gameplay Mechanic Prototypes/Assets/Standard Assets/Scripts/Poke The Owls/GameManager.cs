@@ -7,18 +7,11 @@ public class GameManager : MonoBehaviour
 	// The maximum number of owls that can be on the
 	// screen at once.
 	private int maxOwlsOnScreen;
-	// The transperancy of the owls
-	private float owlOpacity;
 	// The range that the owls' speed can be
 	private float minOwlSpeed;
 	private float maxOwlSpeed;
 	// The time between each new owl being spawned
 	private float owlSpawnInterval;
-
-	// The transperancy of the spiral
-	private float spiralOpacity;
-	// The speed that the spiral spins
-	private float spiralSpeed;
 
 	// The number of owls needed to win
 	private int owlsToWin;
@@ -31,11 +24,9 @@ public class GameManager : MonoBehaviour
 	void Start () 
 	{
 		maxOwlsOnScreen = GetComponent<DifficultySettings>().maxOwlsOnScreen;
-		owlOpacity = GetComponent<DifficultySettings>().owlOpacity;
 		minOwlSpeed = GetComponent<DifficultySettings>().minOwlSpeed;
 		maxOwlSpeed = GetComponent<DifficultySettings>().maxOwlSpeed;
 		owlSpawnInterval = GetComponent<DifficultySettings>().owlSpawnInterval;
-		spiralOpacity = GetComponent<DifficultySettings>().spiralOpacity;
 		owlsToWin = GetComponent<DifficultySettings>().owlsToWin;
 
 		timer = new StopWatch();
