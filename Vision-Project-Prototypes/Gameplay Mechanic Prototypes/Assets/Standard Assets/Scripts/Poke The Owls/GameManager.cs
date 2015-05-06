@@ -7,8 +7,6 @@ public class GameManager : MonoBehaviour
 	// The maximum number of owls that can be on the
 	// screen at once.
 	private int maxOwlsOnScreen;
-	// The scale of the owls. The owls are squares.
-	private float owlScale;
 	// The transperancy of the owls
 	private float owlOpacity;
 	// The range that the owls' speed can be
@@ -33,7 +31,6 @@ public class GameManager : MonoBehaviour
 	void Start () 
 	{
 		maxOwlsOnScreen = GetComponent<DifficultySettings>().maxOwlsOnScreen;
-		owlScale = GetComponent<DifficultySettings>().owlScale;
 		owlOpacity = GetComponent<DifficultySettings>().owlOpacity;
 		minOwlSpeed = GetComponent<DifficultySettings>().minOwlSpeed;
 		maxOwlSpeed = GetComponent<DifficultySettings>().maxOwlSpeed;
