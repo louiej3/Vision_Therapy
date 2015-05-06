@@ -10,17 +10,9 @@ public class DifficultySettings : MonoBehaviour
 	public float owlSize = 1f;
 	public float owlOpacity = 1f;
 	public float spiralOpacity = 1f;
+	public float owlTimeout = 5f;
+	public float owlSpawnInterval = 3f;
+	public float spiralSpeed = -80f;
+	public int owlsToWin = 20;
 
-
-	// Use this for initialization
-	void Start () 
-	{
-	
-	}
-	
-	// Update is called once per frame
-	void Update () 
-	{
-	
-	}
 }
