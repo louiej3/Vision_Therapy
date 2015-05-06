@@ -4,20 +4,46 @@ using System.Collections;
 public class GameManager : MonoBehaviour 
 {
 
-	private StopWatch timer;
-	
-	private TargetManager targetMan;
-	
-	// Determines the owls' speed
-	public float minSpeed = 0.5f;
-	public float maxSpeed = 1.5f;
+	// The maximum number of owls that can be on the
+	// screen at once.
+	private int maxOwlsOnScreen;
+	// The scale of the owls. The owls are squares.
+	private float owlScale;
+	// The transperancy of the owls
+	private float owlOpacity;
+	// The range that the owls' speed can be
+	private float minOwlSpeed;
+	private float maxOwlSpeed;
+	// The time before an owl disappears
+	private float owlTimeout;
+	// The time between each new owl being spawned
+	private float owlSpawnInterval;
 
-	// Owl spawn time in seconds
-	public float owlInterval = 3f;
+	// The transperancy of the spiral
+	private float spiralOpacity;
+	// The speed that the spiral spins
+	private float spiralSpeed;
+
+	// The number of owls needed to win
+	private int owlsToWin;
+
+	private StopWatch timer;
+
+	private TargetManager targetMan;
 	
 	// Use this for initialization
 	void Start () 
 	{
+		maxOwlsOnScreen = GetComponent<DifficultySettings>().maxOwlsOnScreen;
+		owlScale = GetComponent<DifficultySettings>().owlScale;
+		owlOpacity = GetComponent<DifficultySettings>().owlOpacity;
+		minOwlSpeed = GetComponent<DifficultySettings>().minOwlSpeed;
+		maxOwlSpeed = GetComponent<DifficultySettings>().maxOwlSpeed;
+		owlTimeout = GetComponent<DifficultySettings>().owlTimeout;
+		owlSpawnInterval = GetComponent<DifficultySettings>().owlSpawnInterval;
+		spiralOpacity = GetComponent<DifficultySettings>().spiralOpacity;
+		owlsToWin = GetComponent<DifficultySettings>().owlsToWin;
+
 		timer = new StopWatch();
 		targetMan = GetComponent<TargetManager>();
 	}
@@ -25,7 +51,7 @@ public class GameManager : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		if (timer.lap() >= owlInterval)
+		if (timer.lap() >= owlSpawnInterval)
 		{
 			spawnOwl();
 		}
@@ -45,7 +71,7 @@ public class GameManager : MonoBehaviour
 		float y = Random.Range(-worldWidth, worldWidth);
 
 		// Generate random speed
-		float speed = Random.Range(minSpeed, maxSpeed);
+		float speed = Random.Range(minOwlSpeed, maxOwlSpeed);
 
 		// Position and set owl speed
 		owl.transform.position = new Vector2(x, y);

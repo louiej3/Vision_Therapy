@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Difficulty settings for Poke the Owls
+/// </summary>
 public class DifficultySettings : MonoBehaviour 
 {
 
