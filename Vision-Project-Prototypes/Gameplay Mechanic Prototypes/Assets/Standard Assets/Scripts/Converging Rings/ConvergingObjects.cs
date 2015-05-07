@@ -17,7 +17,7 @@ public class ConvergingObjects : MonoBehaviour
 	// Tells whether or not this converging object has been successfully tapped
 	protected bool isTapped = false;
 
-	protected float lapTime = 0f;
+	public float lapTime = 0f;
 
 	protected StopWatch timer;
 
