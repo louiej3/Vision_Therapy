@@ -5,26 +5,57 @@ public class ConvergingObjects : MonoBehaviour
 {
 
 	// List of boomerangs associated with this convergence point
-	private ArrayList boomerangs;
+	protected ArrayList boomerangs;
 	// The time it takes for all of the boomerangs to converge
-	private float convergeTime = 0f;
+	protected float convergeTime = 0f;
 	// The scale of the each boomerang
-	private float scale = 1f;
+	protected float scale = 1f;
 	// The point where all of the boomerangs converge
-	private Vector2 centerPoint;
+	protected Vector2 centerPoint;
 	// The object that represents the center point
-	private GameObject centerObject;
+	protected GameObject centerObject;
+	// Tells whether or not this converging object has been successfully tapped
+	protected bool isTapped = false;
+
+	protected float lapTime = 0f;
+
+	protected StopWatch timer;
 
 	// Use this for initialization
 	void Start () 
 	{
 		boomerangs = new ArrayList();
+		timer = new StopWatch();
+
+		timer.start();
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
 		
+	}
+
+	// For subclasses that would like to implement behavior upon tap
+	protected virtual void tapBehavior() { }
+
+	public bool checkTouch(Touch tap)
+	{
+		Vector3 worldPoint = Camera.main.ScreenToWorldPoint(tap.position);
+		Vector2 touchPos = new Vector2(worldPoint.x, worldPoint.y);
+
+		if (centerObject.GetComponent<Collider2D>() == Physics2D.OverlapPoint(touchPos))
+		{
+			// because the unit has been tapped, set the variables
+			lapTime = timer.lap();
+			isTapped = true;
+
+			// If it is an inherited class, we can call the specific tap behavior
+			tapBehavior();
+
+			return true;
+		}
+		return false;   
 	}
 
 	public void converge()
@@ -97,5 +128,10 @@ public class ConvergingObjects : MonoBehaviour
 
 			boomerangs.Add(boomerang);
 		}
+	}
+
+	public float getLapTime()
+	{
+		return lapTime;
 	}
 }
