@@ -60,18 +60,21 @@ public class ConvergingObjects : MonoBehaviour
 
 	public void converge()
 	{
-		// If the first boomerang reaches its max distance, turn
-		// all of them boomerangs around and go the other way
-		if (Vector2.Distance(((Boomerang)boomerangs[0]).transform.position, centerPoint)
-			>= ((Boomerang)boomerangs[0]).distance)
+		if (!isTapped)
 		{
-			turnAround();
-		}
-		
-		// Move the boomerangs towards the center point
-		foreach (Boomerang b in boomerangs)
-		{
-			b.transform.position += b.transform.up * b.speed * Time.smoothDeltaTime;
+			// If the first boomerang reaches its max distance, turn
+			// all of them boomerangs around and go the other way
+			if (Vector2.Distance(((Boomerang)boomerangs[0]).transform.position, centerPoint)
+				>= ((Boomerang)boomerangs[0]).distance)
+			{
+				turnAround();
+			}
+
+			// Move the boomerangs towards the center point
+			foreach (Boomerang b in boomerangs)
+			{
+				b.transform.position += b.transform.up * b.speed * Time.smoothDeltaTime;
+			}
 		}
 	}
 
