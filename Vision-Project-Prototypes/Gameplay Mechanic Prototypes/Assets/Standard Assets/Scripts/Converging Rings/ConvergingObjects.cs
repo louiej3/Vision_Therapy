@@ -12,6 +12,8 @@ public class ConvergingObjects : MonoBehaviour
 	private float scale = 1f;
 	// The point where all of the boomerangs converge
 	private Vector2 centerPoint;
+	// The object that represents the center point
+	private GameObject centerObject;
 
 	// Use this for initialization
 	void Start () 
@@ -55,8 +57,8 @@ public class ConvergingObjects : MonoBehaviour
 	public void set(int numberOfObjects, Vector2 centerPoint, float time)
 	{
 		// Create and position the center point
-		GameObject center = Instantiate(Resources.Load("Converging Rings Prefabs/Center", typeof(GameObject))) as GameObject;
-		center.transform.position = centerPoint;
+		centerObject = Instantiate(Resources.Load("Converging Rings Prefabs/Center", typeof(GameObject))) as GameObject;
+		centerObject.transform.position = centerPoint;
 		this.centerPoint = centerPoint;
 
 		// Create the amount of boomerangs specified by numberOfObjects
@@ -68,8 +70,8 @@ public class ConvergingObjects : MonoBehaviour
 			convergeTime = time;
 
 			// Find the x coordinate of the boomerang relative to the center point
-			float height = Camera.main.orthographicSize - Mathf.Abs(center.transform.position.y - scale / 2);
-			float y = Random.Range(center.transform.position.y - height, center.transform.position.y + height);
+			float height = Camera.main.orthographicSize - Mathf.Abs(centerPoint.y - scale / 2);
+			float y = Random.Range(centerPoint.y - height, centerPoint.y + height);
 
 			// Find the y coordinate of the boomerang relative to the center point
 			float width = Mathf.Sqrt(Mathf.Abs(Mathf.Pow(height, 2) - Mathf.Pow(y, 2)));
