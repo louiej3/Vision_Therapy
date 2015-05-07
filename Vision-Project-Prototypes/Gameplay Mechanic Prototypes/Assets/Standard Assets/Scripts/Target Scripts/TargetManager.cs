@@ -118,9 +118,9 @@ public class TargetManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Pack all the data into a IEnumerator to 
+    /// Pack all the data into a IEnumerable to be inserted into the database 
     /// </summary>
-    /// <returns></returns>
+    /// <return> An IEnumerable of all the Targets data objects</returns>
     public IEnumerable packTargetData()
     {
         if (targets.Count == 0) 
@@ -141,7 +141,7 @@ public class TargetManager : MonoBehaviour
         TargetManData data = new TargetManData();
 
         data.targetManID = manID;
-        data.GameManID = gameManID;
+        data.gameManID = gameManID;
         data.totalTargets = targets.Count;
         data.hits = hits;
         data.misses = misses;
@@ -150,5 +150,7 @@ public class TargetManager : MonoBehaviour
         return null;
     }
 }
+
+
 
 

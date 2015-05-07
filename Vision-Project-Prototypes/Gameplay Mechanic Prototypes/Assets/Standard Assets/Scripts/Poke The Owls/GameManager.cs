@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 	private StopWatch timer;
 	
 	private TargetManager targetMan;
+    private string gameManID;
 	
 	// Determines the owls' speed
 	public float minSpeed = 0.5f;
@@ -18,6 +19,7 @@ public class GameManager : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
+        gameManID = System.Guid.NewGuid().ToString();
 		timer = new StopWatch();
 		targetMan = GetComponent<TargetManager>();
 	}
@@ -57,4 +59,9 @@ public class GameManager : MonoBehaviour
 		// Restart the spawn timer
 		timer.start();
 	}
+
+    public void Finish()
+    {
+
+    }
 }
