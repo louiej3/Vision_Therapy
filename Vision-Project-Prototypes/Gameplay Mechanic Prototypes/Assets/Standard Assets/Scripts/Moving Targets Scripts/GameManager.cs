@@ -6,7 +6,7 @@ using System.Collections;
 /// </summary>
 public class GameManager : MonoBehaviour 
 {
-
+    private string gameManID;
 	// The maximum number of targets that can be on the
 	// screen at once.
 	private int maxTargetsOnScreen;
@@ -22,6 +22,9 @@ public class GameManager : MonoBehaviour
 	private StopWatch timer;
 
 	private TargetManager targetMan;
+
+    private GameSession gameSession;
+    private Database dbConnection;
 
 	private Background background;
 
@@ -47,9 +50,12 @@ public class GameManager : MonoBehaviour
 
 		timer = new StopWatch();
 		targetMan = GetComponent<TargetManager>();
+        gameSession = GameObject.Find("GameSession").GetComponent<GameSession>();
+        dbConnection = GameObject.Find("Database").GetComponent<Database>();
 		background = GameObject.Find("Background").GetComponent<Background>();
 
 		currentState = state.PLAY;
+        gameManID = System.Guid.NewGuid().ToString();
 	}
 	
 	// Update is called once per frame
@@ -94,7 +100,19 @@ public class GameManager : MonoBehaviour
 
 	private void winBehavior()
 	{
+        GameInstance inst = gameSession.packData();
+        if (!dbConnection.insert(inst))
+        {
+            Debug.Log("game instance insert failed");
+        }
 
+        MovingTargetsManData man = packData();
+        if (!dbConnection.insert(man))
+        {
+            Debug.Log("game manager insert failed");
+        }
+
+        TargetManData targetManData = targetMan
 	}
 
 	public void spawnTarget()
@@ -128,4 +146,12 @@ public class GameManager : MonoBehaviour
 	{
 		return currentState;
 	}
+    public MovingTargetsManData packData()
+    {
+        MovingTargetsManData data = new MovingTargetsManData();
+
+        data.gameManID = gameManID;
+        data.gameInstanceID = gameSession.getID();
+        data.levelID = 
+    }
 }

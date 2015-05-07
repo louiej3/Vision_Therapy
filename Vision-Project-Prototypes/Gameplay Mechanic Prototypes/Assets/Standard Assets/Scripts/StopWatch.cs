@@ -34,7 +34,7 @@ public class StopWatch
     /// </summary>
     public float start()
     {
-        startTime = Time.realtimeSinceStartup;
+        startTime = Time.time;
         return startTime;
     }
 
@@ -45,7 +45,7 @@ public class StopWatch
     /// <returns>Difference in seconds between now(endTime) and startTime</returns>
     public float lap()
     {
-        endTime = Time.realtimeSinceStartup;
+        endTime = Time.time;
         return endTime - startTime;
     }
 
@@ -58,7 +58,7 @@ public class StopWatch
     /// <returns>Difference in seconds between now(endTime) and oldTime </returns>
     public float lap(float oldTime)
     {
-        endTime = Time.realtimeSinceStartup;
+        endTime = Time.time;
         return endTime - oldTime;
     }
 }

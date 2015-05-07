@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using SQLite4Unity3d;
 
 /// <summary>
 /// Difficulty settings for moving targets game
 /// </summary>
-public class MovingTargetsSettings 
+public class MovingTargetsSettings
 {
-
 	// The maximum number of targets that can be on the
 	// screen at once.
 	public static int maxTargetsOnScreen = 5;
