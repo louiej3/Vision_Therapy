@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ConvergingManager : MonoBehaviour 
+public class ConObjectManager : MonoBehaviour 
 {
 
 	private int hits = 0;
@@ -19,6 +19,11 @@ public class ConvergingManager : MonoBehaviour
 	{
 		Touch[] taps = Input.touches;
 
+		foreach (ConvergingObjects co in converging)
+		{
+			co.converge();
+		}
+
 		if (Input.touchCount > 0)
 		{
 			foreach (Touch tap in taps)
@@ -29,7 +34,6 @@ public class ConvergingManager : MonoBehaviour
 
 					foreach (ConvergingObjects co in converging)
 					{
-						co.converge();
 						if (co.checkTouch(tap))
 						{
 							hit = true;
@@ -48,8 +52,8 @@ public class ConvergingManager : MonoBehaviour
 	/// <summary>
 	/// Adds a coverging object to the list of managed targets.
 	/// </summary>
-	/// <param name="t">The fully prepared converging object to be added</param>
-	public void addTarget(ConvergingObjects co)
+	/// <param name="co">The fully prepared converging object to be added</param>
+	public void addConverge(ConvergingObjects co)
 	{
 		if (co != null)
 		{

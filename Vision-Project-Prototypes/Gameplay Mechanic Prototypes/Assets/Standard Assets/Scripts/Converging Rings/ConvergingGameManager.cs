@@ -6,12 +6,12 @@ public class ConvergingGameManager : MonoBehaviour
 
 	private StopWatch timer;
 
-	private ConvergingManager conMan;
+	private ConObjectManager conMan;
 
 	// The time in seconds between each converging object spawn
 	public float convergeSpawnRate = 5f;
 	// The number of boomerangs for each converging object
-	public float convergeNumber = 5f;
+	public int convergeNumber = 5;
 	// The minimum time it takes for the booomerangs to converge
 	public float minConvergeTime = 1f;
 	// The maximum time it takes for the booomerangs to converge
@@ -21,7 +21,7 @@ public class ConvergingGameManager : MonoBehaviour
 	void Start () 
 	{
 		timer = new StopWatch();
-		conMan = GetComponent<ConvergingManager>();
+		conMan = GetComponent<ConObjectManager>();
 	}
 	
 	// Update is called once per frame
@@ -35,8 +35,21 @@ public class ConvergingGameManager : MonoBehaviour
 
 	private void spawnConverge()
 	{
-		float convergeTime = Random.Range(minConvergeTime, maxConvergeTime);
+		ConvergingObjects conObj = Instantiate(Resources.Load("Converging Rings Prefabs/ConvergingObject", 
+			typeof(ConvergingObjects))) as ConvergingObjects;
 		
-		//ConvergingObjects co = GetComponent<ConvergingObjects>().set();
+		float convergeTime = Random.Range(minConvergeTime, maxConvergeTime);
+
+		float worldHeight = Camera.main.orthographicSize - conObj.getScale() / 2;
+		float x = Random.Range(-worldHeight, worldHeight);
+
+		float worldWidth = (Camera.main.orthographicSize / Camera.main.aspect) - conObj.getScale() / 2;
+		float y = Random.Range(-worldWidth, worldWidth);
+
+		conObj.set(convergeNumber, new Vector2(x, y), convergeTime);
+
+		conMan.addConverge(conObj);
+
+		timer.start();
 	}
 }
