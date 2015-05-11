@@ -68,7 +68,24 @@ public class ConvergingGameManager : MonoBehaviour
 
 	private void playBehavior()
 	{
-		if (timer.lap() >= convergeSpawnInterval)
+		ArrayList con = conMan.getConverging();
+		int activeConverges = 0;
+
+		if (conMan.getHits() >= convergesToWin)
+		{
+			currentState = ConvergeState.WIN;
+		}
+
+		foreach (ConvergingObjects co in con)
+		{
+			if (co.isActiveAndEnabled)
+			{
+				activeConverges++;
+			}
+		}
+		
+		if (timer.lap() >= convergeSpawnInterval 
+			&& activeConverges < maxConvergeOnScreen)
 		{
 			spawnConverge();
 		}

@@ -8,16 +8,19 @@ public class ConvergingObjects : MonoBehaviour
 	protected ArrayList boomerangs;
 	// The time it takes for all of the boomerangs to converge
 	protected float convergeTime = 0f;
-	// The scale of the each boomerang, the boomerangs are squares
-	protected float scale = 1f;
 	// Tells whether or not this converging object has been successfully tapped
 	protected bool isTapped = false;
 	// The total time it took for this converging object to the tapped
 	protected float lapTime = 0f;
 	// How accurately the rings intersected when the user touched this converging object
 	protected float accuracy = 0f;
+	
 	// The time before this object initiates timeout behavior
-	protected float timeOut = 0f;
+	protected float timeOut;
+	// The scale of the center object
+	protected float scale;
+	// The transparency of the center of the converging object
+	protected float opacity;
 
 	protected StopWatch timer;
 
@@ -31,8 +34,15 @@ public class ConvergingObjects : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		timer = new StopWatch();
+		timeOut = ConvergingSettings.convergeTimeOut;
+		
+		scale = ConvergingSettings.centerScale;
+		transform.localScale = new Vector2(scale, scale);
 
+		opacity = ConvergingSettings.centerOpacity;
+		GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, opacity);
+		
+		timer = new StopWatch();
 		timer.start();
 	}
 	
@@ -53,7 +63,7 @@ public class ConvergingObjects : MonoBehaviour
 			// to complete one cycle (convergeTime * 2), then subtract the
 			// convergeTime and get the absolute value
 			accuracy = Mathf.Abs((lapTime % (convergeTime * 2)) - convergeTime);
-			
+
 			isTapped = true;
 
 			// If it is an inherited class, we can call the specific tap behavior
@@ -98,7 +108,6 @@ public class ConvergingObjects : MonoBehaviour
 	{
 		// Position the center point
 		transform.position = centerPoint;
-		transform.localScale = new Vector2(scale, scale);
 
 		// Create the amount of boomerangs specified by numberOfObjects
 		for (int i = 0; i < numberOfObjects; i++)
@@ -133,7 +142,6 @@ public class ConvergingObjects : MonoBehaviour
 			// Set variables in this boomerang
 			b.distance = distance;
 			b.speed = speed;
-			b.transform.localScale = new Vector2(scale, scale);
 
 			boomerangs.Add(b);
 		}
