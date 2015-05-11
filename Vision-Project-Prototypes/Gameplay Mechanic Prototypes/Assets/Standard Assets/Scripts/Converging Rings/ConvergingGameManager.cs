@@ -9,13 +9,13 @@ public class ConvergingGameManager : MonoBehaviour
 	private ConObjectManager conMan;
 
 	// The time in seconds between each converging object spawn
-	public float convergeSpawnRate = 5f;
+	private float convergeSpawnRate = 5f;
 	// The number of boomerangs for each converging object
-	public int convergeNumber = 5;
+	private int convergeNumber = 5;
 	// The minimum time it takes for the booomerangs to converge
-	public float minConvergeTime = 1f;
+	private float minConvergeTime = 1f;
 	// The maximum time it takes for the booomerangs to converge
-	public float maxConvergeTime = 4f;
+	private float maxConvergeTime = 4f;
 
 	public ConvergingObjects convergePrefab;
 
