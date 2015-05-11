@@ -17,6 +17,8 @@ public class ConvergingGameManager : MonoBehaviour
 	// The maximum time it takes for the booomerangs to converge
 	public float maxConvergeTime = 4f;
 
+	public ConvergingObjects convergePrefab;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -35,20 +37,19 @@ public class ConvergingGameManager : MonoBehaviour
 
 	private void spawnConverge()
 	{
-		ConvergingObjects conObj = Instantiate(Resources.Load("Converging Rings Prefabs/ConvergingObject", 
-			typeof(ConvergingObjects))) as ConvergingObjects;
+		ConvergingObjects co = Instantiate(convergePrefab) as ConvergingObjects;
 		
 		float convergeTime = Random.Range(minConvergeTime, maxConvergeTime);
 
-		float worldHeight = Camera.main.orthographicSize - conObj.getScale() / 2;
+		float worldHeight = Camera.main.orthographicSize - co.getScale() / 2;
 		float x = Random.Range(-worldHeight, worldHeight);
 
-		float worldWidth = (Camera.main.orthographicSize / Camera.main.aspect) - conObj.getScale() / 2;
+		float worldWidth = (Camera.main.orthographicSize / Camera.main.aspect) - co.getScale() / 2;
 		float y = Random.Range(-worldWidth, worldWidth);
 
-		conObj.set(convergeNumber, new Vector2(x, y), convergeTime);
+		co.set(convergeNumber, new Vector2(x, y), convergeTime);
 
-		conMan.addConverge(conObj);
+		conMan.addConverge(co);
 
 		timer.start();
 	}

@@ -8,14 +8,18 @@ public class ConvergingObjects : MonoBehaviour
 	protected ArrayList boomerangs;
 	// The time it takes for all of the boomerangs to converge
 	protected float convergeTime = 0f;
-	// The scale of the each boomerang
+	// The scale of the each boomerang, the boomerangs are squares
 	protected float scale = 1f;
 	// Tells whether or not this converging object has been successfully tapped
 	protected bool isTapped = false;
-
-	public float lapTime = 0f;
+	// The time it took for this converging object to the tapped
+	protected float lapTime = 0f;
+	// The time before this object initiates timeout behavior
+	protected float timeOut = 0f;
 
 	protected StopWatch timer;
+
+	public Boomerang boomerangPrefab;
 
 	void Awake()
 	{
@@ -98,7 +102,7 @@ public class ConvergingObjects : MonoBehaviour
 		for (int i = 0; i < numberOfObjects; i++)
 		{
 			// Instantiate boomerang
-			Boomerang b = Instantiate(Resources.Load("Converging Rings Prefabs/Ring", typeof(Boomerang))) as Boomerang;
+			Boomerang b = Instantiate(boomerangPrefab) as Boomerang;
 			
 			convergeTime = time;
 
@@ -141,5 +145,14 @@ public class ConvergingObjects : MonoBehaviour
 	public float getScale()
 	{
 		return scale;
+	}
+
+	public bool timedOut()
+	{
+		if (timer.lap() >= timeOut)
+		{
+			return true;
+		}
+		return false;
 	}
 }
