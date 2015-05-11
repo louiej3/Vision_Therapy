@@ -78,6 +78,22 @@ public class ConObjectManager : MonoBehaviour
 	}
 
 	/// <summary>
+	/// Retrieve the average accuracy of the user
+	/// </summary>
+	/// <returns>The average margin of error for the converging objects</returns>
+	public float getAverageAccuracy()
+	{
+		float average = 0f;
+
+		foreach (ConvergingObjects co in converging)
+		{
+			average += co.getAccuracy();
+		}
+
+		return average / converging.Count;
+	}
+
+	/// <summary>
 	/// Retrieve an ArrayList of all converging objects
 	/// </summary>
 	/// <returns></returns>
@@ -93,5 +109,24 @@ public class ConObjectManager : MonoBehaviour
 	public int getNumberOfTargets()
 	{
 		return converging.Count;
+	}
+
+	/// <summary>
+	/// Returns the total number of converging objects that were hit
+	/// </summary>
+	/// <returns></returns>
+	public int getHits()
+	{
+		return hits;
+	}
+
+	/// <summary>
+	/// Returns the total number of taps that did not hit a converging
+	/// object
+	/// </summary>
+	/// <returns></returns>
+	public int getMisses()
+	{
+		return misses;
 	}
 }

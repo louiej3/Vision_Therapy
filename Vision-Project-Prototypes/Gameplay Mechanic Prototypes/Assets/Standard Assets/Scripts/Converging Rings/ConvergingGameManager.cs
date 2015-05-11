@@ -8,14 +8,21 @@ public class ConvergingGameManager : MonoBehaviour
 
 	private ConObjectManager conMan;
 
-	// The time in seconds between each converging object spawn
-	private float convergeSpawnRate = 5f;
+	// The maximum amount of converging objects on the screen
+	// at one time
+	private int maxConvergeOnScreen;
+	// The time between each converging object beign spawned
+	private float convergeSpawnInterval;
 	// The number of boomerangs for each converging object
-	private int convergeNumber = 5;
+	private int numberOfBoomerangs;
 	// The minimum time it takes for the booomerangs to converge
-	private float minConvergeTime = 1f;
+	private float minConvergeTime;
 	// The maximum time it takes for the booomerangs to converge
-	private float maxConvergeTime = 4f;
+	private float maxConvergeTime;
+	// The amount of converging objects that need to be tapped
+	// before the user wins
+	private int convergesToWin;
+	
 	// The current state of the game
 	private ConvergeState currentState;
 
@@ -32,6 +39,13 @@ public class ConvergingGameManager : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
+		maxConvergeOnScreen = ConvergingSettings.maxConvergeOnScreen;
+		convergeSpawnInterval = ConvergingSettings.convergeSpawnInterval;
+		numberOfBoomerangs = ConvergingSettings.numberOfBoomerangs;
+		minConvergeTime = ConvergingSettings.minConvergeTime;
+		maxConvergeTime = ConvergingSettings.maxConvergeTime;
+		convergesToWin = ConvergingSettings.convergesToWin;
+		
 		timer = new StopWatch();
 		conMan = GetComponent<ConObjectManager>();
 		currentState = ConvergeState.PLAY;
@@ -54,7 +68,7 @@ public class ConvergingGameManager : MonoBehaviour
 
 	private void playBehavior()
 	{
-		if (timer.lap() >= convergeSpawnRate)
+		if (timer.lap() >= convergeSpawnInterval)
 		{
 			spawnConverge();
 		}
@@ -77,7 +91,7 @@ public class ConvergingGameManager : MonoBehaviour
 		float worldWidth = (Camera.main.orthographicSize / Camera.main.aspect) - co.getScale() / 2;
 		float y = Random.Range(-worldWidth, worldWidth);
 
-		co.set(convergeNumber, new Vector2(x, y), convergeTime);
+		co.set(numberOfBoomerangs, new Vector2(x, y), convergeTime);
 
 		conMan.addConverge(co);
 

@@ -12,8 +12,10 @@ public class ConvergingObjects : MonoBehaviour
 	protected float scale = 1f;
 	// Tells whether or not this converging object has been successfully tapped
 	protected bool isTapped = false;
-	// The time it took for this converging object to the tapped
+	// The total time it took for this converging object to the tapped
 	protected float lapTime = 0f;
+	// How accurately the rings intersected when the user touched this converging object
+	protected float accuracy = 0f;
 	// The time before this object initiates timeout behavior
 	protected float timeOut = 0f;
 
@@ -34,12 +36,6 @@ public class ConvergingObjects : MonoBehaviour
 		timer.start();
 	}
 	
-	// Update is called once per frame
-	void Update () 
-	{
-		
-	}
-
 	// For subclasses that would like to implement behavior upon tap
 	protected virtual void tapBehavior() { }
 
@@ -52,6 +48,12 @@ public class ConvergingObjects : MonoBehaviour
 		{
 			// because the unit has been tapped, set the variables
 			lapTime = timer.lap();
+
+			// Mod the user's lapTime by the time it takes for a boomerang
+			// to complete one cycle (convergeTime * 2), then subtract the
+			// convergeTime and get the absolute value
+			accuracy = Mathf.Abs((lapTime % (convergeTime * 2)) - convergeTime);
+			
 			isTapped = true;
 
 			// If it is an inherited class, we can call the specific tap behavior
@@ -145,6 +147,11 @@ public class ConvergingObjects : MonoBehaviour
 	public float getScale()
 	{
 		return scale;
+	}
+
+	public float getAccuracy()
+	{
+		return accuracy;
 	}
 
 	public bool timedOut()
