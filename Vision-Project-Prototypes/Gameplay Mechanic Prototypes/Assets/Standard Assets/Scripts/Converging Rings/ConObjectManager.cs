@@ -71,7 +71,7 @@ public class ConObjectManager : MonoBehaviour
 
 		foreach (ConvergingObjects co in converging)
 		{
-			average += co.lapTime;
+			average += co.getLapTime();
 		}
 
 		return average / converging.Count;
