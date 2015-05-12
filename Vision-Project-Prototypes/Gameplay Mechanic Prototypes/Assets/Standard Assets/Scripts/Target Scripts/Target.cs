@@ -17,6 +17,8 @@ public class Target : MonoBehaviour
     protected bool isTapped;
     protected float velocityAtTap;
     public float tapPrecision = -1f;
+	protected float timeOut;
+
     void Awake()
     {
         
@@ -30,6 +32,7 @@ public class Target : MonoBehaviour
         lapTime = 0f;
         isTapped = false;
         velocityAtTap = 0f;
+		timeOut = MovingTargetsSettings.targetTimeout;
     }
 	
 	// Update is called once per frame
@@ -99,6 +102,20 @@ public class Target : MonoBehaviour
         float dist = Vector2.Distance(GetComponent<Transform>().position, touchPos);
         return dist < threshold;
     }
+
+	/// <summary>
+	/// Returns a true value if this object has timed out, false otherwise
+	/// </summary>
+	/// <returns></returns>
+	public bool timedOut()
+	{
+		if (timer.lap() >= timeOut)
+		{
+			return true;
+		}
+		return false;
+	}
+
     /// <summary>
     /// Packs the data up into a Target data object
     /// </summary>
