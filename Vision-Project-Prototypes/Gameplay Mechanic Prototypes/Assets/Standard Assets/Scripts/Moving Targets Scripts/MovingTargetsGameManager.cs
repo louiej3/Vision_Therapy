@@ -4,7 +4,7 @@ using System.Collections;
 /// <summary>
 /// Game manager for moving targets game
 /// </summary>
-public class GameManager : MonoBehaviour 
+public class MovingTargetsGameManager : MonoBehaviour 
 {
 
 	// The maximum number of targets that can be on the

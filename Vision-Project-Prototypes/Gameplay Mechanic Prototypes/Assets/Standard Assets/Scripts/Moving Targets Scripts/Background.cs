@@ -7,12 +7,12 @@ public class Background : MonoBehaviour
 	private float speed;
 	private float opacity;
 
-	GameManager gameMan;
+	MovingTargetsGameManager gameMan;
 
 	// Use this for initialization
 	void Start () 
 	{
-		gameMan = GameObject.Find("GameManager").GetComponent<GameManager>();
+		gameMan = GameObject.Find("GameManager").GetComponent<MovingTargetsGameManager>();
 
 		speed = MovingTargetsSettings.backgroundSpeed;
 

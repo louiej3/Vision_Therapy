@@ -4,13 +4,13 @@ using System.Collections;
 public class MovingTarget : Target 
 {
 
-	GameManager gameMan;
+	MovingTargetsGameManager gameMan;
 
 	protected override void Start()
 	{
 		base.Start();
 
-		gameMan = GameObject.Find("GameManager").GetComponent<GameManager>();
+		gameMan = GameObject.Find("GameManager").GetComponent<MovingTargetsGameManager>();
 
 		timeOut = MovingTargetsSettings.targetTimeout;
 
@@ -24,7 +24,7 @@ public class MovingTarget : Target
 	// Update is called once per frame
 	void Update () 
 	{
-		if (timedOut() && gameMan.getState() == GameManager.state.PLAY)
+		if (timedOut() && gameMan.getState() == MovingTargetsGameManager.state.PLAY)
 		{
 			gameObject.SetActive(false);
 		}
