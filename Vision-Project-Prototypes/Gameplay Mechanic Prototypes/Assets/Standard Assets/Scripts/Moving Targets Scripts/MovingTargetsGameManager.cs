@@ -25,6 +25,8 @@ public class MovingTargetsGameManager : MonoBehaviour
 
 	private Background background;
 
+	public Target targetPrefab;
+
 	// The current state of the game
 	private state currentState;
 
@@ -100,7 +102,7 @@ public class MovingTargetsGameManager : MonoBehaviour
 	public void spawnTarget()
 	{
 		// Instantiate the target prefab
-		Target target = Instantiate(Resources.Load("Moving Targets Prefabs/Owl", typeof(Target))) as Target;
+		Target target = Instantiate(targetPrefab) as Target;
 		
 		// Generate random x position
 		float worldHeight = Camera.main.orthographicSize - target.transform.lossyScale.y / 2;
