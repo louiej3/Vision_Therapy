@@ -69,6 +69,15 @@ public class ConvergingObjects : MonoBehaviour
 			// If it is an inherited class, we can call the specific tap behavior
 			tapBehavior();
 
+			// Deactivate each boomerang
+			foreach (Boomerang b in boomerangs)
+			{
+				b.gameObject.SetActive(false);
+			}
+
+			// Deactivate the center
+			gameObject.SetActive(false);
+
 			return true;
 		}
 		return false;   
