@@ -4,10 +4,6 @@ using System.Collections;
 public class MovingTarget : Target 
 {
 
-	private float timeout;
-	private float scale;
-	private float opacity;
-
 	GameManager gameMan;
 
 	protected override void Start()
@@ -15,8 +11,8 @@ public class MovingTarget : Target
 		base.Start();
 
 		gameMan = GameObject.Find("GameManager").GetComponent<GameManager>();
-		
-		timeout = MovingTargetsSettings.targetTimeout;
+
+		timeOut = MovingTargetsSettings.targetTimeout;
 
 		scale = MovingTargetsSettings.targetScale;
 		transform.localScale = new Vector2(scale, scale);

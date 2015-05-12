@@ -18,6 +18,8 @@ public class Target : MonoBehaviour
     protected float velocityAtTap;
     public float tapPrecision = -1f;
 	protected float timeOut;
+	protected float scale;
+	protected float opacity;
 
     void Awake()
     {
@@ -32,7 +34,6 @@ public class Target : MonoBehaviour
         lapTime = 0f;
         isTapped = false;
         velocityAtTap = 0f;
-		timeOut = MovingTargetsSettings.targetTimeout;
     }
 	
 	// Update is called once per frame
