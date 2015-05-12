@@ -15,7 +15,7 @@ public class ConvergingObjects : MonoBehaviour
 	// How accurately the rings intersected when the user touched this converging object
 	protected float accuracy = 0f;
 	// Tells whether accuracy was in the margin of error
-	public bool withinError = false;
+	public bool success = false;
 	
 	// The time before this object initiates timeout behavior
 	protected float timeOut;

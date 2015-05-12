@@ -37,7 +37,7 @@ public class ConObjectManager : MonoBehaviour
 				if (tap.phase == TouchPhase.Began)
 				{
 					bool hit = false;
-
+					
 					foreach (ConvergingObjects co in converging)
 					{
 						if (co.checkTouch(tap))
@@ -45,15 +45,18 @@ public class ConObjectManager : MonoBehaviour
 							if (co.getAccuracy() <= co.getConvergeTime() * marginOfError)
 							{
 								successfulHits++;
+								co.success = true;
 							}
-							
+
+							hits++;
 							hit = true;
 							break;
 						}
 					}
-					if (hit)
+
+					if (!hit)
 					{
-						hits++;
+						misses++;
 					}
 				}
 			}
