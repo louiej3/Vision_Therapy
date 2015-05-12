@@ -6,12 +6,18 @@ public class ConObjectManager : MonoBehaviour
 
 	private int hits = 0;
 	private int misses = 0;
+	private int successfulHits = 0;
 	private ArrayList converging;
+
+	// Multiplies converge time by this value to determine how
+	// far off the user can be when they tap the object
+	private float marginOfError;
 
 	// Use this for initialization
 	void Start () 
 	{
 		converging = new ArrayList();
+		marginOfError = ConvergingSettings.marginOfError;
 	}
 	
 	// Update is called once per frame
@@ -36,6 +42,11 @@ public class ConObjectManager : MonoBehaviour
 					{
 						if (co.checkTouch(tap))
 						{
+							if (co.getAccuracy() <= co.getConvergeTime() * marginOfError)
+							{
+								successfulHits++;
+							}
+							
 							hit = true;
 							break;
 						}
@@ -118,6 +129,16 @@ public class ConObjectManager : MonoBehaviour
 	public int getHits()
 	{
 		return hits;
+	}
+
+	/// <summary>
+	/// Returns the total number of converging objects that were hit
+	/// within the margin of error
+	/// </summary>
+	/// <returns></returns>
+	public int getSuccessfulHits()
+	{
+		return successfulHits;
 	}
 
 	/// <summary>

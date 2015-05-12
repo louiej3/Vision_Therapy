@@ -14,6 +14,8 @@ public class ConvergingObjects : MonoBehaviour
 	protected float lapTime = 0f;
 	// How accurately the rings intersected when the user touched this converging object
 	protected float accuracy = 0f;
+	// Tells whether accuracy was in the margin of error
+	public bool withinError = false;
 	
 	// The time before this object initiates timeout behavior
 	protected float timeOut;
@@ -41,7 +43,7 @@ public class ConvergingObjects : MonoBehaviour
 
 		opacity = ConvergingSettings.centerOpacity;
 		GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, opacity);
-		
+
 		timer = new StopWatch();
 		timer.start();
 	}
@@ -178,5 +180,10 @@ public class ConvergingObjects : MonoBehaviour
 			return true;
 		}
 		return false;
+	}
+
+	public float getConvergeTime()
+	{
+		return convergeTime;
 	}
 }

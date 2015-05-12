@@ -71,7 +71,7 @@ public class ConvergingGameManager : MonoBehaviour
 		ArrayList con = conMan.getConverging();
 		int activeConverges = 0;
 
-		if (conMan.getHits() >= convergesToWin)
+		if (conMan.getSuccessfulHits() >= convergesToWin)
 		{
 			currentState = ConvergeState.WIN;
 		}
