@@ -4,20 +4,19 @@ using System.Collections;
 public class ConObjectManager : MonoBehaviour 
 {
 
-	private int hits = 0;
-	private int misses = 0;
-	private int successfulHits = 0;
-	private ArrayList converging;
+	public int Hits { get; private set; }
+	public int Misses { get; private set; }
+	public int SuccessfulHits { get; private set; }
+	public ArrayList Converging { get; private set; }
 
 	// Multiplies converge time by this value to determine how
 	// far off the user can be when they tap the object
-	private float marginOfError;
+	private float _marginOfError;
 
 	// Use this for initialization
 	void Start () 
 	{
-		converging = new ArrayList();
-		marginOfError = ConvergingSettings.marginOfError;
+		Converging = new ArrayList();
 	}
 	
 	// Update is called once per frame
@@ -25,7 +24,7 @@ public class ConObjectManager : MonoBehaviour
 	{
 		Touch[] taps = Input.touches;
 
-		foreach (ConvergingObjects co in converging)
+		foreach (ConvergingObjects co in Converging)
 		{
 			co.converge();
 		}
@@ -38,17 +37,17 @@ public class ConObjectManager : MonoBehaviour
 				{
 					bool hit = false;
 					
-					foreach (ConvergingObjects co in converging)
+					foreach (ConvergingObjects co in Converging)
 					{
 						if (co.checkTouch(tap))
 						{
-							if (co.getAccuracy() <= co.getConvergeTime() * marginOfError)
+							if (co.getAccuracy() <= co.getConvergeTime() * _marginOfError)
 							{
-								successfulHits++;
+								SuccessfulHits++;
 								co.success = true;
 							}
 
-							hits++;
+							Hits++;
 							hit = true;
 							break;
 						}
@@ -56,7 +55,7 @@ public class ConObjectManager : MonoBehaviour
 
 					if (!hit)
 					{
-						misses++;
+						Misses++;
 					}
 				}
 			}
@@ -71,86 +70,77 @@ public class ConObjectManager : MonoBehaviour
 	{
 		if (co != null)
 		{
-			converging.Add(co);
+			Converging.Add(co);
 		}
 	}
 
 	/// <summary>
 	/// Retrieve the average time between converging object creation and tap
 	/// </summary>
-	/// <returns>The average hit time for all converging objects</returns>
-	public float getAverage()
+	public float AverageLifeTime
 	{
-		float average = 0f;
-
-		foreach (ConvergingObjects co in converging)
+		get
 		{
-			average += co.getLapTime();
-		}
+			float average = 0f;
 
-		return average / converging.Count;
+			foreach (ConvergingObjects co in Converging)
+			{
+				average += co.getLapTime();
+			}
+
+			return average / Converging.Count;
+		}
 	}
 
 	/// <summary>
 	/// Retrieve the average accuracy of the user
 	/// </summary>
-	/// <returns>The average margin of error for the converging objects</returns>
-	public float getAverageAccuracy()
+	public float AverageAccuracy
 	{
-		float average = 0f;
-
-		foreach (ConvergingObjects co in converging)
+		get
 		{
-			average += co.getAccuracy();
+			float average = 0f;
+
+			foreach (ConvergingObjects co in Converging)
+			{
+				average += co.getAccuracy();
+			}
+
+			return average / Converging.Count;
 		}
-
-		return average / converging.Count;
 	}
-
-	/// <summary>
-	/// Retrieve an ArrayList of all converging objects
-	/// </summary>
-	/// <returns></returns>
-	public ArrayList getConverging()
-	{
-		return converging;
-	}
-
+	
 	/// <summary>
 	/// The total number of converging objects managed by the ConvergingManager
 	/// </summary>
-	/// <returns></returns>
-	public int getNumberOfTargets()
+	public int NumberOfTargets
 	{
-		return converging.Count;
+		get
+		{
+			return Converging.Count;
+		}
 	}
 
 	/// <summary>
-	/// Returns the total number of converging objects that were hit
+	/// A percentage that determines how inaccurate users can be when they 
+	/// tap a converging object.
 	/// </summary>
-	/// <returns></returns>
-	public int getHits()
+	public float MarginOfError
 	{
-		return hits;
-	}
-
-	/// <summary>
-	/// Returns the total number of converging objects that were hit
-	/// within the margin of error
-	/// </summary>
-	/// <returns></returns>
-	public int getSuccessfulHits()
-	{
-		return successfulHits;
-	}
-
-	/// <summary>
-	/// Returns the total number of taps that did not hit a converging
-	/// object
-	/// </summary>
-	/// <returns></returns>
-	public int getMisses()
-	{
-		return misses;
+		get
+		{
+			return _marginOfError;
+		}
+		set
+		{
+			if (value >= 0 && value <= 1)
+			{
+				_marginOfError = value;
+			}
+			else
+			{
+				throw new System.Exception("Value must be between 0 and 1");
+			}
+		}
 	}
 }

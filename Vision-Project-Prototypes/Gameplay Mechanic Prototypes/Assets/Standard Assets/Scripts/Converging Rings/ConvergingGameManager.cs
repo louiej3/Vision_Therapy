@@ -7,26 +7,43 @@ public class ConvergingGameManager : MonoBehaviour
 	private StopWatch timer;
 
 	private ConObjectManager conMan;
-
-	// The maximum amount of converging objects on the screen
-	// at one time
-	private int maxConvergeOnScreen;
-	// The time between each converging object beign spawned
-	private float convergeSpawnInterval;
-	// The number of boomerangs for each converging object
-	private int numberOfBoomerangs;
-	// The minimum time it takes for the booomerangs to converge
-	private float minConvergeTime;
-	// The maximum time it takes for the booomerangs to converge
-	private float maxConvergeTime;
-	// The amount of converging objects that need to be tapped
-	// before the user wins
-	private int convergesToWin;
 	
 	// The current state of the game
 	private ConvergeState currentState;
 
 	public ConvergingObjects convergePrefab;
+
+	// The maximum amount of converging objects on the screen
+	// at one time
+	public int maxConvergeOnScreen = 4;
+	// The time between each converging object beign spawned
+	public float convergeSpawnInterval = 3f;
+	// The minimum time it takes for the boomerangs to intersect
+	public float minConvergeTime = 1f;
+	// The maximum time it takes for the boomerangs to intersect
+	public float maxConvergeTime = 4f;
+
+	// The transparency of the center of the converging object
+	public float centerOpacity = 0.5f;
+	// The time before a converging object times out
+	public float convergeTimeOut = 20f;
+	// The scale of the center object, center is a square
+	public float centerScale = 1f;
+
+	// The transparency of the boomerangs
+	public float boomerangOpacity = 1f;
+	// The scale of the boomerangs, boomerangs are square
+	public float boomerangScale = 1f;
+	// The number of boomerangs for each converging object
+	public int numberOfBoomerangs = 4;
+
+	// The amount of converging objects that need to be tapped
+	// before the user wins
+	public int convergesToWin = 10;
+
+	// Multiplies converge time by this value to determine how
+	// far off the user can be when they tap the object
+	public float marginOfError = 0.1f;
 
 	public enum ConvergeState
 	{
@@ -41,10 +58,16 @@ public class ConvergingGameManager : MonoBehaviour
 	{
 		maxConvergeOnScreen = ConvergingSettings.maxConvergeOnScreen;
 		convergeSpawnInterval = ConvergingSettings.convergeSpawnInterval;
-		numberOfBoomerangs = ConvergingSettings.numberOfBoomerangs;
 		minConvergeTime = ConvergingSettings.minConvergeTime;
 		maxConvergeTime = ConvergingSettings.maxConvergeTime;
+		centerOpacity = ConvergingSettings.centerOpacity;
+		convergeTimeOut = ConvergingSettings.convergeTimeOut;
+		centerScale = ConvergingSettings.centerScale;
+		boomerangOpacity = ConvergingSettings.boomerangOpacity;
+		boomerangScale = ConvergingSettings.boomerangScale;
+		numberOfBoomerangs = ConvergingSettings.numberOfBoomerangs;
 		convergesToWin = ConvergingSettings.convergesToWin;
+		marginOfError = ConvergingSettings.marginOfError;
 		
 		timer = new StopWatch();
 		conMan = GetComponent<ConObjectManager>();
@@ -68,10 +91,10 @@ public class ConvergingGameManager : MonoBehaviour
 
 	private void playBehavior()
 	{
-		ArrayList con = conMan.getConverging();
+		ArrayList con = conMan.Converging;
 		int activeConverges = 0;
 
-		if (conMan.getSuccessfulHits() >= convergesToWin)
+		if (conMan.SuccessfulHits >= convergesToWin)
 		{
 			currentState = ConvergeState.WIN;
 		}
