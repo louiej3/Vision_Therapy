@@ -120,12 +120,12 @@ public class ConvergingObjects : MonoBehaviour
 			convergeTime = time;
 
 			// Find the x coordinate of the boomerang relative to the center point
-			float height = Camera.main.orthographicSize - Mathf.Abs(centerPoint.y - scale / 2);
+			float height = Camera.main.orthographicSize - Mathf.Abs(centerPoint.y + scale / 2);
 			float y = Random.Range(centerPoint.y - height, centerPoint.y + height);
 
 			// Find the y coordinate of the boomerang relative to the center point
 			float width = Mathf.Sqrt(Mathf.Abs(Mathf.Pow(height, 2) - Mathf.Pow(y, 2)));
-			float x = Random.Range(-width, width);
+			float x = Random.Range(centerPoint.x - width, centerPoint.x + width);
 
 			// Position the boomerang
 			b.transform.position = new Vector2(x, y);
