@@ -36,14 +36,6 @@ public class ConvergingObjects : MonoBehaviour
 	// Use this for initialization
 	protected virtual void Start () 
 	{
-		_timeOut = ConvergingSettings.convergeTimeOut;
-
-		_scale = ConvergingSettings.centerScale;
-		transform.localScale = new Vector2(_scale, _scale);
-
-		_opacity = ConvergingSettings.centerOpacity;
-		GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, _opacity);
-
 		timer = new StopWatch();
 		timer.start();
 	}
@@ -188,6 +180,7 @@ public class ConvergingObjects : MonoBehaviour
 			if (value >= 0)
 			{
 				_scale = value;
+				transform.localScale = new Vector2(_scale, _scale);
 			}
 			else
 			{
@@ -207,6 +200,11 @@ public class ConvergingObjects : MonoBehaviour
 			if (value >= 0)
 			{
 				_opacity = value;
+				GetComponent<SpriteRenderer>().color = new Color(
+					GetComponent<SpriteRenderer>().color.r, 
+					GetComponent<SpriteRenderer>().color.g, 
+					GetComponent<SpriteRenderer>().color.b, 
+					_opacity);
 			}
 			else
 			{

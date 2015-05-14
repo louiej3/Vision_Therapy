@@ -15,31 +15,23 @@ public class ConvergingGameManager : MonoBehaviour
 
 	// The maximum amount of converging objects on the screen
 	// at one time
-	public int maxConvergeOnScreen = 4;
+	public int maxConvergeOnScreen;
 	// The time between each converging object beign spawned
-	public float convergeSpawnInterval = 3f;
+	public float convergeSpawnInterval;
 	// The minimum time it takes for the boomerangs to intersect
-	public float minConvergeTime = 1f;
+	public float minConvergeTime;
 	// The maximum time it takes for the boomerangs to intersect
-	public float maxConvergeTime = 4f;
-
-	// The transparency of the center of the converging object
-	public float centerOpacity = 0.5f;
-	// The time before a converging object times out
-	public float convergeTimeOut = 20f;
-	// The scale of the center object, center is a square
-	public float centerScale = 1f;
+	public float maxConvergeTime;
+	// The number of boomerangs for each converging object
+	public int numberOfBoomerangs;
+	// The amount of converging objects that need to be tapped
+	// before the user wins
+	public int convergesToWin;
 
 	// The transparency of the boomerangs
 	public float boomerangOpacity = 1f;
 	// The scale of the boomerangs, boomerangs are square
 	public float boomerangScale = 1f;
-	// The number of boomerangs for each converging object
-	public int numberOfBoomerangs = 4;
-
-	// The amount of converging objects that need to be tapped
-	// before the user wins
-	public int convergesToWin = 10;
 
 	public enum ConvergeState
 	{
@@ -56,9 +48,6 @@ public class ConvergingGameManager : MonoBehaviour
 		convergeSpawnInterval = ConvergingSettings.convergeSpawnInterval;
 		minConvergeTime = ConvergingSettings.minConvergeTime;
 		maxConvergeTime = ConvergingSettings.maxConvergeTime;
-		centerOpacity = ConvergingSettings.centerOpacity;
-		convergeTimeOut = ConvergingSettings.convergeTimeOut;
-		centerScale = ConvergingSettings.centerScale;
 		boomerangOpacity = ConvergingSettings.boomerangOpacity;
 		boomerangScale = ConvergingSettings.boomerangScale;
 		numberOfBoomerangs = ConvergingSettings.numberOfBoomerangs;
@@ -121,7 +110,10 @@ public class ConvergingGameManager : MonoBehaviour
 	private void spawnConverge()
 	{
 		ConvergingObjects co = Instantiate(convergePrefab) as ConvergingObjects;
-		
+		co.TimeOut = ConvergingSettings.convergeTimeOut;
+		co.Scale = ConvergingSettings.centerScale;
+		co.Opacity = ConvergingSettings.centerOpacity;
+
 		float convergeTime = Random.Range(minConvergeTime, maxConvergeTime);
 
 		float worldHeight = Camera.main.orthographicSize - co.Scale / 2;
