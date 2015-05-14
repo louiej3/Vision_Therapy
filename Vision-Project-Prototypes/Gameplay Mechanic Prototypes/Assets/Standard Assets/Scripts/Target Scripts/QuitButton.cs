@@ -5,7 +5,7 @@ public class QuitButton : Target
 {
 
 	// Use this for initialization
-	void Start () 
+	public override void Start () 
     {
 	
 	}
