@@ -80,7 +80,7 @@ public class TargetManager : MonoBehaviour
 
 			foreach (Target t in Targets)
 			{
-				average += t.lapTime;
+				average += t.LapTime;
 			}
 
 			return average / Targets.Count;
