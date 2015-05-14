@@ -10,12 +10,21 @@ public class MovingTargetsGameManager : MonoBehaviour
 	// The maximum number of targets that can be on the
 	// screen at once.
 	private int maxTargetsOnScreen;
+	// The scale of the targets. The targets are squares.
+	private float targetScale;
+	// The transperancy of the targets
+	private float targetOpacity;
 	// The range that the targets' speed can be
 	private float minTargetSpeed;
 	private float maxTargetSpeed;
+	// The time before a target disappears
+	private float targetTimeout;
 	// The time between each new target being spawned
 	private float targetSpawnInterval;
-
+	// The transperancy of the background
+	private float backgroundOpacity;
+	// The speed that the background spins
+	private float backgroundSpeed;
 	// The number of targets needed to win
 	private int targetsToWin;
 
@@ -28,7 +37,7 @@ public class MovingTargetsGameManager : MonoBehaviour
 	public Target targetPrefab;
 
 	// The current state of the game
-	private MovingTargetsState currentState;
+	public MovingTargetsState CurrentState { get; private set; }
 
 	public enum MovingTargetsState
 	{
@@ -42,22 +51,29 @@ public class MovingTargetsGameManager : MonoBehaviour
 	void Start () 
 	{
 		maxTargetsOnScreen = MovingTargetsSettings.maxTargetsOnScreen;
+		targetScale = MovingTargetsSettings.targetScale;
+		targetOpacity = MovingTargetsSettings.targetOpacity;
 		minTargetSpeed = MovingTargetsSettings.minTargetSpeed;
 		maxTargetSpeed = MovingTargetsSettings.maxTargetSpeed;
+		targetTimeout = MovingTargetsSettings.targetTimeout;
 		targetSpawnInterval = MovingTargetsSettings.targetSpawnInterval;
+		backgroundOpacity = MovingTargetsSettings.backgroundOpacity;
+		backgroundSpeed = MovingTargetsSettings.backgroundSpeed;
 		targetsToWin = MovingTargetsSettings.targetsToWin;
 
 		timer = new StopWatch();
+		
 		targetMan = GetComponent<TargetManager>();
+		
 		background = GameObject.Find("Background").GetComponent<Background>();
 
-		currentState = MovingTargetsState.PLAY;
+		CurrentState = MovingTargetsState.PLAY;
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		switch (currentState)
+		switch (CurrentState)
 		{ 
 			case MovingTargetsState.PLAY:
 				playBehavior();
@@ -77,7 +93,7 @@ public class MovingTargetsGameManager : MonoBehaviour
 
 		if (targetMan.Hits >= targetsToWin)
 		{
-			currentState = MovingTargetsState.WIN;
+			CurrentState = MovingTargetsState.WIN;
 		}
 
 		foreach (Target t in targets)
@@ -124,10 +140,5 @@ public class MovingTargetsGameManager : MonoBehaviour
 		
 		// Restart the spawn timer
 		timer.start();
-	}
-
-	public MovingTargetsState getState()
-	{
-		return currentState;
 	}
 }
