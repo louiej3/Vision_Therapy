@@ -10,7 +10,7 @@ public class MovingTarget : Target
 
 	GameManager gameMan;
 
-	protected override void Start()
+	public override void Start()
 	{
 		base.Start();
 
@@ -26,7 +26,7 @@ public class MovingTarget : Target
 	}
 
 	// Update is called once per frame
-	void Update () 
+	public override void Update () 
 	{
 		if (timer.lap() >= timeout && gameMan.getState() == GameManager.state.PLAY)
 		{

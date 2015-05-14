@@ -20,7 +20,7 @@ public class MovingTargetsSettings
 	// The time before a target disappears
 	public static float targetTimeout = 20f;
 	// The time between each new target being spawned
-	public static float targetSpawnInterval = 3f;
+	public static float targetSpawnInterval = 0.5f;
 
 	// The transperancy of the background
 	public static float backgroundOpacity = 1f;
@@ -28,6 +28,6 @@ public class MovingTargetsSettings
 	public static float backgroundSpeed = -80f;
 
 	// The number of targets needed to win
-	public static int targetsToWin = 20;
+	public static int targetsToWin = 10;
 
 }

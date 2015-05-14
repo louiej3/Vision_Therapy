@@ -8,6 +8,7 @@ using SQLite4Unity3d;
 /// </summary>
 public class TargetManager : MonoBehaviour 
 {
+    private string manID;
     private int hits, misses, nearMisses;
     public Movement moveType;
 	private ArrayList targets;
@@ -16,6 +17,7 @@ public class TargetManager : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
+        manID = System.Guid.NewGuid().ToString();
         hits = 0;
         misses = 0;
         nearMisses = 0;
@@ -120,5 +122,38 @@ public class TargetManager : MonoBehaviour
 	public int getHits()
 	{
 		return hits;
-	}
+    }
+
+    /// <summary>
+    /// Pack all the data into a IEnumerable to be inserted into the database 
+    /// </summary>
+    /// <return> An IEnumerable of all the Targets data objects</returns>
+    public IEnumerable packTargetData()
+    {
+        if (targets.Count == 0)
+        {
+            return null;
+        }
+        ArrayList data = new ArrayList();
+        foreach (Target t in targets)
+        {
+            data.Add(t.packData(manID));
+        }
+
+        return data;
+    }
+
+    public TargetManData packData(string gameManID)
+    {
+        TargetManData data = new TargetManData();
+
+        data.targetManID = manID;
+        data.gameManID = gameManID;
+        data.totalTargets = targets.Count;
+        data.hits = hits;
+        data.misses = misses;
+        data.nearMisses = nearMisses;
+
+        return data;
+    }
 }

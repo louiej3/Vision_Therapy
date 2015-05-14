@@ -6,7 +6,7 @@ public class BalloonTarget : Target
 	private TargetManager tm;
 
 	// Use this for initialization
-	void Start () 
+	public override void Start () 
     {
         timer = new StopWatch();
         timer.start();

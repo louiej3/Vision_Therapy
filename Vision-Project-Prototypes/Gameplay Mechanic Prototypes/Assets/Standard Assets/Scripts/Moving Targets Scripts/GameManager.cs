@@ -112,7 +112,18 @@ public class GameManager : MonoBehaviour
             Debug.Log("game manager insert failed");
         }
 
-        TargetManData targetManData = targetMan
+        TargetManData targetManData = targetMan.packData(gameManID);
+        if (!dbConnection.insert(targetManData))
+        {
+            Debug.Log("target Manager insert failed");
+        }
+
+        IEnumerable targets = targetMan.packTargetData();
+        if (!dbConnection.insertAll(targets))
+        {
+            Debug.Log("targets insert failed");
+        }
+        Application.Quit();
 	}
 
 	public void spawnTarget()
@@ -152,6 +163,18 @@ public class GameManager : MonoBehaviour
 
         data.gameManID = gameManID;
         data.gameInstanceID = gameSession.getID();
-        data.levelID = 
+
+        // load current difficulty settings
+        data.maxOnScreen = MovingTargetsSettings.maxTargetsOnScreen;
+        data.targetScale = MovingTargetsSettings.targetScale;
+        data.targetOpacity = MovingTargetsSettings.targetOpacity;
+        data.minTargetSpeed = MovingTargetsSettings.minTargetSpeed;
+        data.maxTargetSpeed = MovingTargetsSettings.maxTargetsOnScreen;
+        data.targetTimeout = MovingTargetsSettings.targetTimeout;
+        data.targetSpawnInterval = MovingTargetsSettings.targetSpawnInterval;
+        data.backgroundOpacity = MovingTargetsSettings.backgroundOpacity;
+        data.backgroundSpeed = MovingTargetsSettings.backgroundSpeed;
+        data.targetsToWin = MovingTargetsSettings.targetsToWin;
+        return data;
     }
 }
