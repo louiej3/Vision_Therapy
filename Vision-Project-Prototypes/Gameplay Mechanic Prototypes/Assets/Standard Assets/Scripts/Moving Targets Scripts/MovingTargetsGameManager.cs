@@ -66,6 +66,8 @@ public class MovingTargetsGameManager : MonoBehaviour
 		targetMan = GetComponent<TargetManager>();
 		
 		background = GameObject.Find("Background").GetComponent<Background>();
+		background.Speed = backgroundSpeed;
+		background.Opacity = backgroundOpacity;
 
 		CurrentState = MovingTargetsState.PLAY;
 	}

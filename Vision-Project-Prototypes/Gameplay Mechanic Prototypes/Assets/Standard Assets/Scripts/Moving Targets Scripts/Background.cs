@@ -4,20 +4,13 @@ using System.Collections;
 public class Background : MonoBehaviour 
 {
 
-	private float speed;
-	private float opacity;
-
-	MovingTargetsGameManager gameMan;
+	private float _speed;
+	private float _opacity;
 
 	// Use this for initialization
 	void Start () 
 	{
-		gameMan = GameObject.Find("GameManager").GetComponent<MovingTargetsGameManager>();
-
-		speed = MovingTargetsSettings.backgroundSpeed;
-
-		opacity = MovingTargetsSettings.backgroundOpacity;
-		GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, opacity);
+		
 	}
 	
 	// Update is called once per frame
@@ -28,6 +21,49 @@ public class Background : MonoBehaviour
 
 	public void spin()
 	{
-		transform.Rotate(Vector3.forward, speed * Time.deltaTime);
+		transform.Rotate(Vector3.forward, Speed * Time.deltaTime);
+	}
+
+	public float Speed
+	{
+		get
+		{
+			return _speed;
+		}
+		set
+		{
+			if (_speed >= 0)
+			{
+				_speed = value;
+			} 
+			else
+			{
+				throw new System.Exception("Value cannot be negative");
+			}
+		}
+	}
+
+	public float Opacity
+	{
+		get
+		{
+			return _opacity;
+		}
+		set
+		{
+			if (value >= 0)
+			{
+				_opacity = value;
+				GetComponent<SpriteRenderer>().color = new Color(
+					GetComponent<SpriteRenderer>().color.r,
+					GetComponent<SpriteRenderer>().color.g,
+					GetComponent<SpriteRenderer>().color.b,
+					_opacity);
+			} 
+			else
+			{
+				throw new System.Exception("Value cannot be negative");
+			}
+		}
 	}
 }
