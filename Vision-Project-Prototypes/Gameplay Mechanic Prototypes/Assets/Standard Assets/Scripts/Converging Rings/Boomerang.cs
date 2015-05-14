@@ -4,18 +4,90 @@ using System.Collections;
 public class Boomerang : MonoBehaviour 
 {
 
-	public float speed = 0f;
-	public float distance = 0f;
-	public float opacity;
-	public float scale;
+	private float _speed;
+	private float _distance;
+	private float _opacity;
+	private float _scale;
 
-	void Start()
+	public float Speed
 	{
-		opacity = ConvergingSettings.boomerangOpacity;
-		GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, opacity);
-		
-		scale = ConvergingSettings.boomerangScale;
-		transform.localScale = new Vector2(scale, scale);
+		get
+		{
+			return _speed;
+		}
+		set
+		{
+			if (_speed >= 0)
+			{
+				_speed = value;
+			}
+			else
+			{
+				throw new System.Exception("Value cannot be negative");
+			}
+		}
 	}
 
+	public float Distance
+	{
+		get
+		{
+			return _distance;
+		}
+		set
+		{
+			if (_distance >= 0)
+			{
+				_distance = value;
+			}
+			else
+			{
+				throw new System.Exception("Value cannot be negative");
+			}
+		}
+	}
+
+	public float Scale
+	{
+		get
+		{
+			return _scale;
+		}
+		set
+		{
+			if (value >= 0)
+			{
+				_scale = value;
+				transform.localScale = new Vector2(_scale, _scale);
+			}
+			else
+			{
+				throw new System.Exception("Value cannot be negative");
+			}
+		}
+	}
+
+	public float Opacity
+	{
+		get
+		{
+			return _opacity;
+		}
+		set
+		{
+			if (value >= 0)
+			{
+				_opacity = value;
+				GetComponent<SpriteRenderer>().color = new Color(
+					GetComponent<SpriteRenderer>().color.r,
+					GetComponent<SpriteRenderer>().color.g,
+					GetComponent<SpriteRenderer>().color.b,
+					_opacity);
+			}
+			else
+			{
+				throw new System.Exception("Value cannot be negative");
+			}
+		}
+	}
 }

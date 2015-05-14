@@ -75,7 +75,7 @@ public class ConvergingObjects : MonoBehaviour
 			// If the first boomerang reaches its max distance, turn
 			// all of them boomerangs around and go the other way
 			if (Vector2.Distance(((Boomerang)boomerangs[0]).transform.position, transform.position)
-				>= ((Boomerang)boomerangs[0]).distance)
+				>= ((Boomerang)boomerangs[0]).Distance)
 			{
 				turnAround();
 			}
@@ -83,7 +83,7 @@ public class ConvergingObjects : MonoBehaviour
 			// Move the boomerangs towards the center point
 			foreach (Boomerang b in boomerangs)
 			{
-				b.transform.position += b.transform.up * b.speed * Time.smoothDeltaTime;
+				b.transform.position += b.transform.up * b.Speed * Time.smoothDeltaTime;
 			}
 		}
 	}
@@ -98,7 +98,8 @@ public class ConvergingObjects : MonoBehaviour
 		}
 	}
 
-	public void set(int numberOfObjects, Vector2 centerPoint, float time)
+	public void set(int numberOfObjects, Vector2 centerPoint, float time, 
+		float boomerangScale, float boomerangOpacity)
 	{
 		// Position the center point
 		transform.position = centerPoint;
@@ -134,8 +135,10 @@ public class ConvergingObjects : MonoBehaviour
 			float speed = distance / time;
 
 			// Set variables in this boomerang
-			b.distance = distance;
-			b.speed = speed;
+			b.Distance = distance;
+			b.Speed = speed;
+			b.Scale = boomerangScale;
+			b.Opacity = boomerangOpacity;
 
 			boomerangs.Add(b);
 		}

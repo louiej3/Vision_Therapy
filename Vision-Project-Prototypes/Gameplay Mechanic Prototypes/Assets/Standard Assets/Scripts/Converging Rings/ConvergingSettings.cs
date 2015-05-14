@@ -11,7 +11,7 @@ public class ConvergingSettings : MonoBehaviour
 	// at one time
 	public static int maxConvergeOnScreen = 4;
 	// The time between each converging object beign spawned
-	public static float convergeSpawnInterval = 3f;
+	public static float convergeSpawnInterval = 5f;
 	// The minimum time it takes for the boomerangs to intersect
 	public static float minConvergeTime = 1f;
 	// The maximum time it takes for the boomerangs to intersect
@@ -29,7 +29,7 @@ public class ConvergingSettings : MonoBehaviour
 	// The scale of the boomerangs, boomerangs are square
 	public static float boomerangScale = 1f;
 	// The number of boomerangs for each converging object
-	public static int numberOfBoomerangs = 4;
+	public static int numberOfBoomerangs = 3;
 
 	// The amount of converging objects that need to be tapped
 	// before the user wins
