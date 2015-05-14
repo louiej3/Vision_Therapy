@@ -18,7 +18,6 @@ public class TargetManager : MonoBehaviour
 	public int NearMisses { get; private set; }
 	public ArrayList Targets { get; private set; }
     public float nearMissThreshold = 5f;
-    private string manID;
 	public Movement moveType;
 	
 	// Use this for initialization
