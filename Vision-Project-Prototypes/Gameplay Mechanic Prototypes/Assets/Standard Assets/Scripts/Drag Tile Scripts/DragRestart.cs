@@ -5,10 +5,6 @@ public class DragRestart : Target
 {
 
 	// Use this for initialization
-	void Start () 
-	{
-	
-	}
 
 	protected override void tapBehavior()
 	{

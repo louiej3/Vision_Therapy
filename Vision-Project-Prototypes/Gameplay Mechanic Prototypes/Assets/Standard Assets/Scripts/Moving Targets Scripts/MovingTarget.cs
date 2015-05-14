@@ -4,19 +4,15 @@ using System.Collections;
 public class MovingTarget : Target 
 {
 
-	private float timeout;
-	private float scale;
-	private float opacity;
+	MovingTargetsGameManager gameMan;
 
-	GameManager gameMan;
-
-	protected override void Start()
+	public override void Start()
 	{
 		base.Start();
 
-		gameMan = GameObject.Find("GameManager").GetComponent<GameManager>();
-		
-		timeout = MovingTargetsSettings.targetTimeout;
+		gameMan = GameObject.Find("GameManager").GetComponent<MovingTargetsGameManager>();
+
+		timeOut = MovingTargetsSettings.targetTimeout;
 
 		scale = MovingTargetsSettings.targetScale;
 		transform.localScale = new Vector2(scale, scale);
@@ -26,9 +22,9 @@ public class MovingTarget : Target
 	}
 
 	// Update is called once per frame
-	void Update () 
+	public override void Update () 
 	{
-		if (timer.lap() >= timeout && gameMan.getState() == GameManager.state.PLAY)
+		if (timedOut() && gameMan.CurrentState == MovingTargetsGameManager.MovingTargetsState.PLAY)
 		{
 			gameObject.SetActive(false);
 		}

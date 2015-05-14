@@ -8,18 +8,24 @@ using SQLite4Unity3d;
 /// </summary>
 public class TargetManager : MonoBehaviour 
 {
-    private int hits, misses, nearMisses;
-    public Movement moveType;
-	private ArrayList targets;
+    private string manID;
+
+
+	public int Hits { get; private set; }
+	public int Misses { get; private set; }
+	public int NearMisses { get; private set; }
+	public ArrayList Targets { get; private set; }
     public float nearMissThreshold = 5f;
+	public Movement moveType;
 	
 	// Use this for initialization
 	void Start () 
 	{
+        manID = System.Guid.NewGuid().ToString();
         hits = 0;
         misses = 0;
         nearMisses = 0;
-		targets = new ArrayList();
+		Targets = new ArrayList();
 	}
 	
 	// Update is called once per frame
@@ -34,7 +40,7 @@ public class TargetManager : MonoBehaviour
                 {
                     bool hit = false;
 
-                    foreach (Target target in targets)
+                    foreach (Target target in Targets)
                     {
                         if (target.checkTouch(tap))
                         {
@@ -44,13 +50,13 @@ public class TargetManager : MonoBehaviour
                             if (target.checkNearMiss(tap, nearMissThreshold))
                             {
                                 nearMissAnimation(target);
-                                ++nearMisses;
+                                ++NearMisses;
                             }
                         }
                     }
                     if (hit)
                     {
-                        hits++;
+                        Hits++;
                     }
                 }
             }
@@ -65,7 +71,7 @@ public class TargetManager : MonoBehaviour
 	{
         if (t != null)
         {
-            targets.Add(t);
+            Targets.Add(t);
         }
 	}
 
@@ -73,34 +79,30 @@ public class TargetManager : MonoBehaviour
     /// Retrieve the average time between target creation and tap
     /// </summary>
     /// <returns>The average hit time for all targets</returns>
-	public float getAverage()
+	public float AverageLifeTime
 	{
-		float average = 0f;
-		
-		foreach (Target t in targets)
+		get
 		{
-			average += t.lapTime;
+			float average = 0f;
+
+			foreach (Target t in Targets)
+			{
+				average += t.LapTime;
+			}
+
+			return average / Targets.Count;
 		}
-
-		return average / targets.Count;
-	}
-
-    /// <summary>
-    /// Retrieve an ArrayList of all targets
-    /// </summary>
-    /// <returns></returns>
-	public ArrayList getTargets()
-	{
-		return targets;
 	}
 
     /// <summary>
     /// The total number of targets managed by the TargetManager
     /// </summary>
-    /// <returns></returns>
-	public int getNumberOfTargets()
+	public int NumberOfTargets
 	{
-		return targets.Count;
+		get
+		{
+			return Targets.Count;
+		}
     }
 
     /// <summary>
@@ -112,53 +114,4 @@ public class TargetManager : MonoBehaviour
     {
 
     }
-
-	/// <summary>
-	/// The total number of targets that were hit
-	/// </summary>
-	/// <returns></returns>
-	public int getHits()
-	{
-		return hits;
-	}
 }
-
-// Target Manager Data
-// Total Targets
-// Total Hits
-// Total Misses
-// Near Misses
-// Target Manager ID
-// GameSession ID
-public class TargetManData
-{
-    //[PrimaryKey, AutoIncrement]
-    public int targetManID;
-    //[NotNull]
-    public int GameManID;
-    //[NotNull]
-    public int totalTargets;
-    //[NotNull]
-    public int hits;
-    //[NotNull]
-    public int misses;
-    public int nearMisses;
-
-    const string targetTable = "TargetManagers";
-
-    /// <summary>
-    /// Generate an SQL insert statement for the Class
-    /// This is not needed for inserting into the local database
-    /// </summary>
-    /// <param name="ManID">The FK id for the Game Manager class</param>
-    /// <returns>An SQL statement in the form of a string</returns>
-    public string generateInsert(int ManID)
-    {
-		var insert = "INSERT into ";
-        insert += targetTable;
-        insert += "(";
-
-        return insert;
-    }
-}
-

@@ -23,7 +23,7 @@ public class OrbitMove : Movement {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	public override void Update () {
         angle += Time.smoothDeltaTime * SPEEDFACTOR * (isClockwise ? -1 : 1);
         float x, y;
         x = center.x + (float)System.Math.Cos(angle) * radius;
