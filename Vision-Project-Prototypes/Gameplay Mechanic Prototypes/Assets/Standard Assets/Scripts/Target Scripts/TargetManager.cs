@@ -22,9 +22,9 @@ public class TargetManager : MonoBehaviour
 	void Start () 
 	{
         manID = System.Guid.NewGuid().ToString();
-        hits = 0;
-        misses = 0;
-        nearMisses = 0;
+        Hits = 0;
+        Misses = 0;
+        NearMisses = 0;
 		Targets = new ArrayList();
 	}
 	
@@ -114,4 +114,33 @@ public class TargetManager : MonoBehaviour
     {
 
     }
+    public IEnumerable packTargetData()
+    {
+        if (Targets.Count == 0)
+        {
+            return null;
+        }
+        ArrayList data = new ArrayList();
+        foreach (Target t in Targets)
+        {
+            data.Add(t.packData(manID));
+        }
+
+        return data;
+    }
+
+    public TargetManData packData(string gameManID)
+    {
+        TargetManData data = new TargetManData();
+
+        data.targetManID = manID;
+        data.gameManID = gameManID;
+        data.totalTargets = Targets.Count;
+        data.hits = Hits;
+        data.misses = Misses;
+        data.nearMisses = NearMisses;
+
+        return data;
+    }
+
 }
