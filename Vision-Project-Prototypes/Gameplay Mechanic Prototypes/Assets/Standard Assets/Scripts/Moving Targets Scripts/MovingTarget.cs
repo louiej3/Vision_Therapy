@@ -24,7 +24,7 @@ public class MovingTarget : Target
 	// Update is called once per frame
 	void Update () 
 	{
-		if (timedOut() && gameMan.getState() == MovingTargetsGameManager.state.PLAY)
+		if (timedOut() && gameMan.getState() == MovingTargetsGameManager.MovingTargetsState.PLAY)
 		{
 			gameObject.SetActive(false);
 		}

@@ -28,9 +28,9 @@ public class MovingTargetsGameManager : MonoBehaviour
 	public Target targetPrefab;
 
 	// The current state of the game
-	private state currentState;
+	private MovingTargetsState currentState;
 
-	public enum state
+	public enum MovingTargetsState
 	{
 		PLAY,
 		PAUSE,
@@ -51,7 +51,7 @@ public class MovingTargetsGameManager : MonoBehaviour
 		targetMan = GetComponent<TargetManager>();
 		background = GameObject.Find("Background").GetComponent<Background>();
 
-		currentState = state.PLAY;
+		currentState = MovingTargetsState.PLAY;
 	}
 	
 	// Update is called once per frame
@@ -59,12 +59,12 @@ public class MovingTargetsGameManager : MonoBehaviour
 	{
 		switch (currentState)
 		{ 
-			case state.PLAY:
+			case MovingTargetsState.PLAY:
 				playBehavior();
 				background.spin();
 				break;
 
-			case state.WIN:
+			case MovingTargetsState.WIN:
 				winBehavior();
 				break;
 		}
@@ -77,7 +77,7 @@ public class MovingTargetsGameManager : MonoBehaviour
 
 		if (targetMan.getHits() >= targetsToWin)
 		{
-			currentState = state.WIN;
+			currentState = MovingTargetsState.WIN;
 		}
 
 		foreach (Target t in targets)
@@ -126,7 +126,7 @@ public class MovingTargetsGameManager : MonoBehaviour
 		timer.start();
 	}
 
-	public state getState()
+	public MovingTargetsState getState()
 	{
 		return currentState;
 	}
