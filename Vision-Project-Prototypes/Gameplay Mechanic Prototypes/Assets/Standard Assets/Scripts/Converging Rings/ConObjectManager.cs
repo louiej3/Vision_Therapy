@@ -41,10 +41,10 @@ public class ConObjectManager : MonoBehaviour
 					{
 						if (co.checkTouch(tap))
 						{
-							if (co.getAccuracy() <= co.getConvergeTime() * _marginOfError)
+							if (co.Accuracy <= co.ConvergeTime * _marginOfError)
 							{
 								SuccessfulHits++;
-								co.success = true;
+								co.Success = true;
 							}
 
 							Hits++;
@@ -85,7 +85,7 @@ public class ConObjectManager : MonoBehaviour
 
 			foreach (ConvergingObjects co in Converging)
 			{
-				average += co.getLapTime();
+				average += co.LapTime;
 			}
 
 			return average / Converging.Count;
@@ -103,7 +103,7 @@ public class ConObjectManager : MonoBehaviour
 
 			foreach (ConvergingObjects co in Converging)
 			{
-				average += co.getAccuracy();
+				average += co.Accuracy;
 			}
 
 			return average / Converging.Count;

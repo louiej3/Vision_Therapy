@@ -7,22 +7,22 @@ public class ConvergingObjects : MonoBehaviour
 	// List of boomerangs associated with this convergence point
 	protected ArrayList boomerangs;
 	// The time it takes for all of the boomerangs to converge
-	protected float convergeTime = 0f;
+	public float ConvergeTime { get; protected set; }
 	// Tells whether or not this converging object has been successfully tapped
-	protected bool isTapped = false;
+	public bool IsTapped { get; protected set; }
 	// The total time it took for this converging object to the tapped
-	protected float lapTime = 0f;
+	public float LapTime { get; protected set; }
 	// How accurately the rings intersected when the user touched this converging object
-	protected float accuracy = 0f;
+	public float Accuracy { get; protected set; }
 	// Tells whether accuracy was in the margin of error
-	public bool success = false;
+	public bool Success { get; set; }
 	
 	// The time before this object initiates timeout behavior
-	protected float timeOut;
+	protected float _timeOut;
 	// The scale of the center object
-	protected float scale;
+	protected float _scale;
 	// The transparency of the center of the converging object
-	protected float opacity;
+	protected float _opacity;
 
 	protected StopWatch timer;
 
@@ -36,13 +36,13 @@ public class ConvergingObjects : MonoBehaviour
 	// Use this for initialization
 	protected virtual void Start () 
 	{
-		timeOut = ConvergingSettings.convergeTimeOut;
-		
-		scale = ConvergingSettings.centerScale;
-		transform.localScale = new Vector2(scale, scale);
+		_timeOut = ConvergingSettings.convergeTimeOut;
 
-		opacity = ConvergingSettings.centerOpacity;
-		GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, opacity);
+		_scale = ConvergingSettings.centerScale;
+		transform.localScale = new Vector2(_scale, _scale);
+
+		_opacity = ConvergingSettings.centerOpacity;
+		GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, _opacity);
 
 		timer = new StopWatch();
 		timer.start();
@@ -59,14 +59,14 @@ public class ConvergingObjects : MonoBehaviour
 		if (GetComponent<Collider2D>() == Physics2D.OverlapPoint(touchPos))
 		{
 			// because the unit has been tapped, set the variables
-			lapTime = timer.lap();
+			LapTime = timer.lap();
 
 			// Mod the user's lapTime by the time it takes for a boomerang
 			// to complete one cycle (convergeTime * 2), then subtract the
 			// convergeTime and get the absolute value
-			accuracy = Mathf.Abs((lapTime % (convergeTime * 2)) - convergeTime);
+			Accuracy = Mathf.Abs((LapTime % (ConvergeTime * 2)) - ConvergeTime);
 
-			isTapped = true;
+			IsTapped = true;
 
 			// If it is an inherited class, we can call the specific tap behavior
 			tapBehavior();
@@ -78,7 +78,7 @@ public class ConvergingObjects : MonoBehaviour
 
 	public void converge()
 	{
-		if (!isTapped)
+		if (!IsTapped)
 		{
 			// If the first boomerang reaches its max distance, turn
 			// all of them boomerangs around and go the other way
@@ -117,10 +117,10 @@ public class ConvergingObjects : MonoBehaviour
 			// Instantiate boomerang
 			Boomerang b = Instantiate(boomerangPrefab) as Boomerang;
 			
-			convergeTime = time;
+			ConvergeTime = time;
 
 			// Find the x coordinate of the boomerang relative to the center point
-			float height = Camera.main.orthographicSize - Mathf.Abs(centerPoint.y + scale / 2);
+			float height = Camera.main.orthographicSize - Mathf.Abs(centerPoint.y + _scale / 2);
 			float y = Random.Range(centerPoint.y - height, centerPoint.y + height);
 
 			// Find the y coordinate of the boomerang relative to the center point
@@ -149,32 +149,69 @@ public class ConvergingObjects : MonoBehaviour
 		}
 	}
 
-	public float getLapTime()
-	{
-		return lapTime;
-	}
-
-	public float getScale()
-	{
-		return scale;
-	}
-
-	public float getAccuracy()
-	{
-		return accuracy;
-	}
-
 	public bool timedOut()
 	{
-		if (timer.lap() >= timeOut)
+		if (timer.lap() >= _timeOut)
 		{
 			return true;
 		}
 		return false;
 	}
 
-	public float getConvergeTime()
+	public float TimeOut
 	{
-		return convergeTime;
+		get
+		{
+			return _timeOut;
+		}
+		set
+		{
+			if (value >= 0)
+			{
+				_timeOut = value;
+			}
+			else
+			{
+				throw new System.Exception("Value cannot be negative");
+			}
+		}
+	}
+
+	public float Scale
+	{
+		get
+		{
+			return _scale;
+		}
+		set
+		{
+			if (value >= 0)
+			{
+				_scale = value;
+			}
+			else
+			{
+				throw new System.Exception("Value cannot be negative");
+			}
+		}
+	}
+
+	public float Opacity
+	{
+		get
+		{
+			return _opacity;
+		}
+		set
+		{
+			if (value >= 0)
+			{
+				_opacity = value;
+			}
+			else
+			{
+				throw new System.Exception("Value cannot be negative");
+			}
+		}
 	}
 }

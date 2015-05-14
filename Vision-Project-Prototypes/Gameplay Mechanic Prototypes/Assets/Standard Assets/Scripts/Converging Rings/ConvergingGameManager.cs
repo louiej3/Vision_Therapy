@@ -41,10 +41,6 @@ public class ConvergingGameManager : MonoBehaviour
 	// before the user wins
 	public int convergesToWin = 10;
 
-	// Multiplies converge time by this value to determine how
-	// far off the user can be when they tap the object
-	public float marginOfError = 0.1f;
-
 	public enum ConvergeState
 	{
 		PLAY,
@@ -67,10 +63,12 @@ public class ConvergingGameManager : MonoBehaviour
 		boomerangScale = ConvergingSettings.boomerangScale;
 		numberOfBoomerangs = ConvergingSettings.numberOfBoomerangs;
 		convergesToWin = ConvergingSettings.convergesToWin;
-		marginOfError = ConvergingSettings.marginOfError;
 		
 		timer = new StopWatch();
+		
 		conMan = GetComponent<ConObjectManager>();
+		conMan.MarginOfError = ConvergingSettings.marginOfError;
+
 		currentState = ConvergeState.PLAY;
 	}
 	
@@ -92,6 +90,7 @@ public class ConvergingGameManager : MonoBehaviour
 	private void playBehavior()
 	{
 		ArrayList con = conMan.Converging;
+		
 		int activeConverges = 0;
 
 		if (conMan.SuccessfulHits >= convergesToWin)
@@ -125,10 +124,10 @@ public class ConvergingGameManager : MonoBehaviour
 		
 		float convergeTime = Random.Range(minConvergeTime, maxConvergeTime);
 
-		float worldHeight = Camera.main.orthographicSize - co.getScale() / 2;
+		float worldHeight = Camera.main.orthographicSize - co.Scale / 2;
 		float x = Random.Range(-worldHeight, worldHeight);
 
-		float worldWidth = (Camera.main.orthographicSize / Camera.main.aspect) - co.getScale() / 2;
+		float worldWidth = (Camera.main.orthographicSize / Camera.main.aspect) - co.Scale / 2;
 		float y = Random.Range(-worldWidth, worldWidth);
 
 		co.set(numberOfBoomerangs, new Vector2(x, y), convergeTime);
