@@ -72,10 +72,10 @@ public class MovingTargetsGameManager : MonoBehaviour
 
 	private void playBehavior()
 	{
-		ArrayList targets = targetMan.getTargets();
+		ArrayList targets = targetMan.Targets;
 		int activeTargets = 0;
 
-		if (targetMan.getHits() >= targetsToWin)
+		if (targetMan.Hits >= targetsToWin)
 		{
 			currentState = MovingTargetsState.WIN;
 		}
