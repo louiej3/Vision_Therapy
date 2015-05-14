@@ -9,10 +9,14 @@ using SQLite4Unity3d;
 public class TargetManager : MonoBehaviour 
 {
     private string manID;
-    private int hits, misses, nearMisses;
-    public Movement moveType;
-	private ArrayList targets;
+
+
+	public int Hits { get; private set; }
+	public int Misses { get; private set; }
+	public int NearMisses { get; private set; }
+	public ArrayList Targets { get; private set; }
     public float nearMissThreshold = 5f;
+	public Movement moveType;
 	
 	// Use this for initialization
 	void Start () 
@@ -21,7 +25,7 @@ public class TargetManager : MonoBehaviour
         hits = 0;
         misses = 0;
         nearMisses = 0;
-		targets = new ArrayList();
+		Targets = new ArrayList();
 	}
 	
 	// Update is called once per frame
@@ -36,7 +40,7 @@ public class TargetManager : MonoBehaviour
                 {
                     bool hit = false;
 
-                    foreach (Target target in targets)
+                    foreach (Target target in Targets)
                     {
                         if (target.checkTouch(tap))
                         {
@@ -46,13 +50,13 @@ public class TargetManager : MonoBehaviour
                             if (target.checkNearMiss(tap, nearMissThreshold))
                             {
                                 nearMissAnimation(target);
-                                ++nearMisses;
+                                ++NearMisses;
                             }
                         }
                     }
                     if (hit)
                     {
-                        hits++;
+                        Hits++;
                     }
                 }
             }
@@ -67,7 +71,7 @@ public class TargetManager : MonoBehaviour
 	{
         if (t != null)
         {
-            targets.Add(t);
+            Targets.Add(t);
         }
 	}
 
@@ -75,34 +79,30 @@ public class TargetManager : MonoBehaviour
     /// Retrieve the average time between target creation and tap
     /// </summary>
     /// <returns>The average hit time for all targets</returns>
-	public float getAverage()
+	public float AverageLifeTime
 	{
-		float average = 0f;
-		
-		foreach (Target t in targets)
+		get
 		{
-			average += t.lapTime;
+			float average = 0f;
+
+			foreach (Target t in Targets)
+			{
+				average += t.LapTime;
+			}
+
+			return average / Targets.Count;
 		}
-
-		return average / targets.Count;
-	}
-
-    /// <summary>
-    /// Retrieve an ArrayList of all targets
-    /// </summary>
-    /// <returns></returns>
-	public ArrayList getTargets()
-	{
-		return targets;
 	}
 
     /// <summary>
     /// The total number of targets managed by the TargetManager
     /// </summary>
-    /// <returns></returns>
-	public int getNumberOfTargets()
+	public int NumberOfTargets
 	{
-		return targets.Count;
+		get
+		{
+			return Targets.Count;
+		}
     }
 
     /// <summary>
@@ -113,47 +113,5 @@ public class TargetManager : MonoBehaviour
     public void nearMissAnimation(Target target)
     {
 
-    }
-
-	/// <summary>
-	/// The total number of targets that were hit
-	/// </summary>
-	/// <returns></returns>
-	public int getHits()
-	{
-		return hits;
-    }
-
-    /// <summary>
-    /// Pack all the data into a IEnumerable to be inserted into the database 
-    /// </summary>
-    /// <return> An IEnumerable of all the Targets data objects</returns>
-    public IEnumerable packTargetData()
-    {
-        if (targets.Count == 0)
-        {
-            return null;
-        }
-        ArrayList data = new ArrayList();
-        foreach (Target t in targets)
-        {
-            data.Add(t.packData(manID));
-        }
-
-        return data;
-    }
-
-    public TargetManData packData(string gameManID)
-    {
-        TargetManData data = new TargetManData();
-
-        data.targetManID = manID;
-        data.gameManID = gameManID;
-        data.totalTargets = targets.Count;
-        data.hits = hits;
-        data.misses = misses;
-        data.nearMisses = nearMisses;
-
-        return data;
     }
 }

@@ -10,13 +10,16 @@ using SQLite4Unity3d;
 /// </summary>
 public class Target : MonoBehaviour 
 {
-    //protected float startTime = 0f;
-    //protected float currentTime = 0f;
+	
     protected StopWatch timer;
-    public float lapTime;
-    protected bool isTapped;
+	public float LapTime { get; protected set; }
+	public bool IsTapped { get; protected set; }
     protected float velocityAtTap;
     public float tapPrecision = -1f;
+	protected float timeOut;
+	protected float scale;
+	protected float opacity;
+
     void Awake()
     {
         
@@ -27,8 +30,7 @@ public class Target : MonoBehaviour
     { 
         timer = new StopWatch();
         timer.start();
-        lapTime = 0f;
-        isTapped = false;
+        IsTapped = false;
         velocityAtTap = 0f;
     }
 	
@@ -42,11 +44,6 @@ public class Target : MonoBehaviour
     /// automatically records the time it took to tap it.
     /// </summary>
 	protected virtual void tapBehavior() { }
-    
-    public float getLapTime()
-    {
-        return lapTime;
-    }
 
     /// <summary>
     /// Checks if the touch is overlapping with the target. Sets data if 
@@ -62,8 +59,8 @@ public class Target : MonoBehaviour
                 && tap.phase == TouchPhase.Began)
         {
             // because the unit has been tapped, set the variables
-            lapTime = timer.lap();
-            isTapped = true;
+            LapTime = timer.lap();
+            IsTapped = true;
 
             // Determine how fast the target was moving when it was hit.
 
@@ -99,6 +96,20 @@ public class Target : MonoBehaviour
         float dist = Vector2.Distance(GetComponent<Transform>().position, touchPos);
         return dist < threshold;
     }
+
+	/// <summary>
+	/// Returns a true value if this object has timed out, false otherwise
+	/// </summary>
+	/// <returns></returns>
+	public bool timedOut()
+	{
+		if (timer.lap() >= timeOut)
+		{
+			return true;
+		}
+		return false;
+	}
+
     /// <summary>
     /// Packs the data up into a Target data object
     /// </summary>
@@ -112,8 +123,8 @@ public class Target : MonoBehaviour
 
         data.targetID = Guid.NewGuid().ToString();
         data.managerID = manID;
-        data.timeAlive = lapTime;
-        data.wasHit = isTapped;
+        data.timeAlive = LapTime;
+        data.wasHit = IsTapped;
         data.velocity = m.getVelocity();
         if (r != null)
         {

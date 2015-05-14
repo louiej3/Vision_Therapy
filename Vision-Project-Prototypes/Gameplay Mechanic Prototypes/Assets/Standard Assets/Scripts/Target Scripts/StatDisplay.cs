@@ -20,7 +20,7 @@ public class StatDisplay : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		textMesh.text = "Avg Time = " + tm.getAverage() 
-			+ "\nTargetManager Size = " + tm.getNumberOfTargets();
+		textMesh.text = "Avg Time = " + tm.AverageLifeTime 
+			+ "\nTargetManager Size = " + tm.NumberOfTargets;
 	}
 }
