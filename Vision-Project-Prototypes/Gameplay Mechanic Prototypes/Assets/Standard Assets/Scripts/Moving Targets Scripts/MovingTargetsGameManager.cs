@@ -67,8 +67,10 @@ public class MovingTargetsGameManager : MonoBehaviour
 		timer = new StopWatch();
 		
 		targetMan = GetComponent<TargetManager>();
-        gameSession = GameObject.Find("GameSession").GetComponent<GameSession>();
+        
+		gameSession = GameObject.Find("GameSession").GetComponent<GameSession>();
         dbConnection = GameObject.Find("Database").GetComponent<Database>();
+		
 		background = GameObject.Find("Background").GetComponent<Background>();
 		background.Speed = backgroundSpeed;
 		background.Opacity = backgroundOpacity;
@@ -164,6 +166,9 @@ public class MovingTargetsGameManager : MonoBehaviour
         // Position and set target speed
         target.transform.position = new Vector2(x, y);
         target.GetComponent<OrbitMove>().SPEEDFACTOR = speed;
+		target.Scale = targetScale;
+		target.Opacity = targetOpacity;
+		target.TimeOut = targetTimeout;
 
         // Add target to target manager
         targetMan.addTarget(target);
@@ -171,6 +176,7 @@ public class MovingTargetsGameManager : MonoBehaviour
         // Restart the spawn timer
         timer.start();
     }
+
     public MovingTargetsManData packData()
     {
         MovingTargetsManData data = new MovingTargetsManData();

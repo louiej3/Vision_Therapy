@@ -21,7 +21,7 @@ public class Background : MonoBehaviour
 
 	public void spin()
 	{
-		transform.Rotate(Vector3.forward, Speed * Time.deltaTime);
+		transform.Rotate(Vector3.forward, _speed * Time.deltaTime);
 	}
 
 	public float Speed
