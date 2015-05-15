@@ -170,6 +170,13 @@ public class MovingTargetsGameManager : MonoBehaviour
 		target.Opacity = targetOpacity;
 		target.TimeOut = targetTimeout;
 
+		// Pick a float between 0 and 1, >= 0.5f clockwise
+		// counter clockwise is default
+		if (Random.value >= 0.5f)
+		{
+			target.GetComponent<OrbitMove>().IsClockwise = true;
+		}
+
         // Add target to target manager
         targetMan.addTarget(target);
 
