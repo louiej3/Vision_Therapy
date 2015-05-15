@@ -154,7 +154,7 @@ public class MovingTargetsGameManager : MonoBehaviour
 
         // Generate random x position
         float worldHeight = Camera.main.orthographicSize - target.transform.lossyScale.y / 2;
-        float x = Random.Range(-worldHeight, worldHeight);
+		float x = Random.Range(-worldHeight, worldHeight);
 
         // Generate random y position
         float worldWidth = Mathf.Sqrt(Mathf.Pow(worldHeight, 2) - Mathf.Pow(x, 2));
