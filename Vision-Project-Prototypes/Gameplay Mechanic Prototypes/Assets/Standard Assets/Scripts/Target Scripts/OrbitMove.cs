@@ -19,6 +19,7 @@ public class OrbitMove : Movement {
 	void Start () {
         location = GetComponent<Transform>();
         angle = Vector2.Angle(center, location.position);
+        Debug.Log(string.Format("Angle: {0}", angle));
         radius = Vector2.Distance(center, location.position);
 	}
 	

@@ -98,7 +98,7 @@ public class Target : MonoBehaviour
         Vector2 touchPos = new Vector2(worldPoint.x, worldPoint.y);
 
         float dist = Vector2.Distance(GetComponent<Transform>().position, touchPos);
-        return dist < threshold;
+        return dist > threshold;
     }
 
 	/// <summary>

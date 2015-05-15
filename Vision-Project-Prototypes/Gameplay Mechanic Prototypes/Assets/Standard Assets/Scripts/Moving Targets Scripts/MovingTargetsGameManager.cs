@@ -161,6 +161,7 @@ public class MovingTargetsGameManager : MonoBehaviour
         float worldWidth = Mathf.Sqrt(Mathf.Pow(worldHeight, 2) - Mathf.Pow(x, 2));
         float y = Random.Range(-worldWidth, worldWidth);
 
+        Debug.Log(string.Format("X:{0}, Y:{1}", x, y));
         // Generate random speed
         float speed = Random.Range(minTargetSpeed, maxTargetSpeed);
 
