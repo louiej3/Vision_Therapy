@@ -15,17 +15,15 @@ public class TargetManager : MonoBehaviour
 	public int Misses { get; private set; }
 	public int NearMisses { get; private set; }
 	public ArrayList Targets { get; private set; }
-    public float nearMissThreshold = 5f;
+	public float NearMissThreshold { get; private set; }
 	public Movement moveType;
 	
 	// Use this for initialization
 	void Start () 
 	{
         manID = System.Guid.NewGuid().ToString();
-        Hits = 0;
-        Misses = 0;
-        NearMisses = 0;
 		Targets = new ArrayList();
+		NearMissThreshold = 5f;
 	}
 	
 	// Update is called once per frame
@@ -47,7 +45,7 @@ public class TargetManager : MonoBehaviour
                             hit = true;
                             break;
                         } else {
-                            if (target.checkNearMiss(tap, nearMissThreshold))
+                            if (target.checkNearMiss(tap, NearMissThreshold))
                             {
                                 nearMissAnimation(target);
                                 ++NearMisses;
@@ -114,6 +112,7 @@ public class TargetManager : MonoBehaviour
     {
 
     }
+
     public IEnumerable packTargetData()
     {
         if (Targets.Count == 0)
