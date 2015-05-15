@@ -165,7 +165,7 @@ public class MovingTargetsGameManager : MonoBehaviour
 
         // Position and set target speed
         target.transform.position = new Vector2(x, y);
-        target.GetComponent<OrbitMove>().SPEEDFACTOR = speed;
+        target.GetComponent<OrbitMove>().SpeedFactor = speed;
 		target.Scale = targetScale;
 		target.Opacity = targetOpacity;
 		target.TimeOut = targetTimeout;

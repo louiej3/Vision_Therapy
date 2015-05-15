@@ -184,7 +184,7 @@ public class Target : MonoBehaviour
         data.managerID = manID;
         data.timeAlive = LapTime;
         data.wasHit = IsTapped;
-        data.velocity = m.getVelocity();
+        data.velocity = m.Velocity;
         if (r != null)
         {
             data.opacity = r.color.a;
