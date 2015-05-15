@@ -16,7 +16,7 @@ public class Database : MonoBehaviour {
 
     const string MYSQLCONNECTIONSTRING = "server=vergil.u.washington.edu;uid=basic;pwd=ChildVision;database=ChildVision;port=50290;";
 
-    const string DatabaseName = "testDB2.db";
+    const string DatabaseName = "testDB.db";
 
     private SQLiteConnection _connection;
     private SQLiteCommand _command;
@@ -156,6 +156,7 @@ public class Database : MonoBehaviour {
             , targetList = new ArrayList();
         foreach (GameInstance g in games)
         {
+            Debug.Log(g.generateInsert());
             IEnumerable<MovingTargetsManData> gameMan = _connection.Table<MovingTargetsManData>().Where(x => x.gameInstanceID == g.gameInstanceID);
             foreach (MovingTargetsManData m in gameMan)
             {
@@ -183,33 +184,41 @@ public class Database : MonoBehaviour {
 
         // do inserts for all of this data
 
+        int rowsAffected = 0;
         foreach (GameInstance i in games)
         {
             addInstances.CommandText = i.generateInsert();
             int editNum = addInstances.ExecuteNonQuery();
-            Debug.Log(string.Format("added {0} rows", editNum));
+            rowsAffected += editNum;
         }
+        Debug.Log(string.Format("{0} Instances added", rowsAffected));
 
+        rowsAffected = 0;
         foreach (MovingTargetsManData m in mechanics)
         {
             addInstances.CommandText = m.generateInsert();
             int editNum = addInstances.ExecuteNonQuery();
-            Debug.Log(string.Format("added {0} rows", editNum));
+            rowsAffected += editNum;
         }
+        Debug.Log(string.Format("{0} mechanics added", rowsAffected));
 
+        rowsAffected = 0;
         foreach (TargetManData t in managers)
         {
             addInstances.CommandText = t.generateInsert();
             int editNum = addInstances.ExecuteNonQuery();
-            Debug.Log(string.Format("added {0} rows", editNum));
+            rowsAffected += editNum;
         }
+        Debug.Log(string.Format("{0} managers added", rowsAffected));
 
+        rowsAffected = 0;
         foreach (TargetData t in targetList)
         {
             addInstances.CommandText = t.generateInsert();
             int editNum = addInstances.ExecuteNonQuery();
-            Debug.Log(string.Format("added {0} rows", editNum));
+            rowsAffected += editNum;
         }
+        Debug.Log(string.Format("{0} Targets added", rowsAffected));
 
 
         // Add a new sync Object

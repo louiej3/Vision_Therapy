@@ -10,14 +10,11 @@ using SQLite4Unity3d;
 /// </summary>
 public class TargetManager : MonoBehaviour 
 {
-    private string manID;
-
-
 	public int Hits { get; private set; }
 	public int Misses { get; private set; }
 	public int NearMisses { get; private set; }
 	public ArrayList Targets { get; private set; }
-    public float nearMissThreshold = 5f;
+    public float nearMissThreshold = 1f;
     private string manID;
 	public Movement moveType;
 	
@@ -60,6 +57,10 @@ public class TargetManager : MonoBehaviour
                     if (hit)
                     {
                         Hits++;
+                    }
+                    else
+                    {
+                        Misses++;
                     }
                 }
             }

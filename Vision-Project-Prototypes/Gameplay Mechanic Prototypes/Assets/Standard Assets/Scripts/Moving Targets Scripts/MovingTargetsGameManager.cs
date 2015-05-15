@@ -28,6 +28,8 @@ public class MovingTargetsGameManager : MonoBehaviour
 	// The number of targets needed to win
 	private int targetsToWin;
 
+    private const string mechanicType = "MovingTargets";
+
 	private StopWatch timer;
 
 	private TargetManager targetMan;
@@ -120,6 +122,7 @@ public class MovingTargetsGameManager : MonoBehaviour
 	private void winBehavior()
 	{
         GameInstance inst = gameSession.packData();
+        Debug.Log(inst.generateInsert());
         if (!dbConnection.insert(inst))
         {
             Debug.Log("game instance insert failed");
@@ -189,6 +192,7 @@ public class MovingTargetsGameManager : MonoBehaviour
         data.backgroundOpacity = MovingTargetsSettings.backgroundOpacity;
         data.backgroundSpeed = MovingTargetsSettings.backgroundSpeed;
         data.targetsToWin = MovingTargetsSettings.targetsToWin;
+        data.mechanicType = mechanicType;
         return data;
     }
 }
