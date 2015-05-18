@@ -180,7 +180,7 @@ public class Target : MonoBehaviour
         Movement m = GetComponent<Movement>();
         SpriteRenderer r = GetComponent<SpriteRenderer>();
 
-        data.targetID = targetID;
+		data.targetID = Guid.NewGuid().ToString();
         data.managerID = manID;
         data.timeAlive = LapTime;
         data.wasHit = IsTapped;
