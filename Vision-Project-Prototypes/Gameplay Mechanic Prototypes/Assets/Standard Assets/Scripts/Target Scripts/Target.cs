@@ -14,28 +14,18 @@ public class Target : MonoBehaviour
     protected StopWatch timer;
 	public float LapTime { get; protected set; }
 	public bool IsTapped { get; protected set; }
-    protected float velocityAtTap;
-    public float tapPrecision = -1f;
-
-    public string targetID;
-
-	protected float timeOut;
-	protected float scale;
-	protected float opacity;
-
-    void Awake()
-    {
-        
-    }
+	public float VelocityAtTap { get; protected set; }
+	public float TapPrecision { get; protected set; }
+	protected float _timeOut;
+	protected float _scale;
+	protected float _opacity;
 
     // Use this for initialization
 	public virtual void Start () 
     { 
         timer = new StopWatch();
         timer.start();
-        IsTapped = false;
-        velocityAtTap = 0f;
-        targetID = Guid.NewGuid().ToString();
+		TapPrecision = -1f;
     }
 	
 	// Update is called once per frame
@@ -43,6 +33,7 @@ public class Target : MonoBehaviour
     {
        
 	}
+
     /// <summary>
     /// Specifies the way a target reacts upon being tapped. The target 
     /// automatically records the time it took to tap it.
@@ -70,7 +61,7 @@ public class Target : MonoBehaviour
 
 
             // determine how close the tap was to the target.
-            tapPrecision = Vector2.Distance(touchPos, transform.position);
+            TapPrecision = Vector2.Distance(touchPos, transform.position);
 
             // If it is an inherited class, we can call the specific tap behavior
             tapBehavior();
@@ -79,6 +70,7 @@ public class Target : MonoBehaviour
         }
         return false;   
     }
+
     /// <summary>
     /// Checks if the target was almost hit, based on its own size and a given threshold
     /// </summary>
@@ -107,11 +99,74 @@ public class Target : MonoBehaviour
 	/// <returns></returns>
 	public bool timedOut()
 	{
-		if (timer.lap() >= timeOut)
+		if (timer.lap() >= _timeOut)
 		{
 			return true;
 		}
 		return false;
+	}
+
+	public float TimeOut
+	{
+		get
+		{
+			return _timeOut;
+		}
+		set
+		{
+			if (value >= 0)
+			{
+				_timeOut = value;
+			}
+			else
+			{
+				throw new System.Exception("Value cannot be negative");
+			}
+		}
+	}
+
+	public float Scale
+	{
+		get
+		{
+			return _scale;
+		}
+		set
+		{
+			if (value >= 0)
+			{
+				_scale = value;
+				transform.localScale = new Vector2(_scale, _scale);
+			}
+			else
+			{
+				throw new System.Exception("Value cannot be negative");
+			}
+		}
+	}
+
+	public float Opacity
+	{
+		get
+		{
+			return _opacity;
+		}
+		set
+		{
+			if (value >= 0)
+			{
+				_opacity = value;
+				GetComponent<SpriteRenderer>().color = new Color(
+					GetComponent<SpriteRenderer>().color.r,
+					GetComponent<SpriteRenderer>().color.g,
+					GetComponent<SpriteRenderer>().color.b,
+					_opacity);
+			}
+			else
+			{
+				throw new System.Exception("Value cannot be negative");
+			}
+		}
 	}
 
     /// <summary>
@@ -129,7 +184,7 @@ public class Target : MonoBehaviour
         data.managerID = manID;
         data.timeAlive = LapTime;
         data.wasHit = IsTapped;
-        data.velocity = m.getVelocity();
+        data.velocity = m.Velocity;
         if (r != null)
         {
             data.opacity = r.color.a;

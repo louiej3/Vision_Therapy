@@ -67,8 +67,10 @@ public class MovingTargetsGameManager : MonoBehaviour
 		timer = new StopWatch();
 		
 		targetMan = GetComponent<TargetManager>();
-        gameSession = GameObject.Find("GameSession").GetComponent<GameSession>();
+        
+		gameSession = GameObject.Find("GameSession").GetComponent<GameSession>();
         dbConnection = GameObject.Find("Database").GetComponent<Database>();
+		
 		background = GameObject.Find("Background").GetComponent<Background>();
 		background.Speed = backgroundSpeed;
 		background.Opacity = backgroundOpacity;
@@ -152,7 +154,7 @@ public class MovingTargetsGameManager : MonoBehaviour
 
         // Generate random x position
         float worldHeight = Camera.main.orthographicSize - target.transform.lossyScale.y / 2;
-        float x = Random.Range(-worldHeight, worldHeight);
+		float x = Random.Range(-worldHeight, worldHeight);
 
         // Generate random y position
         float worldWidth = Mathf.Sqrt(Mathf.Pow(worldHeight, 2) - Mathf.Pow(x, 2));
@@ -163,7 +165,17 @@ public class MovingTargetsGameManager : MonoBehaviour
 
         // Position and set target speed
         target.transform.position = new Vector2(x, y);
-        target.GetComponent<OrbitMove>().SPEEDFACTOR = speed;
+        target.GetComponent<OrbitMove>().SpeedFactor = speed;
+		target.Scale = targetScale;
+		target.Opacity = targetOpacity;
+		target.TimeOut = targetTimeout;
+
+		// Pick a float between 0 and 1, >= 0.5f clockwise
+		// counter clockwise is default
+		if (Random.value >= 0.5f)
+		{
+			target.GetComponent<OrbitMove>().IsClockwise = true;
+		}
 
         // Add target to target manager
         targetMan.addTarget(target);
@@ -171,6 +183,7 @@ public class MovingTargetsGameManager : MonoBehaviour
         // Restart the spawn timer
         timer.start();
     }
+
     public MovingTargetsManData packData()
     {
         MovingTargetsManData data = new MovingTargetsManData();

@@ -11,18 +11,22 @@ public class Movement : MonoBehaviour
     /// The location of the object being moved.
     /// </summary>
     protected Transform location;
-    void Start()
+    
+	void Start()
     {
         location = GetComponent<Transform>();
     }
-    public virtual void Update()
+    
+	public virtual void Update()
     {
 
     }
-    public virtual float getVelocity()
+    
+	public virtual float Velocity
     {
-        float v = 0f;
-
-        return v;
+		get
+		{
+			return 0;
+		}
     }
-}//
+}
