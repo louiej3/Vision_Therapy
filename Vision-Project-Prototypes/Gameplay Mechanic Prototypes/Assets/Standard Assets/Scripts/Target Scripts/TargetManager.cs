@@ -20,11 +20,15 @@ public class TargetManager : MonoBehaviour
 	public float NearMissThreshold { get; private set; }
 	public Movement moveType;
 	
+	void Awake()
+	{
+		Targets = new ArrayList();
+	}
+
 	// Use this for initialization
 	void Start () 
 	{
         manID = System.Guid.NewGuid().ToString();
-		Targets = new ArrayList();
 		NearMissThreshold = 5f;
 	}
 	
