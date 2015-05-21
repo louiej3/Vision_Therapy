@@ -24,6 +24,9 @@ public class ConvergingObjects : MonoBehaviour
 	// The transparency of the center of the converging object
 	protected float _opacity;
 
+    // Data objects
+    public string targetID {get; protected set; }
+
 	protected StopWatch timer;
 
 	public Boomerang boomerangPrefab;
@@ -38,6 +41,7 @@ public class ConvergingObjects : MonoBehaviour
 	{
 		timer = new StopWatch();
 		timer.start();
+        targetID = System.Guid.NewGuid().ToString();
 	}
 	
 	// For subclasses that would like to implement behavior upon tap
@@ -215,4 +219,37 @@ public class ConvergingObjects : MonoBehaviour
 			}
 		}
 	}
+
+    public TargetData packData(string manID)
+    {
+        // variable init
+        var data = new TargetData();
+        var move = GetComponent<Movement>();
+        var sprite = GetComponent<SpriteRenderer>();
+        
+        // set data
+        data.targetID = targetID;
+        data.managerID = manID;
+        data.timeAlive = LapTime;
+        data.hitPrecision = Accuracy;
+        data.wasHit = IsTapped;
+        data.scale = GetComponent<Transform>().localScale.x;
+        if (move != null)
+        {
+            data.velocity = move.getVelocity();
+        }
+        else
+        {
+            data.velocity = 0f;
+        }
+        if (sprite != null)
+        {
+            data.opacity = sprite.color.a;
+            data.red = sprite.color.r;
+            data.green = sprite.color.g;
+            data.blue = sprite.color.b;
+        }
+
+        return data;
+    }
 }

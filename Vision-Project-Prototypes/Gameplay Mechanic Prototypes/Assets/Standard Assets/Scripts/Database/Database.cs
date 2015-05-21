@@ -18,6 +18,9 @@ public class Database : MonoBehaviour {
 
     const string DatabaseName = "testDB.db";
 
+    private StopWatch timer;
+    private const float SYNC_TIME = 300f; // check for sync data every 30 seconds
+
     private SQLiteConnection _connection;
     private SQLiteCommand _command;
 
@@ -72,17 +75,29 @@ public class Database : MonoBehaviour {
     {
         DontDestroyOnLoad(this.gameObject);
         _connection.CreateTable<TargetData>();
-        _connection.CreateTable<TargetManData>();
-        _connection.CreateTable<MovingTargetsManData>();
+        _connection.CreateTable<ManagerData>();
+        _connection.CreateTable<MechanicData>();
         _connection.CreateTable<GameInstance>();
         _connection.CreateTable<User>();
         _connection.CreateTable<Sync>();
         _connection.Insert(new Sync() { syncID = 0, syncDate = System.DateTime.MinValue });
+
+        timer = new StopWatch();
+        timer.start();
     }
 	
 	// Update is called once per frame
     
     void Update () {
+
+        // occasionally  check to sync data
+
+        if (timer.lap() > SYNC_TIME)
+        {
+            syncData();
+            timer.start();
+        }
+
 
     }
 
@@ -104,7 +119,10 @@ public class Database : MonoBehaviour {
     {
         return _connection.InsertAll(objs) > 0;
     }
-
+    /// <summary>
+    /// Syncs data to the main server, which is hardcoded in
+    /// </summary>
+    /// <returns>returns true on successfull sync</returns>
     public bool syncData() {
         // check for internet connection
         if (Application.internetReachability == NetworkReachability.NotReachable)
@@ -137,7 +155,7 @@ public class Database : MonoBehaviour {
         
         // check for latest sync
         System.DateTime syncDate = lastSync();
-        Debug.Log(syncDate.ToString());
+
         // find any users added after this date.
         IEnumerable<User> users = _connection.Table<User>().Where( x => x.creationDate > syncDate);
         foreach( User u in users ) 
@@ -152,28 +170,35 @@ public class Database : MonoBehaviour {
         // find all game instances that took place after that
         // query to get these instances
         IEnumerable<GameInstance> games = _connection.Table<GameInstance>().Where( x => x.completionDate > syncDate);
+        
+        // if there are no new games we are done
+        if (games == null)
+        {
+            return true;
+        }
+        
         ArrayList mechanics = new ArrayList(), managers = new ArrayList()
             , targetList = new ArrayList();
         foreach (GameInstance g in games)
         {
             Debug.Log(g.generateInsert());
-            IEnumerable<MovingTargetsManData> gameMan = _connection.Table<MovingTargetsManData>().Where(x => x.gameInstanceID == g.gameInstanceID);
-            foreach (MovingTargetsManData m in gameMan)
+            IEnumerable<MechanicData> gameMan = _connection.Table<MechanicData>().Where(x => x.gameInstanceID == g.gameInstanceID);
+            foreach (MechanicData m in gameMan)
             {
                 mechanics.Add(m);
             }
         }
 
-        foreach (MovingTargetsManData m in mechanics)
+        foreach (MechanicData m in mechanics)
         {
-            IEnumerable<TargetManData> targetMan = _connection.Table<TargetManData>().Where(x => x.gameManID == m.gameManID);
-            foreach (TargetManData t in targetMan)
+            IEnumerable<ManagerData> targetMan = _connection.Table<ManagerData>().Where(x => x.gameManID == m.gameManID);
+            foreach (ManagerData t in targetMan)
             {
                 managers.Add(t);
             }
         }
 
-        foreach (TargetManData t in managers)
+        foreach (ManagerData t in managers)
         {
             IEnumerable<TargetData> targets = _connection.Table<TargetData>().Where(x => x.managerID == t.targetManID);
             foreach (TargetData target in targets)
@@ -194,7 +219,7 @@ public class Database : MonoBehaviour {
         Debug.Log(string.Format("{0} Instances added", rowsAffected));
 
         rowsAffected = 0;
-        foreach (MovingTargetsManData m in mechanics)
+        foreach (MechanicData m in mechanics)
         {
             addInstances.CommandText = m.generateInsert();
             int editNum = addInstances.ExecuteNonQuery();
@@ -203,7 +228,7 @@ public class Database : MonoBehaviour {
         Debug.Log(string.Format("{0} mechanics added", rowsAffected));
 
         rowsAffected = 0;
-        foreach (TargetManData t in managers)
+        foreach (ManagerData t in managers)
         {
             addInstances.CommandText = t.generateInsert();
             int editNum = addInstances.ExecuteNonQuery();

@@ -101,7 +101,7 @@ public class TargetData
 // Target Manager ID
 // GameSession ID
 
-public class TargetManData
+public class ManagerData
 {
     [PrimaryKey]
     public string targetManID { get; set; }
@@ -138,7 +138,7 @@ public class TargetManData
     }
 }
 
-public class MovingTargetsManData
+public class MechanicData
 {
     // stores some basic information as well as the difficulty 
     //settings used at the time of the level
@@ -162,6 +162,9 @@ public class MovingTargetsManData
 
     public float backgroundOpacity { get; set; }
     public float backgroundSpeed { get; set; }
+
+    public float secondaryOpacity { get; set; }
+    public float secondaryScale { get; set; }
 
     public int targetsToWin { get; set; }
     public string mechanicType { get; set; }

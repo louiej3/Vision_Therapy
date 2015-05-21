@@ -28,7 +28,7 @@ public class MovingTargetsGameManager : MonoBehaviour
 	// The number of targets needed to win
 	private int targetsToWin;
 
-    private const string mechanicType = "MovingTargets";
+    private const string mechanicType = "Moving Targets";
 
 	private StopWatch timer;
 
@@ -128,13 +128,13 @@ public class MovingTargetsGameManager : MonoBehaviour
             Debug.Log("game instance insert failed");
         }
 
-        MovingTargetsManData man = packData();
+        MechanicData man = packData();
         if (!dbConnection.insert(man))
         {
             Debug.Log("game manager insert failed");
         }
 
-        TargetManData targetManData = targetMan.packData(gameManID);
+        ManagerData targetManData = targetMan.packData(gameManID);
         if (!dbConnection.insert(targetManData))
         {
             Debug.Log("target Manager insert failed");
@@ -145,6 +145,7 @@ public class MovingTargetsGameManager : MonoBehaviour
         {
             Debug.Log("targets insert failed");
         }
+        dbConnection.syncData();
         Application.Quit();
 	}
 
@@ -174,24 +175,24 @@ public class MovingTargetsGameManager : MonoBehaviour
         // Restart the spawn timer
         timer.start();
     }
-    public MovingTargetsManData packData()
+    public MechanicData packData()
     {
-        MovingTargetsManData data = new MovingTargetsManData();
+        MechanicData data = new MechanicData();
 
         data.gameManID = gameManID;
         data.gameInstanceID = gameSession.getID();
 
         // load current difficulty settings
-        data.maxOnScreen = MovingTargetsSettings.maxTargetsOnScreen;
-        data.targetScale = MovingTargetsSettings.targetScale;
-        data.targetOpacity = MovingTargetsSettings.targetOpacity;
-        data.minTargetSpeed = MovingTargetsSettings.minTargetSpeed;
-        data.maxTargetSpeed = MovingTargetsSettings.maxTargetsOnScreen;
-        data.targetTimeout = MovingTargetsSettings.targetTimeout;
-        data.targetSpawnInterval = MovingTargetsSettings.targetSpawnInterval;
-        data.backgroundOpacity = MovingTargetsSettings.backgroundOpacity;
-        data.backgroundSpeed = MovingTargetsSettings.backgroundSpeed;
-        data.targetsToWin = MovingTargetsSettings.targetsToWin;
+        data.maxOnScreen = maxTargetsOnScreen;
+        data.targetScale = targetScale;
+        data.targetOpacity = targetOpacity;
+        data.minTargetSpeed = minTargetSpeed;
+        data.maxTargetSpeed = maxTargetsOnScreen;
+        data.targetTimeout = targetTimeout;
+        data.targetSpawnInterval = targetSpawnInterval;
+        data.backgroundOpacity = backgroundOpacity;
+        data.backgroundSpeed = backgroundSpeed;
+        data.targetsToWin = targetsToWin;
         data.mechanicType = mechanicType;
         return data;
     }

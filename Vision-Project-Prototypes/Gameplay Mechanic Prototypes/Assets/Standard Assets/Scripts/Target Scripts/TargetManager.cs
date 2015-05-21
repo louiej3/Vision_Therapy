@@ -133,9 +133,9 @@ public class TargetManager : MonoBehaviour
         return data;
     }
 
-    public TargetManData packData(string gameManID)
+    public ManagerData packData(string gameManID)
     {
-        TargetManData data = new TargetManData();
+        ManagerData data = new ManagerData();
 
         data.targetManID = manID;
         data.gameManID = gameManID;

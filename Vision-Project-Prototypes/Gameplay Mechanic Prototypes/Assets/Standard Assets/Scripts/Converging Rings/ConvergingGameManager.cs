@@ -3,7 +3,12 @@ using System.Collections;
 
 public class ConvergingGameManager : MonoBehaviour 
 {
-
+    // Database Variables
+    private const string mechanicType = "Converging Rings";
+    private GameSession gameSession;
+    private Database dbConnection;
+    private string gameManID;
+	
 	private StopWatch timer;
 
 	private ConObjectManager conMan;
@@ -71,6 +76,11 @@ public class ConvergingGameManager : MonoBehaviour
 		conMan.MarginOfError = marginOfError;
 
 		currentState = ConvergeState.PLAY;
+
+        gameSession = GameObject.Find("GameSession").GetComponent<GameSession>();
+        dbConnection = GameObject.Find("Database").GetComponent<Database>();
+        gameManID = System.Guid.NewGuid().ToString();
+		
 	}
 	
 	// Update is called once per frame
@@ -116,7 +126,32 @@ public class ConvergingGameManager : MonoBehaviour
 
 	private void winBehavior()
 	{
+        GameInstance inst = gameSession.packData();
+        Debug.Log(inst.generateInsert());
+        if (!dbConnection.insert(inst))
+        {
+            Debug.Log("game instance insert failed");
+        }
 
+        MechanicData man = packData();
+        if (!dbConnection.insert(man))
+        {
+            Debug.Log("game manager insert failed");
+        }
+
+        ManagerData targetManData = conMan.packData(gameManID);
+        if (!dbConnection.insert(targetManData))
+        {
+            Debug.Log("target Manager insert failed");
+        }
+
+        IEnumerable targets = conMan.packTargetData();
+        if (!dbConnection.insertAll(targets))
+        {
+            Debug.Log("targets insert failed");
+        }
+        dbConnection.syncData();
+        Application.Quit();
 	}
 
 	private void spawnConverge()
@@ -140,4 +175,26 @@ public class ConvergingGameManager : MonoBehaviour
 
 		timer.start();
 	}
+
+    public MechanicData packData()
+    {
+        MechanicData data = new MechanicData();
+
+        data.gameManID = gameManID;
+        data.gameInstanceID = gameSession.getID();
+
+        // load current difficulty settings
+        data.maxOnScreen = maxConvergeOnScreen;
+        data.targetScale = centerScale;
+        data.targetOpacity = centerOpacity;
+        data.minTargetSpeed = minConvergeTime;
+        data.maxTargetSpeed = maxConvergeTime;
+        data.targetTimeout = convergeTimeOut;
+        data.targetSpawnInterval = convergeSpawnInterval;
+        data.targetsToWin = convergesToWin;
+        data.mechanicType = mechanicType;
+        data.secondaryOpacity = boomerangOpacity;
+        data.secondaryScale = boomerangScale;
+        return data;
+    }
 }

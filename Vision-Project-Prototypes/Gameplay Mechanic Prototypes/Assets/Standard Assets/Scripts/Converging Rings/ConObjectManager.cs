@@ -13,10 +13,14 @@ public class ConObjectManager : MonoBehaviour
 	// far off the user can be when they tap the object
 	private float _marginOfError;
 
+    // Primary key
+    protected string manID;
+
 	// Use this for initialization
 	void Start () 
 	{
 		Converging = new ArrayList();
+        manID = System.Guid.NewGuid().ToString();
 	}
 	
 	// Update is called once per frame
@@ -143,4 +147,32 @@ public class ConObjectManager : MonoBehaviour
 			}
 		}
 	}
+
+    public IEnumerable packTargetData()
+    {
+        if (Converging.Count == 0)
+        {
+            return null;
+        }
+        ArrayList data = new ArrayList();
+        foreach(ConvergingObjects c in Converging)
+        {
+            data.Add(c.packData(manID));
+        }
+
+        return data;
+    }
+
+    public ManagerData packData(string mechanicID)
+    {
+        ManagerData data = new ManagerData();
+
+        data.targetManID = manID;
+        data.gameManID = mechanicID;
+        data.totalTargets = Converging.Count;
+        data.hits = Hits;
+        data.misses = Misses;
+
+        return data;
+    }
 }
