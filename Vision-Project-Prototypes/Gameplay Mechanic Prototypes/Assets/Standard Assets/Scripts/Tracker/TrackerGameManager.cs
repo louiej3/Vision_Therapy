@@ -30,8 +30,13 @@ public class TrackerGameManager : MonoBehaviour
 
 	public Target targetPrefab;
 
+	private GameObject leftWall;
+	private GameObject rightWall;
+	private GameObject topWall;
+	private GameObject bottomWall;
+
 	// The current state of the game
-	public TrackerState CurrentState { get; private set; }
+	public static TrackerState CurrentState { get; private set; }
 
 	public enum TrackerState
 	{
@@ -125,6 +130,25 @@ public class TrackerGameManager : MonoBehaviour
 
 	IEnumerator startUp(float waitTime)
 	{
+		float height = Camera.main.orthographicSize;
+		float width = height * Camera.main.aspect;
+		
+		leftWall = GameObject.Find("LeftWall");
+		leftWall.transform.position = new Vector2(-width - leftWall.transform.localScale.x / 2, 0f);
+		leftWall.transform.localScale = new Vector2(1f, height * 2);
+
+		rightWall = GameObject.Find("RightWall");
+		rightWall.transform.position = new Vector2(width + rightWall.transform.localScale.x / 2, 0f);
+		rightWall.transform.localScale = new Vector2(1f, height * 2);
+
+		topWall = GameObject.Find("TopWall");
+		topWall.transform.position = new Vector2(0f, height + topWall.transform.localScale.y / 2);
+		topWall.transform.localScale = new Vector2(width * 2, 1f);
+
+		bottomWall = GameObject.Find("BottomWall");
+		bottomWall.transform.position = new Vector2(0f, -height - bottomWall.transform.localScale.y / 2);
+		bottomWall.transform.localScale = new Vector2(width * 2, 1f);
+
 		for (int i = 0; i < numberOfTrackTargets; i++)
 		{
 			spawnTarget();
