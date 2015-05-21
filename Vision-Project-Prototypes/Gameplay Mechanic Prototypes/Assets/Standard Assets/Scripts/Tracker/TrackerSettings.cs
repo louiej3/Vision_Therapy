@@ -13,17 +13,18 @@ public class TrackerSettings
 	// The transperancy of the targets
 	public static float targetOpacity = 1f;
 	// The range that the targets' speed can be
-	public static float minTargetSpeed = 0.5f;
-	public static float maxTargetSpeed = 1.5f;
-	// The time before a target disappears
-	public static float targetTimeout = 20f;
-	// The time between each new target being spawned
-	public static float targetSpawnInterval = 0.5f;
-
+	public static float minChangeTime = 0.5f;
+	public static float maxChangeTime = 1.5f;
+	// Number of targets that the user needs to track
 	public static int numberOfTrackTargets = 3;
+	// Number of dummy targets in the scene
 	public static int numberOfDummyTargets = 10;
-
-	// The number of targets needed to win
-	public static int targetsToWin = 10;
+	// The amount of time that targets are allowed to move around
+	public static float shuffleTime = 30f;
+	// The time between tracks spawning, dummies spawning, and the
+	// game starting
+	public static float startUpTime = 3f;
+	// The max speed of the targets
+	public static float targetSpeed = 0.5f;
 
 }

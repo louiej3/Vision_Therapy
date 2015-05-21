@@ -12,28 +12,28 @@ public class TrackerGameManager : MonoBehaviour
 	// The transperancy of the targets
 	private float targetOpacity;
 	// The range that the targets' speed can be
-	private float minTargetSpeed;
-	private float maxTargetSpeed;
-	// The time before a target disappears
-	private float targetTimeout;
-	// The time between each new target being spawned
-	private float targetSpawnInterval;
-	// The number of targets needed to win
-	private int targetsToWin;
-
+	private float minChangeTime;
+	private float maxChangeTime;
+	// Number of targets that the user needs to track
 	private int numberOfTrackTargets;
+	// Number of dummy targets in the scene
 	private int numberOfDummyTargets;
+	// The amount of time that targets are allowed to move around
+	private float shuffleTime;
+	// The time between tracks spawning, dummies spawning, and the
+	// game starting
+	private float startUpTime;
+	// The max speed of the targets
+	private float targetSpeed;
 
 	private StopWatch timer;
 
 	private TargetManager targetMan;
 
-	public Target targetPrefab;
+	private ArrayList targets;
 
-	private GameObject leftWall;
-	private GameObject rightWall;
-	private GameObject topWall;
-	private GameObject bottomWall;
+	public Target trackPrefab;
+	public Target dummyPrefab;
 
 	// The current state of the game
 	public static TrackerState CurrentState { get; private set; }
@@ -52,22 +52,23 @@ public class TrackerGameManager : MonoBehaviour
 	{
 		targetScale = TrackerSettings.targetScale;
 		targetOpacity = TrackerSettings.targetOpacity;
-		minTargetSpeed = TrackerSettings.minTargetSpeed;
-		maxTargetSpeed = TrackerSettings.maxTargetSpeed;
-		targetTimeout = TrackerSettings.targetTimeout;
-		targetSpawnInterval = TrackerSettings.targetSpawnInterval;
-		targetsToWin = TrackerSettings.targetsToWin;
-
+		minChangeTime = TrackerSettings.minChangeTime;
+		maxChangeTime = TrackerSettings.maxChangeTime;
 		numberOfTrackTargets = TrackerSettings.numberOfTrackTargets;
 		numberOfDummyTargets = TrackerSettings.numberOfDummyTargets;
+		shuffleTime = TrackerSettings.shuffleTime;
+		startUpTime = TrackerSettings.startUpTime;
+		targetSpeed = TrackerSettings.targetSpeed;
 
 		timer = new StopWatch();
 
 		targetMan = GetComponent<TargetManager>();
-		
+
+		targets = targetMan.Targets;
+
 		CurrentState = TrackerState.STARTUP;
 
-		StartCoroutine(startUp(3));
+		StartCoroutine(startUp(startUpTime));
     }
 	
 	// Update is called once per frame
@@ -90,79 +91,130 @@ public class TrackerGameManager : MonoBehaviour
 
 	private void playBehavior()
 	{
+		int found = 0;
 		
+		foreach (Target t in targets)
+		{
+			if (t.tag == "Track" && t.IsTapped == true)
+			{
+				found++;
+			}
+		}
+
+		if (found == numberOfTrackTargets)
+		{
+			CurrentState = TrackerState.WIN;
+		}
 	}
 
 	private void winBehavior()
 	{
-		
+		Debug.Log("You win!");
+		foreach (Target t in targets)
+		{
+			t.gameObject.SetActive(false);
+		}
 	}
 
-    public void spawnTarget()
+    private void spawnTrack()
     {
         // Instantiate the target prefab
-        Target target = Instantiate(targetPrefab) as Target;
+        Target track = Instantiate(trackPrefab) as Target;
 
         // Generate random x position
-        float worldHeight = Camera.main.orthographicSize - target.transform.lossyScale.y / 2;
+        float worldHeight = Camera.main.orthographicSize - track.transform.lossyScale.y / 2;
 		float x = Random.Range(-worldHeight, worldHeight);
 
         // Generate random y position
         float worldWidth = Mathf.Sqrt(Mathf.Pow(worldHeight, 2) - Mathf.Pow(x, 2));
         float y = Random.Range(-worldWidth, worldWidth);
 
-        // Generate random speed
-        float speed = Random.Range(minTargetSpeed, maxTargetSpeed);
-
-        // Position and set target speed
-        target.transform.position = new Vector2(x, y);
-        //target.GetComponent<OrbitMove>().SpeedFactor = speed;
-		target.Scale = targetScale;
-		target.Opacity = targetOpacity;
-		target.TimeOut = targetTimeout;
+        // Position tracker object
+        track.transform.position = new Vector2(x, y);
+		track.Scale = targetScale;
+		track.Opacity = targetOpacity;
 
         // Add target to target manager
-        targetMan.addTarget(target);
-
-        // Restart the spawn timer
-        timer.start();
+		targetMan.addTarget(track);
     }
+
+	private void spawnDummy()
+	{
+		// Instantiate the target prefab
+		Target dummy = Instantiate(dummyPrefab) as Target;
+
+		// Generate random x position
+		float worldHeight = Camera.main.orthographicSize - dummy.transform.lossyScale.y / 2;
+		float x = Random.Range(-worldHeight, worldHeight);
+
+		// Generate random y position
+		float worldWidth = Mathf.Sqrt(Mathf.Pow(worldHeight, 2) - Mathf.Pow(x, 2));
+		float y = Random.Range(-worldWidth, worldWidth);
+
+		// Position tracker object
+		dummy.transform.position = new Vector2(x, y);
+		dummy.Scale = targetScale;
+		dummy.Opacity = targetOpacity;
+
+		// Add target to target manager
+		targetMan.addTarget(dummy);
+	}
 
 	IEnumerator startUp(float waitTime)
 	{
+		// Position walls
 		float height = Camera.main.orthographicSize;
 		float width = height * Camera.main.aspect;
-		
-		leftWall = GameObject.Find("LeftWall");
+
+		GameObject leftWall = GameObject.Find("LeftWall");
 		leftWall.transform.position = new Vector2(-width - leftWall.transform.localScale.x / 2, 0f);
 		leftWall.transform.localScale = new Vector2(1f, height * 2);
 
-		rightWall = GameObject.Find("RightWall");
+		GameObject rightWall = GameObject.Find("RightWall");
 		rightWall.transform.position = new Vector2(width + rightWall.transform.localScale.x / 2, 0f);
 		rightWall.transform.localScale = new Vector2(1f, height * 2);
 
-		topWall = GameObject.Find("TopWall");
+		GameObject topWall = GameObject.Find("TopWall");
 		topWall.transform.position = new Vector2(0f, height + topWall.transform.localScale.y / 2);
 		topWall.transform.localScale = new Vector2(width * 2, 1f);
 
-		bottomWall = GameObject.Find("BottomWall");
+		GameObject bottomWall = GameObject.Find("BottomWall");
 		bottomWall.transform.position = new Vector2(0f, -height - bottomWall.transform.localScale.y / 2);
 		bottomWall.transform.localScale = new Vector2(width * 2, 1f);
 
+		// Spawn track objects
 		for (int i = 0; i < numberOfTrackTargets; i++)
 		{
-			spawnTarget();
+			spawnTrack();
 		}
 		
 		yield return new WaitForSeconds(waitTime);
 		
+		// Spawn dummies
 		for (int i = 0; i < numberOfDummyTargets; i++)
 		{
-			spawnTarget();
+			spawnDummy();
 		}
 		
 		yield return new WaitForSeconds(waitTime);
-		
+
+		foreach (Target t in targets)
+		{
+			t.gameObject.AddComponent<RandomStraightMove>();
+			t.gameObject.GetComponent<RandomStraightMove>().MinimumChangeTime = minChangeTime;
+			t.gameObject.GetComponent<RandomStraightMove>().MaximumChangeTime = maxChangeTime;
+			t.gameObject.GetComponent<RandomStraightMove>().Speed = targetSpeed;
+		}
+
+		yield return new WaitForSeconds(shuffleTime);
+
+		foreach (Target t in targets)
+		{
+			Destroy(t.GetComponent<RandomStraightMove>());
+			t.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+			t.GetComponent<Rigidbody2D>().fixedAngle = true;
+		}
+
 		CurrentState = TrackerState.PLAY;
 	}
 }
