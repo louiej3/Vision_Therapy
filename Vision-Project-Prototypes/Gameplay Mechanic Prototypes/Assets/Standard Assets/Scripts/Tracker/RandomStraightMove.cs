@@ -19,7 +19,6 @@ public class RandomStraightMove : Movement
 	{
 		timer = new StopWatch();
 		timer.start();
-		changeTime = Random.Range(1f, 3f);
 
 		height = Camera.main.orthographicSize;
 		width = height * Camera.main.aspect;

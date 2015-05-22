@@ -134,6 +134,11 @@ public class TrackerGameManager : MonoBehaviour
 		track.Scale = targetScale;
 		track.Opacity = targetOpacity;
 
+		track.gameObject.GetComponent<RandomStraightMove>().MinimumChangeTime = minChangeTime;
+		track.gameObject.GetComponent<RandomStraightMove>().MaximumChangeTime = maxChangeTime;
+		track.gameObject.GetComponent<RandomStraightMove>().Speed = targetSpeed;
+		track.gameObject.GetComponent<RandomStraightMove>().enabled = false;
+
         // Add target to target manager
 		targetMan.addTarget(track);
     }
@@ -155,6 +160,11 @@ public class TrackerGameManager : MonoBehaviour
 		dummy.transform.position = new Vector2(x, y);
 		dummy.Scale = targetScale;
 		dummy.Opacity = targetOpacity;
+
+		dummy.gameObject.GetComponent<RandomStraightMove>().MinimumChangeTime = minChangeTime;
+		dummy.gameObject.GetComponent<RandomStraightMove>().MaximumChangeTime = maxChangeTime;
+		dummy.gameObject.GetComponent<RandomStraightMove>().Speed = targetSpeed;
+		dummy.gameObject.GetComponent<RandomStraightMove>().enabled = false;
 
 		// Add target to target manager
 		targetMan.addTarget(dummy);
@@ -200,17 +210,14 @@ public class TrackerGameManager : MonoBehaviour
 
 		foreach (Target t in targets)
 		{
-			t.gameObject.AddComponent<RandomStraightMove>();
-			t.gameObject.GetComponent<RandomStraightMove>().MinimumChangeTime = minChangeTime;
-			t.gameObject.GetComponent<RandomStraightMove>().MaximumChangeTime = maxChangeTime;
-			t.gameObject.GetComponent<RandomStraightMove>().Speed = targetSpeed;
+			t.gameObject.GetComponent<RandomStraightMove>().enabled = true;
 		}
 
 		yield return new WaitForSeconds(shuffleTime);
 
 		foreach (Target t in targets)
 		{
-			Destroy(t.GetComponent<RandomStraightMove>());
+			t.gameObject.GetComponent<RandomStraightMove>().enabled = false;
 			t.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 			t.GetComponent<Rigidbody2D>().fixedAngle = true;
 		}
