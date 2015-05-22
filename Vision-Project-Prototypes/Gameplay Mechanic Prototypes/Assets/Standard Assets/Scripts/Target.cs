@@ -186,7 +186,7 @@ public class Target : MonoBehaviour
         data.wasHit = IsTapped;
         if (m != null)
         {
-            data.velocity = m.getVelocity();
+            data.velocity = m.Velocity;
         }
         else
         {

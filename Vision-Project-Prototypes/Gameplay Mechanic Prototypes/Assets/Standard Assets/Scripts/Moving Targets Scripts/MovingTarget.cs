@@ -3,7 +3,7 @@ using System.Collections;
 
 public class MovingTarget : Target 
 {
-public override void Start()
+    public override void Start()
 	{
 		base.Start();
 	}

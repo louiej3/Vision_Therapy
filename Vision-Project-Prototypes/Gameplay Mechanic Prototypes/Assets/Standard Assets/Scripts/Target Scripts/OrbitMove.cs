@@ -3,42 +3,59 @@ using System.Collections;
 
 public class OrbitMove : Movement {
 
-    public float SPEEDFACTOR = 1f;
+    private float _speedFactor = 1f;
 
-    protected float curTime;
+    private float curTime;
 
     /// <summary>
     /// The point that is being orbited around
     /// </summary>
-    public Vector2 center = Vector2.zero;
-    public bool isClockwise = false;
-    float radius;
-    float angle;
+	public Vector2 Center { get; set; }
+	public bool IsClockwise { get; set; }
+	public float Radius { get; private set; }
+	public float Angle { get; private set; }
 
 	// Use this for initialization
 	void Start () {
         location = GetComponent<Transform>();
-        angle = Vector2.Angle(center, location.position);
-        Debug.Log(string.Format("Angle: {0}", angle));
-        radius = Vector2.Distance(center, location.position);
+        Angle = Vector2.Angle(Center, location.position);
+        Radius = Vector2.Distance(Center, location.position);
+		Center = Vector2.zero;
 	}
 	
 	// Update is called once per frame
 	public override void Update () {
-        angle += Time.smoothDeltaTime * SPEEDFACTOR * (isClockwise ? -1 : 1);
+        Angle += Time.smoothDeltaTime * _speedFactor * (IsClockwise ? -1 : 1);
         float x, y;
-        x = center.x + (float)System.Math.Cos(angle) * radius;
-        y = center.x + (float)System.Math.Sin(angle) * radius;
-        //y = center.y + (float)System.Math.Sin(angle) * radius;
-        //if (isClockwise)
-        //{
-        //    y *= -1;
-        //}
+        x = Center.x + (float)System.Math.Cos(Angle) * Radius;
+        y = Center.x + (float)System.Math.Sin(Angle) * Radius;
         location.position = new Vector2(x, y);
 	}
 
-    public override float getVelocity()
+    public override float Velocity
     {
-        return radius * SPEEDFACTOR;
+		get
+		{
+			return Radius * _speedFactor;
+		}
     }
+
+	public float SpeedFactor
+	{
+		get
+		{
+			return _speedFactor;
+		}
+		set
+		{
+			if (value >= 0)
+			{
+				_speedFactor = value;
+			}
+			else
+			{
+				throw new System.Exception("Value cannot be negative");
+			}
+		}
+	}
 }
