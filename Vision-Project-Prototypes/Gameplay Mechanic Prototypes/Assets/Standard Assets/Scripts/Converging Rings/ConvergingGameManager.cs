@@ -1,42 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ConvergingGameManager : MonoBehaviour 
+public class ConvergingGameManager : Mechanic 
 {
-
-	private StopWatch timer;
-
-	private ConObjectManager conMan;
-	
 	// The current state of the game
 	private ConvergeState currentState;
 
-	public ConvergingObjects convergePrefab;
+    private ConObjectManager conMan;
 
-	// The maximum amount of converging objects on the screen
-	// at one time
-	private int maxConvergeOnScreen;
-	// The time between each converging object beign spawned
-	private float convergeSpawnInterval;
-	// The minimum time it takes for the boomerangs to intersect
-	private float minConvergeTime;
-	// The maximum time it takes for the boomerangs to intersect
-	private float maxConvergeTime;
-	// The transparency of the center of the converging object
-	private float centerOpacity;
-	// The time before a converging object times out
-	private float convergeTimeOut;
-	// The scale of the center object, center is a square
-	private float centerScale;
-	// The transparency of the boomerangs
+	public ConvergingObjects convergePrefab;
 	private float boomerangOpacity;
 	// The scale of the boomerangs, boomerangs are square
 	private float boomerangScale;
 	// The number of boomerangs for each converging object
 	private int numberOfBoomerangs;
-	// The amount of converging objects that need to be tapped
-	// before the user wins
-	private int convergesToWin;
 	// Multiplies converge time by this value to determine how
 	// far off the user can be when they tap the object
 	private float marginOfError;
@@ -52,25 +29,32 @@ public class ConvergingGameManager : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		maxConvergeOnScreen = ConvergingSettings.maxConvergeOnScreen;
-		convergeSpawnInterval = ConvergingSettings.convergeSpawnInterval;
-		minConvergeTime = ConvergingSettings.minConvergeTime;
-		maxConvergeTime = ConvergingSettings.maxConvergeTime;
-		centerOpacity = ConvergingSettings.centerOpacity;
-		convergeTimeOut = ConvergingSettings.convergeTimeOut;
-		centerScale = ConvergingSettings.centerScale;
+		maxTargetsOnScreen = ConvergingSettings.maxConvergeOnScreen;
+		targetSpawnInterval = ConvergingSettings.convergeSpawnInterval;
+		minTargetSpeed = ConvergingSettings.minConvergeTime;
+		maxTargetSpeed = ConvergingSettings.maxConvergeTime;
+		targetOpacity = ConvergingSettings.centerOpacity;
+		targetTimeout = ConvergingSettings.convergeTimeOut;
+		targetScale = ConvergingSettings.centerScale;
 		boomerangOpacity = ConvergingSettings.boomerangOpacity;
 		boomerangScale = ConvergingSettings.boomerangScale;
 		numberOfBoomerangs = ConvergingSettings.numberOfBoomerangs;
-		convergesToWin = ConvergingSettings.convergesToWin;
+		targetsToWin = ConvergingSettings.convergesToWin;
 		marginOfError = ConvergingSettings.marginOfError;
 
-		timer = new StopWatch();
+		gameTime = new StopWatch();
 		
 		conMan = GetComponent<ConObjectManager>();
+        targetMan = conMan;
 		conMan.MarginOfError = marginOfError;
 
 		currentState = ConvergeState.PLAY;
+
+        gameSession = GameObject.Find("GameSession").GetComponent<GameSession>();
+        dbConnection = GameObject.Find("Database").GetComponent<Database>();
+
+        mechanicType = "Converging Rings";
+		
 	}
 	
 	// Update is called once per frame
@@ -88,45 +72,38 @@ public class ConvergingGameManager : MonoBehaviour
 		}
 	}
 
-	private void playBehavior()
+	protected override void playBehavior()
 	{
-		ArrayList con = conMan.Converging;
 		
-		int activeConverges = 0;
+		int activeConverges = conMan.ActiveObjects;
 
-		if (conMan.SuccessfulHits >= convergesToWin)
+		if (conMan.SuccessfulHits >= targetsToWin)
 		{
 			currentState = ConvergeState.WIN;
 		}
-
-		foreach (ConvergingObjects co in con)
-		{
-			if (co.isActiveAndEnabled)
-			{
-				activeConverges++;
-			}
-		}
 		
-		if (timer.lap() >= convergeSpawnInterval 
-			&& activeConverges < maxConvergeOnScreen)
+		if (gameTime.lap() >= targetSpawnInterval 
+			&& activeConverges < maxTargetsOnScreen)
 		{
 			spawnConverge();
 		}
 	}
 
-	private void winBehavior()
+	protected override void winBehavior()
 	{
-
+        base.winBehavior();
+        
+        Application.Quit();
 	}
 
 	private void spawnConverge()
 	{
 		ConvergingObjects co = Instantiate(convergePrefab) as ConvergingObjects;
-		co.TimeOut = convergeTimeOut;
-		co.Scale = centerScale;
-		co.Opacity = centerOpacity;
+		co.TimeOut = targetTimeout;
+		co.Scale = targetScale;
+		co.Opacity = targetOpacity;
 
-		float convergeTime = Random.Range(minConvergeTime, maxConvergeTime);
+		float convergeTime = Random.Range(minTargetSpeed, maxTargetSpeed);
 
 		float worldHeight = Camera.main.orthographicSize - co.Scale / 2;
 		float x = Random.Range(-worldHeight, worldHeight);
@@ -138,6 +115,16 @@ public class ConvergingGameManager : MonoBehaviour
 
 		conMan.addConverge(co);
 
-		timer.start();
+		gameTime.start();
 	}
+
+    public override MechanicData packData()
+    {
+        MechanicData data = base.packData();
+
+        data.secondaryOpacity = boomerangOpacity;
+        data.secondaryScale = boomerangScale;
+
+        return data;
+    }
 }
