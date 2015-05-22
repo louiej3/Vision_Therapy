@@ -12,9 +12,14 @@ public class Movement : MonoBehaviour
     /// </summary>
     protected Transform location;
     
+	void Awake()
+	{
+		location = GetComponent<Transform>();
+	}
+
 	void Start()
     {
-        location = GetComponent<Transform>();
+        
     }
     
 	public virtual void Update()

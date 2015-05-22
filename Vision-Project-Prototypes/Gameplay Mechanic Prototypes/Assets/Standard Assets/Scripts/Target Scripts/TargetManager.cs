@@ -10,11 +10,19 @@ using SQLite4Unity3d;
 /// </summary>
 public class TargetManager : Manager
 {
-	
+
+    private float NearMissThreshold;
+
+	void Awake()
+	{
+		Targets = new ArrayList();
+	}
+
 	// Use this for initialization
     public override void Start()
     {
         base.Start();
+		NearMissThreshold = 5f;
     }
 	
 	// Update is called once per frame
