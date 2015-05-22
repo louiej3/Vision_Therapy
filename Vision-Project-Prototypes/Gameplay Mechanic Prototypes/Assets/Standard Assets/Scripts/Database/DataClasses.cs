@@ -16,14 +16,14 @@ using SQLite4Unity3d;
 /// <summary>
 /// The Schema for storing data, may be possible to abstract it later.
 /// </summary>,
-public class TargetData
+public class ObjectData
 {
 
     /// <summary>
     /// The Primary key of the Target
     /// </summary>
     [PrimaryKey]
-    public string targetID { get; set; }
+    public string objectID { get; set; }
     /// <summary>
     /// The time the target spent alive.
     /// </summary>
@@ -86,7 +86,7 @@ public class TargetData
         insert += "(targetID, managerID, timeAlive, hitPrecision, wasHit, velocity, opacity, red, green, blue, scale) ";
         insert += "Values";
         insert += string.Format("( '{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10});",
-            targetID, managerID, timeAlive, hitPrecision, wasHit, velocity
+            objectID, managerID, timeAlive, hitPrecision, wasHit, velocity
             , opacity, red, green, blue, scale);
 
         return insert;
@@ -104,9 +104,9 @@ public class TargetData
 public class ManagerData
 {
     [PrimaryKey]
-    public string targetManID { get; set; }
+    public string managerID { get; set; }
     [NotNull]
-    public string gameManID { get; set; }
+    public string mechanicID { get; set; }
     [NotNull]
     public int totalTargets { get; set; }
     [NotNull]
@@ -132,7 +132,7 @@ public class ManagerData
         insert += "(targetManID, gameManID, totalTargets, hits, misses, nearMisses) ";
         insert += "Values";
         insert += string.Format("( '{0}', '{1}', {2}, {3}, {4}, {5});",
-            targetManID, gameManID, totalTargets, hits, misses, nearMisses);
+            managerID, mechanicID, totalTargets, hits, misses, nearMisses);
 
         return insert;
     }
@@ -143,7 +143,7 @@ public class MechanicData
     // stores some basic information as well as the difficulty 
     //settings used at the time of the level
     [PrimaryKey]
-    public string gameManID { get; set; }
+    public string mechanicID { get; set; }
     [NotNull]
     public string gameInstanceID { get; set; }
 
@@ -188,7 +188,7 @@ public class MechanicData
         insert += "backgroundOpacity, backgroundSpeed, targetToWin, mechanicType) ";
         insert += " Values";
         insert += string.Format("('{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, '{12}');",
-            gameManID, gameInstanceID, maxOnScreen, targetScale, targetOpacity, minTargetSpeed,
+            mechanicID, gameInstanceID, maxOnScreen, targetScale, targetOpacity, minTargetSpeed,
                 maxTargetSpeed, targetTimeout, targetSpawnInterval, backgroundOpacity, backgroundSpeed, targetsToWin, mechanicType);
         return insert;
     }

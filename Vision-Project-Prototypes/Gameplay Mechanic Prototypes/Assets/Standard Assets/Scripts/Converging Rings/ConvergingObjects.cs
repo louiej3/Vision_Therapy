@@ -1,33 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ConvergingObjects : MonoBehaviour 
+public class ConvergingObjects : Target 
 {
 
 	// List of boomerangs associated with this convergence point
 	protected ArrayList boomerangs;
 	// The time it takes for all of the boomerangs to converge
 	public float ConvergeTime { get; protected set; }
-	// Tells whether or not this converging object has been successfully tapped
-	public bool IsTapped { get; protected set; }
-	// The total time it took for this converging object to the tapped
-	public float LapTime { get; protected set; }
-	// How accurately the rings intersected when the user touched this converging object
-	public float Accuracy { get; protected set; }
 	// Tells whether accuracy was in the margin of error
 	public bool Success { get; set; }
-	
-	// The time before this object initiates timeout behavior
-	protected float _timeOut;
-	// The scale of the center object
-	protected float _scale;
-	// The transparency of the center of the converging object
-	protected float _opacity;
-
-    // Data objects
-    public string targetID {get; protected set; }
-
-	protected StopWatch timer;
 
 	public Boomerang boomerangPrefab;
 
@@ -37,15 +19,15 @@ public class ConvergingObjects : MonoBehaviour
 	}
 
 	// Use this for initialization
-	protected virtual void Start () 
+	public override void Start () 
 	{
-		timer = new StopWatch();
-		timer.start();
-        targetID = System.Guid.NewGuid().ToString();
+        base.Start();
 	}
 	
 	// For subclasses that would like to implement behavior upon tap
-	protected virtual void tapBehavior() { }
+	protected virtual void tapBehavior() 
+    {
+    }
 
 	public bool checkTouch(Touch tap)
 	{
@@ -55,14 +37,15 @@ public class ConvergingObjects : MonoBehaviour
 		if (GetComponent<Collider2D>() == Physics2D.OverlapPoint(touchPos))
 		{
 			// because the unit has been tapped, set the variables
-			LapTime = timer.lap();
-
-			// Mod the user's lapTime by the time it takes for a boomerang
-			// to complete one cycle (convergeTime * 2), then subtract the
-			// convergeTime and get the absolute value
-			Accuracy = Mathf.Abs((LapTime % (ConvergeTime * 2)) - ConvergeTime);
-
+			LapTime = timeSinceSpawn.lap();
+			
 			IsTapped = true;
+
+            // Mod the user's lapTime by the time it takes for a boomerang
+            // to complete one cycle (convergeTime * 2), then subtract the
+            // convergeTime and get the absolute value
+            TapPrecision = Mathf.Abs((LapTime % (ConvergeTime * 2)) - ConvergeTime);
+
 
 			// If it is an inherited class, we can call the specific tap behavior
 			tapBehavior();
@@ -147,109 +130,4 @@ public class ConvergingObjects : MonoBehaviour
 			boomerangs.Add(b);
 		}
 	}
-
-	public bool timedOut()
-	{
-		if (timer.lap() >= _timeOut)
-		{
-			return true;
-		}
-		return false;
-	}
-
-	public float TimeOut
-	{
-		get
-		{
-			return _timeOut;
-		}
-		set
-		{
-			if (value >= 0)
-			{
-				_timeOut = value;
-			}
-			else
-			{
-				throw new System.Exception("Value cannot be negative");
-			}
-		}
-	}
-
-	public float Scale
-	{
-		get
-		{
-			return _scale;
-		}
-		set
-		{
-			if (value >= 0)
-			{
-				_scale = value;
-				transform.localScale = new Vector2(_scale, _scale);
-			}
-			else
-			{
-				throw new System.Exception("Value cannot be negative");
-			}
-		}
-	}
-
-	public float Opacity
-	{
-		get
-		{
-			return _opacity;
-		}
-		set
-		{
-			if (value >= 0)
-			{
-				_opacity = value;
-				GetComponent<SpriteRenderer>().color = new Color(
-					GetComponent<SpriteRenderer>().color.r, 
-					GetComponent<SpriteRenderer>().color.g, 
-					GetComponent<SpriteRenderer>().color.b, 
-					_opacity);
-			}
-			else
-			{
-				throw new System.Exception("Value cannot be negative");
-			}
-		}
-	}
-
-    public TargetData packData(string manID)
-    {
-        // variable init
-        var data = new TargetData();
-        var move = GetComponent<Movement>();
-        var sprite = GetComponent<SpriteRenderer>();
-        
-        // set data
-        data.targetID = targetID;
-        data.managerID = manID;
-        data.timeAlive = LapTime;
-        data.hitPrecision = Accuracy;
-        data.wasHit = IsTapped;
-        data.scale = GetComponent<Transform>().localScale.x;
-        if (move != null)
-        {
-            data.velocity = move.getVelocity();
-        }
-        else
-        {
-            data.velocity = 0f;
-        }
-        if (sprite != null)
-        {
-            data.opacity = sprite.color.a;
-            data.red = sprite.color.r;
-            data.green = sprite.color.g;
-            data.blue = sprite.color.b;
-        }
-
-        return data;
-    }
 }

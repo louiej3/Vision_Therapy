@@ -1,26 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ConObjectManager : MonoBehaviour 
+public class ConObjectManager : Manager 
 {
-
-	public int Hits { get; private set; }
-	public int Misses { get; private set; }
-	public int SuccessfulHits { get; private set; }
-	public ArrayList Converging { get; private set; }
-
 	// Multiplies converge time by this value to determine how
 	// far off the user can be when they tap the object
 	private float _marginOfError;
 
-    // Primary key
-    protected string manID;
+    public int SuccessfulHits { get; protected set; }
 
 	// Use this for initialization
 	void Start () 
 	{
-		Converging = new ArrayList();
-        manID = System.Guid.NewGuid().ToString();
+        base.Start();
+        SuccessfulHits = 0;
 	}
 	
 	// Update is called once per frame
@@ -28,7 +21,7 @@ public class ConObjectManager : MonoBehaviour
 	{
 		Touch[] taps = Input.touches;
 
-		foreach (ConvergingObjects co in Converging)
+		foreach (ConvergingObjects co in Targets)
 		{
 			co.converge();
 		}
@@ -41,11 +34,11 @@ public class ConObjectManager : MonoBehaviour
 				{
 					bool hit = false;
 					
-					foreach (ConvergingObjects co in Converging)
+					foreach (ConvergingObjects co in Targets)
 					{
 						if (co.checkTouch(tap))
 						{
-							if (co.Accuracy <= co.ConvergeTime * _marginOfError)
+							if (co.TapPrecision <= co.ConvergeTime * _marginOfError)
 							{
 								SuccessfulHits++;
 								co.Success = true;
@@ -74,7 +67,7 @@ public class ConObjectManager : MonoBehaviour
 	{
 		if (co != null)
 		{
-			Converging.Add(co);
+			Targets.Add(co);
 		}
 	}
 
@@ -87,41 +80,12 @@ public class ConObjectManager : MonoBehaviour
 		{
 			float average = 0f;
 
-			foreach (ConvergingObjects co in Converging)
+            foreach (ConvergingObjects co in Targets)
 			{
 				average += co.LapTime;
 			}
 
-			return average / Converging.Count;
-		}
-	}
-
-	/// <summary>
-	/// Retrieve the average accuracy of the user
-	/// </summary>
-	public float AverageAccuracy
-	{
-		get
-		{
-			float average = 0f;
-
-			foreach (ConvergingObjects co in Converging)
-			{
-				average += co.Accuracy;
-			}
-
-			return average / Converging.Count;
-		}
-	}
-	
-	/// <summary>
-	/// The total number of converging objects managed by the ConvergingManager
-	/// </summary>
-	public int NumberOfTargets
-	{
-		get
-		{
-			return Converging.Count;
+            return average / Targets.Count;
 		}
 	}
 
@@ -148,31 +112,20 @@ public class ConObjectManager : MonoBehaviour
 		}
 	}
 
-    public IEnumerable packTargetData()
+    public int ActiveObjects
     {
-        if (Converging.Count == 0)
+        get
         {
-            return null;
+            int activeConverges = 0;
+            foreach (ConvergingObjects co in Targets)
+            {
+                if (co.isActiveAndEnabled)
+                {
+                    activeConverges++;
+                }
+            }
+            return activeConverges;
         }
-        ArrayList data = new ArrayList();
-        foreach(ConvergingObjects c in Converging)
-        {
-            data.Add(c.packData(manID));
-        }
-
-        return data;
     }
 
-    public ManagerData packData(string mechanicID)
-    {
-        ManagerData data = new ManagerData();
-
-        data.targetManID = manID;
-        data.gameManID = mechanicID;
-        data.totalTargets = Converging.Count;
-        data.hits = Hits;
-        data.misses = Misses;
-
-        return data;
-    }
 }

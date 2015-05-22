@@ -74,7 +74,7 @@ public class Database : MonoBehaviour {
     void Start()
     {
         DontDestroyOnLoad(this.gameObject);
-        _connection.CreateTable<TargetData>();
+        _connection.CreateTable<ObjectData>();
         _connection.CreateTable<ManagerData>();
         _connection.CreateTable<MechanicData>();
         _connection.CreateTable<GameInstance>();
@@ -91,7 +91,7 @@ public class Database : MonoBehaviour {
     void Update () {
 
         // occasionally  check to sync data
-
+        
         if (timer.lap() > SYNC_TIME)
         {
             syncData();
@@ -191,7 +191,7 @@ public class Database : MonoBehaviour {
 
         foreach (MechanicData m in mechanics)
         {
-            IEnumerable<ManagerData> targetMan = _connection.Table<ManagerData>().Where(x => x.gameManID == m.gameManID);
+            IEnumerable<ManagerData> targetMan = _connection.Table<ManagerData>().Where(x => x.mechanicID == m.mechanicID);
             foreach (ManagerData t in targetMan)
             {
                 managers.Add(t);
@@ -200,8 +200,8 @@ public class Database : MonoBehaviour {
 
         foreach (ManagerData t in managers)
         {
-            IEnumerable<TargetData> targets = _connection.Table<TargetData>().Where(x => x.managerID == t.targetManID);
-            foreach (TargetData target in targets)
+            IEnumerable<ObjectData> targets = _connection.Table<ObjectData>().Where(x => x.managerID == t.managerID);
+            foreach (ObjectData target in targets)
             {
                 targetList.Add(target);
             }
@@ -237,7 +237,7 @@ public class Database : MonoBehaviour {
         Debug.Log(string.Format("{0} managers added", rowsAffected));
 
         rowsAffected = 0;
-        foreach (TargetData t in targetList)
+        foreach (ObjectData t in targetList)
         {
             addInstances.CommandText = t.generateInsert();
             int editNum = addInstances.ExecuteNonQuery();
@@ -261,5 +261,13 @@ public class Database : MonoBehaviour {
         last = _connection.Table<Sync>().OrderByDescending( x => x.syncDate).First().syncDate;
         return last;
     }
-
+    private void DropallTables()
+    {
+        _connection.DropTable<ObjectData>();
+        _connection.DropTable<ManagerData>();
+        _connection.DropTable<MechanicData>();
+        _connection.DropTable<GameInstance>();
+        _connection.DropTable<User>();
+        _connection.DropTable<Sync>();
+    }
 }
