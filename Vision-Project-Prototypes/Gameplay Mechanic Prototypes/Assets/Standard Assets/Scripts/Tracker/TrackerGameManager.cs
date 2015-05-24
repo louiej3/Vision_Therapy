@@ -28,9 +28,7 @@ public class TrackerGameManager : MonoBehaviour
 
 	private StopWatch timer;
 
-	private TargetManager targetMan;
-
-	private ArrayList targets;
+	private TrackManager trackMan;
 
 	public Target trackPrefab;
 	public Target dummyPrefab;
@@ -62,9 +60,7 @@ public class TrackerGameManager : MonoBehaviour
 
 		timer = new StopWatch();
 
-		targetMan = GetComponent<TargetManager>();
-
-		targets = targetMan.Targets;
+		trackMan = GetComponent<TrackManager>();
 
 		CurrentState = TrackerState.STARTUP;
 
@@ -91,17 +87,7 @@ public class TrackerGameManager : MonoBehaviour
 
 	private void playBehavior()
 	{
-		int found = 0;
-		
-		foreach (Target t in targets)
-		{
-			if (t.tag == "Track" && t.IsTapped == true)
-			{
-				found++;
-			}
-		}
-
-		if (found == numberOfTrackTargets)
+		if (trackMan.SuccessfulHits == numberOfTrackTargets)
 		{
 			CurrentState = TrackerState.WIN;
 		}
@@ -110,10 +96,6 @@ public class TrackerGameManager : MonoBehaviour
 	private void winBehavior()
 	{
 		Debug.Log("You win!");
-		foreach (Target t in targets)
-		{
-			t.gameObject.SetActive(false);
-		}
 	}
 
     private void spawnTrack()
@@ -137,10 +119,9 @@ public class TrackerGameManager : MonoBehaviour
 		track.gameObject.GetComponent<RandomStraightMove>().MinimumChangeTime = minChangeTime;
 		track.gameObject.GetComponent<RandomStraightMove>().MaximumChangeTime = maxChangeTime;
 		track.gameObject.GetComponent<RandomStraightMove>().Speed = targetSpeed;
-		track.gameObject.GetComponent<RandomStraightMove>().enabled = false;
 
         // Add target to target manager
-		targetMan.addTarget(track);
+		trackMan.addTarget(track);
     }
 
 	private void spawnDummy()
@@ -164,10 +145,9 @@ public class TrackerGameManager : MonoBehaviour
 		dummy.gameObject.GetComponent<RandomStraightMove>().MinimumChangeTime = minChangeTime;
 		dummy.gameObject.GetComponent<RandomStraightMove>().MaximumChangeTime = maxChangeTime;
 		dummy.gameObject.GetComponent<RandomStraightMove>().Speed = targetSpeed;
-		dummy.gameObject.GetComponent<RandomStraightMove>().enabled = false;
 
 		// Add target to target manager
-		targetMan.addTarget(dummy);
+		trackMan.addTarget(dummy);
 	}
 
 	IEnumerator startUp(float waitTime)
@@ -197,6 +177,8 @@ public class TrackerGameManager : MonoBehaviour
 		{
 			spawnTrack();
 		}
+
+		trackMan.freezeTargets();
 		
 		yield return new WaitForSeconds(waitTime);
 		
@@ -205,22 +187,16 @@ public class TrackerGameManager : MonoBehaviour
 		{
 			spawnDummy();
 		}
+
+		trackMan.freezeTargets();
 		
 		yield return new WaitForSeconds(waitTime);
 
-		foreach (Target t in targets)
-		{
-			t.gameObject.GetComponent<RandomStraightMove>().enabled = true;
-		}
+		trackMan.unfreezeTargets();
 
 		yield return new WaitForSeconds(shuffleTime);
 
-		foreach (Target t in targets)
-		{
-			t.gameObject.GetComponent<RandomStraightMove>().enabled = false;
-			t.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-			t.GetComponent<Rigidbody2D>().fixedAngle = true;
-		}
+		trackMan.freezeTargets();
 
 		CurrentState = TrackerState.PLAY;
 	}

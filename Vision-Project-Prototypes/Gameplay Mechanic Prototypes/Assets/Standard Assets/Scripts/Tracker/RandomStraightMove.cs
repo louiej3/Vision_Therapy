@@ -35,13 +35,16 @@ public class RandomStraightMove : Movement
 
 			float xPercent = Mathf.Abs(location.position.x / width);
 			float yPercent = Mathf.Abs(location.position.y / height);
-
-			float rand = Random.value;
-
-			if (rand <= xPercent || rand <= yPercent)
+			
+			if (xPercent > 0.6f || yPercent > 0.6f)
 			{
-				Vector2 look = Vector2.zero - (Vector2)location.position;
-				location.LookAt(location.position + new Vector3(0, 0, 1), look);
+				float rand = Random.value;
+				
+				if (rand <= xPercent || rand <= yPercent)
+				{
+					Vector2 look = Vector2.zero - (Vector2)location.position;
+					location.LookAt(location.position + new Vector3(0, 0, 1), look);
+				}
 			}
 
 			changeTime = Random.Range(_minChangeTime, _maxChangeTime);

@@ -42,10 +42,12 @@ public class TrackManager : MonoBehaviour
 							if (target.tag == "Track")
 							{
 								SuccessfulHits++;
+								Debug.Log("SuccessfulHits = " + SuccessfulHits);
 							}
 							else
 							{
 								UnsuccessfulHits++;
+								Debug.Log("UnsuccessfulHits = " + UnsuccessfulHits);
 							}
 
 							break;
@@ -61,6 +63,7 @@ public class TrackManager : MonoBehaviour
 					if (!hit)
 					{
 						Misses++;
+						Debug.Log("Misses = " + Misses);
 					}
 				}
 			}
@@ -106,6 +109,25 @@ public class TrackManager : MonoBehaviour
 		get
 		{
 			return Targets.Count;
+		}
+	}
+
+	public void freezeTargets()
+	{
+		foreach (Target t in Targets)
+		{
+			t.gameObject.GetComponent<RandomStraightMove>().enabled = false;
+			t.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+			t.GetComponent<Rigidbody2D>().fixedAngle = true;	
+		}
+	}
+
+	public void unfreezeTargets()
+	{
+		foreach (Target t in Targets)
+		{
+			t.gameObject.GetComponent<RandomStraightMove>().enabled = true;
+			t.GetComponent<Rigidbody2D>().fixedAngle = false;
 		}
 	}
 }
