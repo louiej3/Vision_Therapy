@@ -4,38 +4,14 @@ using System.Collections;
 /// <summary>
 /// Game manager for moving targets game
 /// </summary>
-public class MovingTargetsGameManager : MonoBehaviour 
+public class MovingTargetsGameManager : Mechanic 
 {
-    private string gameManID;
-	// The maximum number of targets that can be on the
-	// screen at once.
-	private int maxTargetsOnScreen;
-	// The scale of the targets. The targets are squares.
-	private float targetScale;
-	// The transperancy of the targets
-	private float targetOpacity;
-	// The range that the targets' speed can be
-	private float minTargetSpeed;
-	private float maxTargetSpeed;
-	// The time before a target disappears
-	private float targetTimeout;
-	// The time between each new target being spawned
-	private float targetSpawnInterval;
-	// The transperancy of the background
-	private float backgroundOpacity;
-	// The speed that the background spins
-	private float backgroundSpeed;
-	// The number of targets needed to win
-	private int targetsToWin;
-
-	private StopWatch timer;
-
-	private TargetManager targetMan;
-
-    private GameSession gameSession;
-    private Database dbConnection;
-
 	private Background background;
+
+    protected float backgroundOpacity;
+    // The speed that the background spins
+    protected float backgroundSpeed;
+    // The number of targets needed to win
 
 	public Target targetPrefab;
 
@@ -51,8 +27,9 @@ public class MovingTargetsGameManager : MonoBehaviour
 	}
 	
 	// Use this for initialization
-	void Start () 
+	public override void Start () 
 	{
+        base.Start();
 		maxTargetsOnScreen = MovingTargetsSettings.maxTargetsOnScreen;
 		targetScale = MovingTargetsSettings.targetScale;
 		targetOpacity = MovingTargetsSettings.targetOpacity;
@@ -63,20 +40,14 @@ public class MovingTargetsGameManager : MonoBehaviour
 		backgroundOpacity = MovingTargetsSettings.backgroundOpacity;
 		backgroundSpeed = MovingTargetsSettings.backgroundSpeed;
 		targetsToWin = MovingTargetsSettings.targetsToWin;
-
-		timer = new StopWatch();
 		
 		targetMan = GetComponent<TargetManager>();
-        
-		gameSession = GameObject.Find("GameSession").GetComponent<GameSession>();
-        dbConnection = GameObject.Find("Database").GetComponent<Database>();
-		
 		background = GameObject.Find("Background").GetComponent<Background>();
 		background.Speed = backgroundSpeed;
 		background.Opacity = backgroundOpacity;
 
-        gameManID = System.Guid.NewGuid().ToString();
 		CurrentState = MovingTargetsState.PLAY;
+        mechanicType = "Moving Targets";
     }
 	
 	// Update is called once per frame
@@ -95,7 +66,7 @@ public class MovingTargetsGameManager : MonoBehaviour
 		}
 	}
 
-	private void playBehavior()
+	protected override void playBehavior()
 	{
 		ArrayList targets = targetMan.Targets;
 		int activeTargets = 0;
@@ -113,39 +84,17 @@ public class MovingTargetsGameManager : MonoBehaviour
 			}
 		}
 
-		if (timer.lap() >= targetSpawnInterval && activeTargets < maxTargetsOnScreen)
+		if (gameTime.lap() >= targetSpawnInterval && activeTargets < maxTargetsOnScreen)
 		{
 			spawnTarget();
 		}
 	}
 
-	private void winBehavior()
-	{
-        GameInstance inst = gameSession.packData();
-        if (!dbConnection.insert(inst))
-        {
-            Debug.Log("game instance insert failed");
-        }
-
-        MovingTargetsManData man = packData();
-        if (!dbConnection.insert(man))
-        {
-            Debug.Log("game manager insert failed");
-        }
-
-        TargetManData targetManData = targetMan.packData(gameManID);
-        if (!dbConnection.insert(targetManData))
-        {
-            Debug.Log("target Manager insert failed");
-        }
-
-        IEnumerable targets = targetMan.packTargetData();
-        if (!dbConnection.insertAll(targets))
-        {
-            Debug.Log("targets insert failed");
-        }
+    protected override void winBehavior()
+    {
+        base.winBehavior();
         Application.Quit();
-	}
+    }
 
     public void spawnTarget()
     {
@@ -160,11 +109,13 @@ public class MovingTargetsGameManager : MonoBehaviour
         float worldWidth = Mathf.Sqrt(Mathf.Pow(worldHeight, 2) - Mathf.Pow(x, 2));
         float y = Random.Range(-worldWidth, worldWidth);
 
+        Debug.Log(string.Format("X:{0}, Y:{1}", x, y));
         // Generate random speed
         float speed = Random.Range(minTargetSpeed, maxTargetSpeed);
 
         // Position and set target speed
         target.transform.position = new Vector2(x, y);
+
         target.GetComponent<OrbitMove>().SpeedFactor = speed;
 		target.Scale = targetScale;
 		target.Opacity = targetOpacity;
@@ -172,36 +123,23 @@ public class MovingTargetsGameManager : MonoBehaviour
 
 		// Pick a float between 0 and 1, >= 0.5f clockwise
 		// counter clockwise is default
-		if (Random.value >= 0.5f)
-		{
-			target.GetComponent<OrbitMove>().IsClockwise = true;
-		}
+        if (Random.value >= 0.5f)
+        {
+            target.GetComponent<OrbitMove>().IsClockwise = true;
+        }
 
         // Add target to target manager
         targetMan.addTarget(target);
 
         // Restart the spawn timer
-        timer.start();
+        gameTime.start();
     }
 
-    public MovingTargetsManData packData()
+    public override MechanicData packData()
     {
-        MovingTargetsManData data = new MovingTargetsManData();
-
-        data.gameManID = gameManID;
-        data.gameInstanceID = gameSession.getID();
-
-        // load current difficulty settings
-        data.maxOnScreen = MovingTargetsSettings.maxTargetsOnScreen;
-        data.targetScale = MovingTargetsSettings.targetScale;
-        data.targetOpacity = MovingTargetsSettings.targetOpacity;
-        data.minTargetSpeed = MovingTargetsSettings.minTargetSpeed;
-        data.maxTargetSpeed = MovingTargetsSettings.maxTargetsOnScreen;
-        data.targetTimeout = MovingTargetsSettings.targetTimeout;
-        data.targetSpawnInterval = MovingTargetsSettings.targetSpawnInterval;
-        data.backgroundOpacity = MovingTargetsSettings.backgroundOpacity;
-        data.backgroundSpeed = MovingTargetsSettings.backgroundSpeed;
-        data.targetsToWin = MovingTargetsSettings.targetsToWin;
+        MechanicData data = base.packData();
+        data.backgroundOpacity = backgroundOpacity;
+        data.backgroundSpeed = backgroundSpeed;
         return data;
     }
 }

@@ -5,6 +5,7 @@ public class GameSession : MonoBehaviour {
 
     protected string userID { get; set; }
     protected string gameInstanceID { get; set; }
+    protected string gameType { get; set; }
 
 	// Use this for initialization
 	void Start () {
@@ -12,6 +13,7 @@ public class GameSession : MonoBehaviour {
         // This should be set by by something else
         userID = "1";
 
+        gameType = "default";
         DontDestroyOnLoad(this.gameObject);
         gameInstanceID = System.Guid.NewGuid().ToString();
 
@@ -28,6 +30,7 @@ public class GameSession : MonoBehaviour {
         data.gameInstanceID = gameInstanceID;
         data.userID = userID;
         data.completionDate = System.DateTime.Now;
+        data.gameType = gameType;
         return data;
     }
 

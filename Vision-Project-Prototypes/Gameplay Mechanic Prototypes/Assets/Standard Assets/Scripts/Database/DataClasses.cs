@@ -15,15 +15,15 @@ using SQLite4Unity3d;
 // target Manager ID
 /// <summary>
 /// The Schema for storing data, may be possible to abstract it later.
-/// </summary>
-public class TargetData
+/// </summary>,
+public class ObjectData
 {
 
     /// <summary>
     /// The Primary key of the Target
     /// </summary>
     [PrimaryKey]
-    public string targetID { get; set; }
+    public string objectID { get; set; }
     /// <summary>
     /// The time the target spent alive.
     /// </summary>
@@ -85,8 +85,8 @@ public class TargetData
         insert += targetTable;
         insert += "(targetID, managerID, timeAlive, hitPrecision, wasHit, velocity, opacity, red, green, blue, scale) ";
         insert += "Values";
-        insert += string.Format("( {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10});",
-            targetID, managerID, timeAlive, hitPrecision, wasHit, velocity
+        insert += string.Format("( '{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10});",
+            objectID, managerID, timeAlive, hitPrecision, wasHit, velocity
             , opacity, red, green, blue, scale);
 
         return insert;
@@ -101,12 +101,12 @@ public class TargetData
 // Target Manager ID
 // GameSession ID
 
-public class TargetManData
+public class ManagerData
 {
     [PrimaryKey]
-    public string targetManID { get; set; }
+    public string managerID { get; set; }
     [NotNull]
-    public string gameManID { get; set; }
+    public string mechanicID { get; set; }
     [NotNull]
     public int totalTargets { get; set; }
     [NotNull]
@@ -131,19 +131,19 @@ public class TargetManData
         insert += targetTable;
         insert += "(targetManID, gameManID, totalTargets, hits, misses, nearMisses) ";
         insert += "Values";
-        insert += string.Format("( {0}, {1}, {2}, {3}, {4}, {5});",
-            targetManID, gameManID, totalTargets, hits, misses, nearMisses);
+        insert += string.Format("( '{0}', '{1}', {2}, {3}, {4}, {5});",
+            managerID, mechanicID, totalTargets, hits, misses, nearMisses);
 
         return insert;
     }
 }
 
-public class MovingTargetsManData
+public class MechanicData
 {
     // stores some basic information as well as the difficulty 
     //settings used at the time of the level
     [PrimaryKey]
-    public string gameManID { get; set; }
+    public string mechanicID { get; set; }
     [NotNull]
     public string gameInstanceID { get; set; }
 
@@ -163,8 +163,11 @@ public class MovingTargetsManData
     public float backgroundOpacity { get; set; }
     public float backgroundSpeed { get; set; }
 
-    public int targetsToWin { get; set; }
+    public float secondaryOpacity { get; set; }
+    public float secondaryScale { get; set; }
 
+    public int targetsToWin { get; set; }
+    public string mechanicType { get; set; }
     
     const string targetTable = "Mechanics";
     
@@ -180,12 +183,13 @@ public class MovingTargetsManData
     {
         var insert = "INSERT into ";
         insert += targetTable;
-        insert += "(gameManID, gameInstanceID, maxOnScreen, targetScale, targetOpacity, minTargetSpeed, maxTargetSpeed, targetTimeout, targetSpawnInterval";
-        insert += "backgroundOpacity, backgroundSpeed, targetsToWin) ";
-        insert += "Values";
-        insert += string.Format("( {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11} );",
-            gameManID, gameInstanceID, maxOnScreen, targetScale, targetOpacity, minTargetSpeed,
-                maxTargetSpeed, targetTimeout, targetSpawnInterval, backgroundOpacity, backgroundSpeed, targetsToWin);
+        insert += "(gameManID, gameInstanceID, maxOnScreen, targetScale, targetOpacity, minTargetSpeed";
+        insert += ", maxTargetSpeed, targetTimeout, targetSpawnInterval,";
+        insert += "backgroundOpacity, backgroundSpeed, targetToWin, mechanicType) ";
+        insert += " Values";
+        insert += string.Format("('{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, '{12}');",
+            mechanicID, gameInstanceID, maxOnScreen, targetScale, targetOpacity, minTargetSpeed,
+                maxTargetSpeed, targetTimeout, targetSpawnInterval, backgroundOpacity, backgroundSpeed, targetsToWin, mechanicType);
         return insert;
     }
 }
@@ -225,7 +229,8 @@ public class MovingTargetsSettingsData
         insert += "Values";
         insert += string.Format("( {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10} );",
             levelID, maxOnScreen, targetScale, targetOpacity, minTargetSpeed,
-                maxTargetSpeed, targetTimeout, targetSpawnInterval, backgroundOpacity, backgroundSpeed, targetsToWin);
+                maxTargetSpeed, targetTimeout, targetSpawnInterval, backgroundOpacity, 
+                backgroundSpeed, targetsToWin);
         return insert;
     }
 }
@@ -236,26 +241,25 @@ public class GameInstance
     [PrimaryKey]
     public string gameInstanceID { get; set; }
     public string userID { get; set; }
+    public string gameType { get; set; }
 
     public System.DateTime completionDate { get; set; }
 
     
     const string targetTable = "GameInstances";
     // when queried, contains all mechanics from the game, like movingtargetsman
-    
-    public IEnumerable Mechanics;
 
     public string generateInsert()
     {
         var insert = "INSERT into ";
         insert += targetTable;
-        insert += "( gameInstanceID, userID, completionDate )";
-        insert += "Values";
-        insert += string.Format("( {0}, {1}, {2} );",
-            gameInstanceID, userID, completionDate);
+        insert += "\n(gameInstanceID, userID, completionDate, gameType )";
+        insert += " \nVALUES";
+        insert += string.Format("\n( '{0}', '{1}', '{2}', '{3}' );",
+            gameInstanceID, userID, completionDate.ToString("yyyy-MM-dd HH:mm:ss"), gameType);
         return insert;
     }
-
+    
 }
 
 public class User
@@ -278,7 +282,7 @@ public class User
         insert += targetTable;
         insert += "(vuserID, currentLevel, slotNumber, creationDate )";
         insert += "Values";
-        insert += string.Format("( {0}, {1}, {2}, {3});",
+        insert += string.Format("( '{0}', {1}, {2}, '{3}');",
             userID, currentLevel, slotNumber, creationDate);
         return insert;
     }
