@@ -22,7 +22,8 @@ public class TrackManager : Manager
 	void Update()
 	{
 		Touch[] taps = Input.touches;
-		if (Input.touchCount > 0)
+		if (TrackerGameManager.CurrentState == TrackerGameManager.TrackerState.PLAY 
+			&& Input.touchCount > 0)
 		{
 			foreach (Touch tap in taps)
 			{
@@ -35,7 +36,8 @@ public class TrackManager : Manager
 						if (t.checkTouch(tap))
 						{
 							hit = true;
-							
+							Hits++;
+
 							if (t.tag == "Track")
 							{
 								SuccessfulHits++;
