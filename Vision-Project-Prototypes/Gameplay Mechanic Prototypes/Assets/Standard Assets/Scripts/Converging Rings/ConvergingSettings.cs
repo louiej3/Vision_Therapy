@@ -18,7 +18,7 @@ public class ConvergingSettings : MonoBehaviour
 	public static float maxConvergeTime = 4f;
 
 	// The transparency of the center of the converging object
-	public static float centerOpacity = 0.5f;
+	public static float centerOpacity = 0.8f;
 	// The time before a converging object times out
 	public static float convergeTimeOut = 20f;
 	// The scale of the center object, center is a square
