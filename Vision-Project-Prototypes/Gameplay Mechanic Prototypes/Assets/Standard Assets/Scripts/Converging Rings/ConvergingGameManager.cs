@@ -55,6 +55,7 @@ public class ConvergingGameManager : Mechanic
 
         mechanicType = "Converging Rings";
 		
+		spawnConverge();
 	}
 	
 	// Update is called once per frame
@@ -74,16 +75,13 @@ public class ConvergingGameManager : Mechanic
 
 	protected override void playBehavior()
 	{
-		
-		int activeConverges = conMan.ActiveObjects;
-
 		if (conMan.SuccessfulHits >= targetsToWin)
 		{
 			currentState = ConvergeState.WIN;
 		}
 		
 		if (gameTime.lap() >= targetSpawnInterval 
-			&& activeConverges < maxTargetsOnScreen)
+			&& conMan.ActiveObjects < maxTargetsOnScreen)
 		{
 			spawnConverge();
 		}
