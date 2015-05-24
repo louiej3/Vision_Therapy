@@ -4,13 +4,9 @@ using System.Collections;
 /// <summary>
 /// Game manager for tracker game
 /// </summary>
-public class TrackerGameManager : MonoBehaviour 
+public class TrackerGameManager : Mechanic 
 {
     
-	// The scale of the targets. The targets are squares.
-	private float targetScale;
-	// The transperancy of the targets
-	private float targetOpacity;
 	// The range that the targets' speed can be
 	private float minChangeTime;
 	private float maxChangeTime;
@@ -25,8 +21,6 @@ public class TrackerGameManager : MonoBehaviour
 	private float startUpTime;
 	// The max speed of the targets
 	private float targetSpeed;
-
-	private StopWatch timer;
 
 	private TrackManager trackMan;
 
@@ -48,6 +42,8 @@ public class TrackerGameManager : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
+		base.Start();
+		
 		targetScale = TrackerSettings.targetScale;
 		targetOpacity = TrackerSettings.targetOpacity;
 		minChangeTime = TrackerSettings.minChangeTime;
@@ -58,9 +54,9 @@ public class TrackerGameManager : MonoBehaviour
 		startUpTime = TrackerSettings.startUpTime;
 		targetSpeed = TrackerSettings.targetSpeed;
 
-		timer = new StopWatch();
-
 		trackMan = GetComponent<TrackManager>();
+
+		mechanicType = "Tracker";
 
 		CurrentState = TrackerState.STARTUP;
 
@@ -85,7 +81,7 @@ public class TrackerGameManager : MonoBehaviour
 		}
 	}
 
-	private void playBehavior()
+	protected override void playBehavior()
 	{
 		if (trackMan.SuccessfulHits == numberOfTrackTargets)
 		{
@@ -93,8 +89,9 @@ public class TrackerGameManager : MonoBehaviour
 		}
 	}
 
-	private void winBehavior()
+	protected override void winBehavior()
 	{
+		base.winBehavior();
 		Debug.Log("You win!");
 	}
 
@@ -178,6 +175,7 @@ public class TrackerGameManager : MonoBehaviour
 			spawnTrack();
 		}
 
+		// Freeze track objects
 		trackMan.freezeTargets();
 		
 		yield return new WaitForSeconds(waitTime);
@@ -188,16 +186,21 @@ public class TrackerGameManager : MonoBehaviour
 			spawnDummy();
 		}
 
+		// Freeze dummies
 		trackMan.freezeTargets();
 		
 		yield return new WaitForSeconds(waitTime);
 
+		// Unfreeze all targets
 		trackMan.unfreezeTargets();
 
+		// Let the targets shuffle around
 		yield return new WaitForSeconds(shuffleTime);
 
+		// Freeze targets so user can select the right ones
 		trackMan.freezeTargets();
 
+		gameTime.start();
 		CurrentState = TrackerState.PLAY;
 	}
 }

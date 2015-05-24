@@ -13,11 +13,6 @@ public class TargetManager : Manager
 
     private float NearMissThreshold;
 
-	void Awake()
-	{
-		Targets = new ArrayList();
-	}
-
 	// Use this for initialization
     public override void Start()
     {

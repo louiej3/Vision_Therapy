@@ -1,23 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TrackManager : MonoBehaviour 
+/// <summary>
+/// The Track manager controls a group of Targets, most likely all targets in a specific level
+/// The class relies on a Game manager type class to provide it with tagets in order to keep coupling low
+/// </summary>
+public class TrackManager : Manager 
 {
 	public int SuccessfulHits { get; private set; }
 	public int UnsuccessfulHits { get; private set; }
-	public int Misses { get; private set; }
-	public int NearMisses { get; private set; }
-	public ArrayList Targets { get; private set; }
 	public float NearMissThreshold { get; private set; }
-
-	void Awake()
-	{
-		Targets = new ArrayList();
-	}
-
+	
 	// Use this for initialization
-	void Start()
+	public override void Start()
 	{
+		base.Start();
 		NearMissThreshold = 5f;
 	}
 
@@ -33,13 +30,13 @@ public class TrackManager : MonoBehaviour
 				{
 					bool hit = false;
 
-					foreach (Target target in Targets)
+					foreach (Target t in Targets)
 					{
-						if (target.checkTouch(tap))
+						if (t.checkTouch(tap))
 						{
 							hit = true;
 							
-							if (target.tag == "Track")
+							if (t.tag == "Track")
 							{
 								SuccessfulHits++;
 								Debug.Log("SuccessfulHits = " + SuccessfulHits);
@@ -54,7 +51,7 @@ public class TrackManager : MonoBehaviour
 						}
 						else
 						{
-							if (target.checkNearMiss(tap, NearMissThreshold))
+							if (t.checkNearMiss(tap, NearMissThreshold))
 							{
 								++NearMisses;
 							}
@@ -71,22 +68,10 @@ public class TrackManager : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Adds a target to the list of managed targets.
-	/// </summary>
-	/// <param name="t">The fully prepared target to be added</param>
-	public void addTarget(Target t)
-	{
-		if (t != null)
-		{
-			Targets.Add(t);
-		}
-	}
-
-	/// <summary>
 	/// Retrieve the average time between target creation and tap
 	/// </summary>
-	/// <returns>The average hit time for all targets</returns>
-	public float AverageLifeTime
+	/// <returns>The average hit time for all track targets</returns>
+	public override float AverageLifeTime
 	{
 		get
 		{
@@ -94,21 +79,13 @@ public class TrackManager : MonoBehaviour
 
 			foreach (Target t in Targets)
 			{
-				average += t.LapTime;
+				if (t.tag == "Track")
+				{
+					average += t.LapTime;
+				}
 			}
 
 			return average / Targets.Count;
-		}
-	}
-
-	/// <summary>
-	/// The total number of targets managed by the TargetManager
-	/// </summary>
-	public int NumberOfTargets
-	{
-		get
-		{
-			return Targets.Count;
 		}
 	}
 

@@ -22,13 +22,17 @@ public class Manager : MonoBehaviour
     public Movement moveType;
     public float nearMissThreshold = 1f;
 
+	void Awake()
+	{
+		Targets = new ArrayList();
+	}
+
     public virtual void Start()
     {
         manID = System.Guid.NewGuid().ToString();
         Hits = 0;
         Misses = 0;
         NearMisses = 0;
-        Targets = new ArrayList();
     }
 
     /// <summary>
@@ -47,7 +51,7 @@ public class Manager : MonoBehaviour
     /// Retrieve the average time between target creation and tap
     /// </summary>
     /// <returns>The average hit time for all targets</returns>
-	public float AverageLifeTime
+	public virtual float AverageLifeTime
     {
         get
         {
@@ -65,7 +69,7 @@ public class Manager : MonoBehaviour
     /// <summary>
     /// The total number of targets managed by the TargetManager
     /// </summary>
-    public int NumberOfTargets
+	public virtual int NumberOfTargets
     {
         get
         {
@@ -76,7 +80,7 @@ public class Manager : MonoBehaviour
     /// <summary>
     /// Retrieve the average accuracy of the user
     /// </summary>
-    public float AverageAccuracy
+	public virtual float AverageAccuracy
     {
         get
         {
