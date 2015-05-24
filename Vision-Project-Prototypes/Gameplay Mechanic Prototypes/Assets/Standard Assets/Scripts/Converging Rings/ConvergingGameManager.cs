@@ -8,6 +8,9 @@ public class ConvergingGameManager : Mechanic
 
     private ConObjectManager conMan;
 
+	private TextMesh score;
+	private GameObject winText;
+
 	public ConvergingObjects convergePrefab;
 	private float boomerangOpacity;
 	// The scale of the boomerangs, boomerangs are square
@@ -48,6 +51,12 @@ public class ConvergingGameManager : Mechanic
         targetMan = conMan;
 		conMan.MarginOfError = marginOfError;
 
+		score = GameObject.Find("Score").GetComponent<TextMesh>();
+		score.transform.position = new Vector2(0f, Camera.main.orthographicSize
+			- score.transform.localScale.y);
+
+		winText = GameObject.Find("WinText");
+
 		currentState = ConvergeState.PLAY;
 
         gameSession = GameObject.Find("GameSession").GetComponent<GameSession>();
@@ -75,6 +84,8 @@ public class ConvergingGameManager : Mechanic
 
 	protected override void playBehavior()
 	{
+		score.text = conMan.SuccessfulHits + " / " + targetsToWin + " targets hit";
+		
 		if (conMan.SuccessfulHits >= targetsToWin)
 		{
 			currentState = ConvergeState.WIN;
@@ -89,9 +100,10 @@ public class ConvergingGameManager : Mechanic
 
 	protected override void winBehavior()
 	{
-        base.winBehavior();
-        
-        Application.Quit();
+		conMan.disableAllTargets();
+		winText.transform.position = Vector2.zero;
+
+		base.winBehavior();
 	}
 
 	private void spawnConverge()

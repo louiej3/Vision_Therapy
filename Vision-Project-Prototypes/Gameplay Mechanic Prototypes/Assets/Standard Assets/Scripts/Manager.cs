@@ -47,6 +47,17 @@ public class Manager : MonoBehaviour
         }
     }
 
+	/// <summary>
+	/// Disables all of the targets in the manager.
+	/// </summary>
+	public void disableAllTargets()
+	{
+		foreach (Target t in Targets)
+		{
+			t.gameObject.SetActive(false);
+		}
+	}
+
     /// <summary>
     /// Retrieve the average time between target creation and tap
     /// </summary>
