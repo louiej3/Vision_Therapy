@@ -58,6 +58,7 @@ public class TrackerGameManager : Mechanic
 		targetSpeed = TrackerSettings.targetSpeed;
 
 		trackMan = GetComponent<TrackManager>();
+		targetMan = trackMan;
 
 		score = GameObject.Find("Score").GetComponent<TextMesh>();
 
