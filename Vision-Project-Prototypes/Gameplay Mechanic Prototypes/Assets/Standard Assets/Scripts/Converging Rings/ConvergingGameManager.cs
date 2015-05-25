@@ -123,7 +123,7 @@ public class ConvergingGameManager : Mechanic
 
 		co.set(numberOfBoomerangs, new Vector2(x, y), convergeTime, boomerangScale, boomerangOpacity);
 
-		conMan.addConverge(co);
+		conMan.addTarget(co);
 
 		gameTime.start();
 	}

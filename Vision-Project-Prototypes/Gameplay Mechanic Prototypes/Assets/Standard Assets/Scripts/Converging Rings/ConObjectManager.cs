@@ -60,36 +60,6 @@ public class ConObjectManager : Manager
 	}
 
 	/// <summary>
-	/// Adds a coverging object to the list of managed targets.
-	/// </summary>
-	/// <param name="co">The fully prepared converging object to be added</param>
-	public void addConverge(ConvergingObjects co)
-	{
-		if (co != null)
-		{
-			Targets.Add(co);
-		}
-	}
-
-	/// <summary>
-	/// Retrieve the average time between converging object creation and tap
-	/// </summary>
-	public float AverageLifeTime
-	{
-		get
-		{
-			float average = 0f;
-
-            foreach (ConvergingObjects co in Targets)
-			{
-				average += co.LapTime;
-			}
-
-            return average / Targets.Count;
-		}
-	}
-
-	/// <summary>
 	/// A percentage that determines how inaccurate users can be when they 
 	/// tap a converging object.
 	/// </summary>
