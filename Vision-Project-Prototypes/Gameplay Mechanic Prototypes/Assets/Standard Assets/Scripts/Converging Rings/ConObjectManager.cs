@@ -111,21 +111,4 @@ public class ConObjectManager : Manager
 			}
 		}
 	}
-
-    public int ActiveObjects
-    {
-        get
-        {
-            int activeConverges = 0;
-            foreach (ConvergingObjects co in Targets)
-            {
-                if (co.isActiveAndEnabled)
-                {
-                    activeConverges++;
-                }
-            }
-            return activeConverges;
-        }
-    }
-
 }

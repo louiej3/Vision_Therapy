@@ -92,7 +92,7 @@ public class ConvergingGameManager : Mechanic
 		}
 		
 		if (gameTime.lap() >= targetSpawnInterval 
-			&& conMan.ActiveObjects < maxTargetsOnScreen)
+			&& conMan.NumberOfActiveObjects < maxTargetsOnScreen)
 		{
 			spawnConverge();
 		}

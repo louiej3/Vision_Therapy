@@ -105,8 +105,26 @@ public class Manager : MonoBehaviour
             return average / Targets.Count;
         }
     }
-	
 
+	/// <summary>
+	/// Returns the number of currently active objects in the target manager.
+	/// </summary>
+	public int NumberOfActiveObjects
+	{
+		get
+		{
+			int activeTargets = 0;
+			foreach (Target t in Targets)
+			{
+				if (t.isActiveAndEnabled)
+				{
+					activeTargets++;
+				}
+			}
+			return activeTargets;
+		}
+	}
+	
     public IEnumerable packTargetData()
     {
         if (Targets.Count == 0)
