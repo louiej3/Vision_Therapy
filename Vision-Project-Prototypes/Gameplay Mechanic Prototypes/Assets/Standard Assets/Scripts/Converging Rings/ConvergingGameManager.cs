@@ -54,8 +54,8 @@ public class ConvergingGameManager : Mechanic
 		conMan.MarginOfError = marginOfError;
 
 		score = GameObject.Find("Score").GetComponent<TextMesh>();
-		score.transform.position = new Vector2(0f, Camera.main.orthographicSize
-			- score.transform.localScale.y);
+		score.transform.position = new Vector3(0f, Camera.main.orthographicSize
+			- score.transform.localScale.y, score.transform.position.z);
 
 		winText = GameObject.Find("WinText");
 
