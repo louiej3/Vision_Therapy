@@ -30,9 +30,6 @@ public class Manager : MonoBehaviour
     public virtual void Start()
     {
         manID = System.Guid.NewGuid().ToString();
-        Hits = 0;
-        Misses = 0;
-        NearMisses = 0;
     }
 
     /// <summary>

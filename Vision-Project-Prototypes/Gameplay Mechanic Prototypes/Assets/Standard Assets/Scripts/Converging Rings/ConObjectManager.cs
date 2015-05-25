@@ -7,13 +7,14 @@ public class ConObjectManager : Manager
 	// far off the user can be when they tap the object
 	private float _marginOfError;
 
+	// Records the number of targets that were tapped within the
+	// margin of error. Starts at 0.
     public int SuccessfulHits { get; protected set; }
 
 	// Use this for initialization
 	void Start () 
 	{
         base.Start();
-        SuccessfulHits = 0;
 	}
 	
 	// Update is called once per frame
