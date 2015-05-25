@@ -24,6 +24,9 @@ public class TrackerGameManager : Mechanic
 
 	private TrackManager trackMan;
 
+	private TextMesh score;
+	private GameObject winText;
+
 	public Target trackPrefab;
 	public Target dummyPrefab;
 
@@ -56,6 +59,10 @@ public class TrackerGameManager : Mechanic
 
 		trackMan = GetComponent<TrackManager>();
 
+		score = GameObject.Find("Score").GetComponent<TextMesh>();
+
+		winText = GameObject.Find("WinText");
+
 		mechanicType = "Tracker";
 
 		CurrentState = TrackerState.STARTUP;
@@ -83,6 +90,8 @@ public class TrackerGameManager : Mechanic
 
 	protected override void playBehavior()
 	{
+		score.text = trackMan.SuccessfulHits + " / " + numberOfTrackTargets + " targets found";
+		
 		if (trackMan.SuccessfulHits == numberOfTrackTargets)
 		{
 			CurrentState = TrackerState.WIN;
@@ -91,8 +100,10 @@ public class TrackerGameManager : Mechanic
 
 	protected override void winBehavior()
 	{
+		trackMan.disableAllTargets();
+		winText.transform.position = Vector2.zero;
+
 		base.winBehavior();
-		Debug.Log("You win!");
 	}
 
     private void spawnTrack()
@@ -199,6 +210,10 @@ public class TrackerGameManager : Mechanic
 
 		// Freeze targets so user can select the right ones
 		trackMan.freezeTargets();
+
+		// Position the score text
+		score.transform.position = new Vector3(0f, Camera.main.orthographicSize
+			- score.transform.localScale.y, score.transform.position.z);
 
 		gameTime.start();
 		CurrentState = TrackerState.PLAY;
