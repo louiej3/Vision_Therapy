@@ -13,6 +13,9 @@ public class MovingTargetsGameManager : Mechanic
     protected float backgroundSpeed;
     // The number of targets needed to win
 
+	private TextMesh score;
+	private GameObject winText;
+
 	public Target targetPrefab;
 
 	// The current state of the game
@@ -46,6 +49,16 @@ public class MovingTargetsGameManager : Mechanic
 		background.Speed = backgroundSpeed;
 		background.Opacity = backgroundOpacity;
 
+		score = GameObject.Find("Score").GetComponent<TextMesh>();
+
+		float height = Camera.main.orthographicSize;
+		float width = height * Camera.main.aspect;
+
+		score.transform.position = new Vector3(-width + 2.5f, 
+			height - score.transform.localScale.y, score.transform.position.z);
+
+		winText = GameObject.Find("WinText");
+
 		CurrentState = MovingTargetsState.PLAY;
         mechanicType = "Moving Targets";
     }
@@ -68,23 +81,15 @@ public class MovingTargetsGameManager : Mechanic
 
 	protected override void playBehavior()
 	{
-		ArrayList targets = targetMan.Targets;
-		int activeTargets = 0;
-
+		score.text = targetMan.Hits + " / " + targetsToWin + " targets hit";
+		
 		if (targetMan.Hits >= targetsToWin)
 		{
 			CurrentState = MovingTargetsState.WIN;
 		}
 
-		foreach (Target t in targets)
-		{
-			if (t.isActiveAndEnabled)
-			{
-				activeTargets++;
-			}
-		}
-
-		if (gameTime.lap() >= targetSpawnInterval && activeTargets < maxTargetsOnScreen)
+		if (gameTime.lap() >= targetSpawnInterval && 
+			targetMan.NumberOfActiveObjects < maxTargetsOnScreen)
 		{
 			spawnTarget();
 		}
@@ -92,8 +97,10 @@ public class MovingTargetsGameManager : Mechanic
 
     protected override void winBehavior()
     {
-        base.winBehavior();
-        Application.Quit();
+        targetMan.disableAllTargets();
+		winText.transform.position = Vector2.zero;
+		
+		base.winBehavior();
     }
 
     public void spawnTarget()
