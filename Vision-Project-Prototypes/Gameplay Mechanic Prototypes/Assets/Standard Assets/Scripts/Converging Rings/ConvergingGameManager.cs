@@ -12,6 +12,7 @@ public class ConvergingGameManager : Mechanic
 	private GameObject winText;
 
 	public ConvergingObjects convergePrefab;
+	
 	private float boomerangOpacity;
 	// The scale of the boomerangs, boomerangs are square
 	private float boomerangScale;
@@ -32,6 +33,8 @@ public class ConvergingGameManager : Mechanic
 	// Use this for initialization
 	void Start () 
 	{
+		base.Start();
+		
 		maxTargetsOnScreen = ConvergingSettings.maxConvergeOnScreen;
 		targetSpawnInterval = ConvergingSettings.convergeSpawnInterval;
 		minTargetSpeed = ConvergingSettings.minConvergeTime;
@@ -44,11 +47,10 @@ public class ConvergingGameManager : Mechanic
 		numberOfBoomerangs = ConvergingSettings.numberOfBoomerangs;
 		targetsToWin = ConvergingSettings.convergesToWin;
 		marginOfError = ConvergingSettings.marginOfError;
-
-		gameTime = new StopWatch();
 		
 		conMan = GetComponent<ConObjectManager>();
         targetMan = conMan;
+		
 		conMan.MarginOfError = marginOfError;
 
 		score = GameObject.Find("Score").GetComponent<TextMesh>();
@@ -65,6 +67,8 @@ public class ConvergingGameManager : Mechanic
         mechanicType = "Converging Rings";
 		
 		spawnConverge();
+
+		gameTime.start();
 	}
 	
 	// Update is called once per frame
