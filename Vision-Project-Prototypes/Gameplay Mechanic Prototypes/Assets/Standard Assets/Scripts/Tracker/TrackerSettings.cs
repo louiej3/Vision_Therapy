@@ -26,5 +26,7 @@ public class TrackerSettings
 	public static float startUpTime = 3f;
 	// The max speed of the targets
 	public static float targetSpeed = 1f;
+	// The transperancy of the background
+	public static float backgroundOpacity = 1f;
 
 }

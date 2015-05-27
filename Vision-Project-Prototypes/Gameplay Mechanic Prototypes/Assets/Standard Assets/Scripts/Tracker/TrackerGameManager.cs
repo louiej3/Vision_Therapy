@@ -21,11 +21,15 @@ public class TrackerGameManager : Mechanic
 	private float startUpTime;
 	// The max speed of the targets
 	private float targetSpeed;
+	// The transperancy of the background
+	private float backgroundOpacity = 1f;
 
 	private TrackManager trackMan;
 
 	private TextMesh score;
 	private GameObject winText;
+
+	private Background background;
 
 	public Target trackPrefab;
 	public Target dummyPrefab;
@@ -56,6 +60,7 @@ public class TrackerGameManager : Mechanic
 		shuffleTime = TrackerSettings.shuffleTime;
 		startUpTime = TrackerSettings.startUpTime;
 		targetSpeed = TrackerSettings.targetSpeed;
+		backgroundOpacity = TrackerSettings.backgroundOpacity;
 
 		trackMan = GetComponent<TrackManager>();
 		targetMan = trackMan;
@@ -63,6 +68,9 @@ public class TrackerGameManager : Mechanic
 		score = GameObject.Find("Score").GetComponent<TextMesh>();
 
 		winText = GameObject.Find("WinText");
+
+		background = GameObject.Find("Background").GetComponent<Background>();
+		background.Opacity = backgroundOpacity;
 
 		mechanicType = "Tracker";
 
