@@ -17,7 +17,6 @@ public class OrbitMove : Movement {
 
 	// Use this for initialization
 	void Start () {
-        location = GetComponent<Transform>();
         Angle = Vector2.Angle(Center, location.position);
         Radius = Vector2.Distance(Center, location.position);
 		Center = Vector2.zero;
