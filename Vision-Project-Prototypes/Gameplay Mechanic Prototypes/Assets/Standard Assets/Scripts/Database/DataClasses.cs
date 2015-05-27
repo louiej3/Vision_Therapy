@@ -244,6 +244,7 @@ public class GameInstance
     public string gameType { get; set; }
 
     public System.DateTime completionDate { get; set; }
+    public System.DateTime startDate { get; set; }
 
     
     const string targetTable = "GameInstances";
@@ -253,10 +254,10 @@ public class GameInstance
     {
         var insert = "INSERT into ";
         insert += targetTable;
-        insert += "\n(gameInstanceID, userID, completionDate, gameType )";
+        insert += "\n(gameInstanceID, userID, completionDate, startDate, gameType )";
         insert += " \nVALUES";
-        insert += string.Format("\n( '{0}', '{1}', '{2}', '{3}' );",
-            gameInstanceID, userID, completionDate.ToString("yyyy-MM-dd HH:mm:ss"), gameType);
+        insert += string.Format("\n( '{0}', '{1}', '{2}', '{3}', '{4}');",
+            gameInstanceID, userID, completionDate.ToString("yyyy-MM-dd HH:mm:ss"), startDate.ToString("yyyy-MM-dd HH:mm:ss"), gameType);
         return insert;
     }
     

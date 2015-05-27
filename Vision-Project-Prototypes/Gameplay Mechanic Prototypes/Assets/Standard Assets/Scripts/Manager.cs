@@ -76,7 +76,7 @@ public class Manager : MonoBehaviour
     /// <summary>
     /// Retrieve the average accuracy of the user
     /// </summary>
-    public float AverageAccuracy
+    public virtual float AverageAccuracy
     {
         get
         {

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using SQLite4Unity3d;
 
 /// <summary>
-/// The Target manager controls a group of Targets, most likely all targets in a specific level
 /// The class relies on a Game manager type class to provide it with tagets in order to keep coupling low
 /// </summary>
 public class TargetManager : Manager

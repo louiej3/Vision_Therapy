@@ -6,6 +6,7 @@ public class GameSession : MonoBehaviour {
     protected string userID { get; set; }
     protected string gameInstanceID { get; set; }
     protected string gameType { get; set; }
+    public System.DateTime startTime { protected get; set; }
 
 	// Use this for initialization
 	void Start () {

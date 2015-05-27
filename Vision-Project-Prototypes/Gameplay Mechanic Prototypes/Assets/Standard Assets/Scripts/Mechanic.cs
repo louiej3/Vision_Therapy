@@ -46,6 +46,8 @@ public abstract class Mechanic : MonoBehaviour
         dbConnection = GameObject.Find("Database").GetComponent<Database>();
 
         mechanicID = System.Guid.NewGuid().ToString();
+
+        
     }
 
     protected abstract void playBehavior();
