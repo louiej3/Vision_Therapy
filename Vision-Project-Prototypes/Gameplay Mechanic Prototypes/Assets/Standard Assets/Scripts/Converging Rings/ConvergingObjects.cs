@@ -98,17 +98,27 @@ public class ConvergingObjects : Target
 			Boomerang b = Instantiate(boomerangPrefab) as Boomerang;
 			
 			ConvergeTime = time;
-
-			// Find the x coordinate of the boomerang relative to the center point
+			
 			float height = Camera.main.orthographicSize - Mathf.Abs(centerPoint.y + _scale / 2);
-			float y = Random.Range(centerPoint.y - height, centerPoint.y + height);
+			float width = (Camera.main.aspect * Camera.main.orthographicSize) - Mathf.Abs(centerPoint.x + _scale / 2);
+			float y = 0f;
+			float x = 0f;
 
-			// Find the y coordinate of the boomerang relative to the center point
-			float width = Mathf.Sqrt(Mathf.Abs(Mathf.Pow(height, 2) - Mathf.Pow(y, 2)));
-			float x = Random.Range(centerPoint.x - width, centerPoint.x + width);
-
+			if (height <= width)
+			{
+				y = Random.Range(-height, height);
+				float newWidth = Mathf.Sqrt(Mathf.Abs(Mathf.Pow(height, 2) - Mathf.Pow(y, 2)));
+				x = Random.Range(-newWidth, newWidth);
+			}
+			else
+			{
+				x = Random.Range(-width, width);
+				float newHeight = Mathf.Sqrt(Mathf.Abs(Mathf.Pow(width, 2) - Mathf.Pow(x, 2)));
+				y = Random.Range(-newHeight, newHeight);
+			}
+			
 			// Position the boomerang
-			b.transform.position = new Vector2(x, y);
+			b.transform.position = new Vector2(centerPoint.x + x, centerPoint.y + y);
 
 			// Turn the point to face the center point
 			Vector2 convergeDirection = centerPoint - (Vector2)b.transform.position;

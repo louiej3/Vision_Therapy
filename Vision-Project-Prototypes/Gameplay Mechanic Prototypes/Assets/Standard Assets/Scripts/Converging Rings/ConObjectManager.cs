@@ -7,13 +7,14 @@ public class ConObjectManager : Manager
 	// far off the user can be when they tap the object
 	private float _marginOfError;
 
+	// Records the number of targets that were tapped within the
+	// margin of error. Starts at 0.
     public int SuccessfulHits { get; protected set; }
 
 	// Use this for initialization
 	void Start () 
 	{
         base.Start();
-        SuccessfulHits = 0;
 	}
 	
 	// Update is called once per frame
@@ -60,36 +61,6 @@ public class ConObjectManager : Manager
 	}
 
 	/// <summary>
-	/// Adds a coverging object to the list of managed targets.
-	/// </summary>
-	/// <param name="co">The fully prepared converging object to be added</param>
-	public void addConverge(ConvergingObjects co)
-	{
-		if (co != null)
-		{
-			Targets.Add(co);
-		}
-	}
-
-	/// <summary>
-	/// Retrieve the average time between converging object creation and tap
-	/// </summary>
-	public float AverageLifeTime
-	{
-		get
-		{
-			float average = 0f;
-
-            foreach (ConvergingObjects co in Targets)
-			{
-				average += co.LapTime;
-			}
-
-            return average / Targets.Count;
-		}
-	}
-
-	/// <summary>
 	/// A percentage that determines how inaccurate users can be when they 
 	/// tap a converging object.
 	/// </summary>
@@ -111,21 +82,4 @@ public class ConObjectManager : Manager
 			}
 		}
 	}
-
-    public int ActiveObjects
-    {
-        get
-        {
-            int activeConverges = 0;
-            foreach (ConvergingObjects co in Targets)
-            {
-                if (co.isActiveAndEnabled)
-                {
-                    activeConverges++;
-                }
-            }
-            return activeConverges;
-        }
-    }
-
 }

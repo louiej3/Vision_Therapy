@@ -8,7 +8,13 @@ public class ConvergingGameManager : Mechanic
 
     private ConObjectManager conMan;
 
+	private TextMesh score;
+	private GameObject winText;
+
+	private Background background;
+
 	public ConvergingObjects convergePrefab;
+	
 	private float boomerangOpacity;
 	// The scale of the boomerangs, boomerangs are square
 	private float boomerangScale;
@@ -17,6 +23,8 @@ public class ConvergingGameManager : Mechanic
 	// Multiplies converge time by this value to determine how
 	// far off the user can be when they tap the object
 	private float marginOfError;
+	// The transperancy of the background
+	private float backgroundOpacity;
 
 	public enum ConvergeState
 	{
@@ -29,6 +37,8 @@ public class ConvergingGameManager : Mechanic
 	// Use this for initialization
 	void Start () 
 	{
+		base.Start();
+		
 		maxTargetsOnScreen = ConvergingSettings.maxConvergeOnScreen;
 		targetSpawnInterval = ConvergingSettings.convergeSpawnInterval;
 		minTargetSpeed = ConvergingSettings.minConvergeTime;
@@ -41,20 +51,32 @@ public class ConvergingGameManager : Mechanic
 		numberOfBoomerangs = ConvergingSettings.numberOfBoomerangs;
 		targetsToWin = ConvergingSettings.convergesToWin;
 		marginOfError = ConvergingSettings.marginOfError;
-
-		gameTime = new StopWatch();
+		backgroundOpacity = ConvergingSettings.backgroundOpacity;
 		
 		conMan = GetComponent<ConObjectManager>();
         targetMan = conMan;
+		
 		conMan.MarginOfError = marginOfError;
+
+		score = GameObject.Find("Score").GetComponent<TextMesh>();
+		score.transform.position = new Vector3(0f, Camera.main.orthographicSize
+			- score.transform.localScale.y, score.transform.position.z);
+
+		winText = GameObject.Find("WinText");
 
 		currentState = ConvergeState.PLAY;
 
         gameSession = GameObject.Find("GameSession").GetComponent<GameSession>();
         dbConnection = GameObject.Find("Database").GetComponent<Database>();
 
+		background = GameObject.Find("Background").GetComponent<Background>();
+		background.Opacity = backgroundOpacity;
+
         mechanicType = "Converging Rings";
 		
+		spawnConverge();
+
+		gameTime.start();
 	}
 	
 	// Update is called once per frame
@@ -74,16 +96,15 @@ public class ConvergingGameManager : Mechanic
 
 	protected override void playBehavior()
 	{
+		score.text = conMan.SuccessfulHits + " / " + targetsToWin + " targets hit";
 		
-		int activeConverges = conMan.ActiveObjects;
-
 		if (conMan.SuccessfulHits >= targetsToWin)
 		{
 			currentState = ConvergeState.WIN;
 		}
 		
 		if (gameTime.lap() >= targetSpawnInterval 
-			&& activeConverges < maxTargetsOnScreen)
+			&& conMan.NumberOfActiveObjects < maxTargetsOnScreen)
 		{
 			spawnConverge();
 		}
@@ -91,9 +112,10 @@ public class ConvergingGameManager : Mechanic
 
 	protected override void winBehavior()
 	{
-        base.winBehavior();
-        
-        Application.Quit();
+		conMan.disableAllTargets();
+		winText.transform.position = Vector2.zero;
+
+		base.winBehavior();
 	}
 
 	private void spawnConverge()
@@ -113,7 +135,7 @@ public class ConvergingGameManager : Mechanic
 
 		co.set(numberOfBoomerangs, new Vector2(x, y), convergeTime, boomerangScale, boomerangOpacity);
 
-		conMan.addConverge(co);
+		conMan.addTarget(co);
 
 		gameTime.start();
 	}

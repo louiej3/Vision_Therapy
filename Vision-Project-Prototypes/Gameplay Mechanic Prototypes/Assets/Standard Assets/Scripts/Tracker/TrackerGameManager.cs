@@ -4,13 +4,9 @@ using System.Collections;
 /// <summary>
 /// Game manager for tracker game
 /// </summary>
-public class TrackerGameManager : MonoBehaviour 
+public class TrackerGameManager : Mechanic 
 {
     
-	// The scale of the targets. The targets are squares.
-	private float targetScale;
-	// The transperancy of the targets
-	private float targetOpacity;
 	// The range that the targets' speed can be
 	private float minChangeTime;
 	private float maxChangeTime;
@@ -25,12 +21,15 @@ public class TrackerGameManager : MonoBehaviour
 	private float startUpTime;
 	// The max speed of the targets
 	private float targetSpeed;
+	// The transperancy of the background
+	private float backgroundOpacity = 1f;
 
-	private StopWatch timer;
+	private TrackManager trackMan;
 
-	private TargetManager targetMan;
+	private TextMesh score;
+	private GameObject winText;
 
-	private ArrayList targets;
+	private Background background;
 
 	public Target trackPrefab;
 	public Target dummyPrefab;
@@ -50,6 +49,8 @@ public class TrackerGameManager : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
+		base.Start();
+		
 		targetScale = TrackerSettings.targetScale;
 		targetOpacity = TrackerSettings.targetOpacity;
 		minChangeTime = TrackerSettings.minChangeTime;
@@ -59,12 +60,19 @@ public class TrackerGameManager : MonoBehaviour
 		shuffleTime = TrackerSettings.shuffleTime;
 		startUpTime = TrackerSettings.startUpTime;
 		targetSpeed = TrackerSettings.targetSpeed;
+		backgroundOpacity = TrackerSettings.backgroundOpacity;
 
-		timer = new StopWatch();
+		trackMan = GetComponent<TrackManager>();
+		targetMan = trackMan;
 
-		targetMan = GetComponent<TargetManager>();
+		score = GameObject.Find("Score").GetComponent<TextMesh>();
 
-		targets = targetMan.Targets;
+		winText = GameObject.Find("WinText");
+
+		background = GameObject.Find("Background").GetComponent<Background>();
+		background.Opacity = backgroundOpacity;
+
+		mechanicType = "Tracker";
 
 		CurrentState = TrackerState.STARTUP;
 
@@ -89,31 +97,22 @@ public class TrackerGameManager : MonoBehaviour
 		}
 	}
 
-	private void playBehavior()
+	protected override void playBehavior()
 	{
-		int found = 0;
+		score.text = trackMan.SuccessfulHits + " / " + numberOfTrackTargets + " targets found";
 		
-		foreach (Target t in targets)
-		{
-			if (t.tag == "Track" && t.IsTapped == true)
-			{
-				found++;
-			}
-		}
-
-		if (found == numberOfTrackTargets)
+		if (trackMan.SuccessfulHits == numberOfTrackTargets)
 		{
 			CurrentState = TrackerState.WIN;
 		}
 	}
 
-	private void winBehavior()
+	protected override void winBehavior()
 	{
-		Debug.Log("You win!");
-		foreach (Target t in targets)
-		{
-			t.gameObject.SetActive(false);
-		}
+		trackMan.disableAllTargets();
+		winText.transform.position = Vector2.zero;
+
+		base.winBehavior();
 	}
 
     private void spawnTrack()
@@ -134,8 +133,12 @@ public class TrackerGameManager : MonoBehaviour
 		track.Scale = targetScale;
 		track.Opacity = targetOpacity;
 
+		track.gameObject.GetComponent<RandomStraightMove>().MinimumChangeTime = minChangeTime;
+		track.gameObject.GetComponent<RandomStraightMove>().MaximumChangeTime = maxChangeTime;
+		track.gameObject.GetComponent<RandomStraightMove>().Speed = targetSpeed;
+
         // Add target to target manager
-		targetMan.addTarget(track);
+		trackMan.addTarget(track);
     }
 
 	private void spawnDummy()
@@ -156,8 +159,12 @@ public class TrackerGameManager : MonoBehaviour
 		dummy.Scale = targetScale;
 		dummy.Opacity = targetOpacity;
 
+		dummy.gameObject.GetComponent<RandomStraightMove>().MinimumChangeTime = minChangeTime;
+		dummy.gameObject.GetComponent<RandomStraightMove>().MaximumChangeTime = maxChangeTime;
+		dummy.gameObject.GetComponent<RandomStraightMove>().Speed = targetSpeed;
+
 		// Add target to target manager
-		targetMan.addTarget(dummy);
+		trackMan.addTarget(dummy);
 	}
 
 	IEnumerator startUp(float waitTime)
@@ -187,6 +194,9 @@ public class TrackerGameManager : MonoBehaviour
 		{
 			spawnTrack();
 		}
+
+		// Freeze track objects
+		trackMan.freezeTargets();
 		
 		yield return new WaitForSeconds(waitTime);
 		
@@ -195,26 +205,26 @@ public class TrackerGameManager : MonoBehaviour
 		{
 			spawnDummy();
 		}
+
+		// Freeze dummies
+		trackMan.freezeTargets();
 		
 		yield return new WaitForSeconds(waitTime);
 
-		foreach (Target t in targets)
-		{
-			t.gameObject.AddComponent<RandomStraightMove>();
-			t.gameObject.GetComponent<RandomStraightMove>().MinimumChangeTime = minChangeTime;
-			t.gameObject.GetComponent<RandomStraightMove>().MaximumChangeTime = maxChangeTime;
-			t.gameObject.GetComponent<RandomStraightMove>().Speed = targetSpeed;
-		}
+		// Unfreeze all targets
+		trackMan.unfreezeTargets();
 
+		// Let the targets shuffle around
 		yield return new WaitForSeconds(shuffleTime);
 
-		foreach (Target t in targets)
-		{
-			Destroy(t.GetComponent<RandomStraightMove>());
-			t.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-			t.GetComponent<Rigidbody2D>().fixedAngle = true;
-		}
+		// Freeze targets so user can select the right ones
+		trackMan.freezeTargets();
 
+		// Position the score text
+		score.transform.position = new Vector3(0f, Camera.main.orthographicSize
+			- score.transform.localScale.y, score.transform.position.z);
+
+		gameTime.start();
 		CurrentState = TrackerState.PLAY;
 	}
 }

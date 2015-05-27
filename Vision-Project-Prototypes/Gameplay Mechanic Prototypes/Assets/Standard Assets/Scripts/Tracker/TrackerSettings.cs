@@ -20,11 +20,13 @@ public class TrackerSettings
 	// Number of dummy targets in the scene
 	public static int numberOfDummyTargets = 10;
 	// The amount of time that targets are allowed to move around
-	public static float shuffleTime = 30f;
+	public static float shuffleTime = 20f;
 	// The time between tracks spawning, dummies spawning, and the
 	// game starting
 	public static float startUpTime = 3f;
 	// The max speed of the targets
-	public static float targetSpeed = 0.5f;
+	public static float targetSpeed = 1f;
+	// The transperancy of the background
+	public static float backgroundOpacity = 1f;
 
 }
