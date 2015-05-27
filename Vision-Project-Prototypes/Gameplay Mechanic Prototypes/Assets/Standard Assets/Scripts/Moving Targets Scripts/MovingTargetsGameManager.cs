@@ -46,7 +46,7 @@ public class MovingTargetsGameManager : Mechanic
 		
 		targetMan = GetComponent<TargetManager>();
 		background = GameObject.Find("Background").GetComponent<Background>();
-		background.Speed = backgroundSpeed;
+		background.GetComponent<SpinMove>().Speed = backgroundSpeed;
 		background.Opacity = backgroundOpacity;
 
 		score = GameObject.Find("Score").GetComponent<TextMesh>();
@@ -70,7 +70,6 @@ public class MovingTargetsGameManager : Mechanic
 		{ 
 			case MovingTargetsState.PLAY:
 				playBehavior();
-				background.spin();
 				break;
 
 			case MovingTargetsState.WIN:
