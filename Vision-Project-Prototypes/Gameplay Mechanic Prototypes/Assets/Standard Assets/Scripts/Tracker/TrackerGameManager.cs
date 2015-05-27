@@ -50,17 +50,62 @@ public class TrackerGameManager : Mechanic
 	void Start () 
 	{
 		base.Start();
-		
-		targetScale = TrackerSettings.targetScale;
-		targetOpacity = TrackerSettings.targetOpacity;
+
+		// Load the players setting preference string (all sliders and their difficulty level
+		string playernum = PlayerPrefs.GetInt("PlayerNumber").ToString();
+		string playerdiff = PlayerPrefs.GetString("P" + playernum + "DIFF");
+		Debug.Log("PDIFF is: " + playernum );
+
+		// Unpack string into 2D array for settings
+		char[] delimiterChars = { ',' };							// Delimiter characters to look for and removes them
+		string[] wordsDiff = playerdiff.Split(delimiterChars);		// Splits the playerspref string into the individial bits (One big array)
+
+		int [,] my2DArray;											// Create 2D array to hold the setting for this players game
+		my2DArray = new int[int.Parse (wordsDiff [1]),int.Parse (wordsDiff [2])]; // Length of the sizes in the 2nd and 3rd element of the array
+
+		// Starts after the first 3 elements check (First 3 are game#, Slider#, and Diff#)
+		int z = 3 + ( int.Parse (wordsDiff [1]) * int.Parse (wordsDiff [2]) );
+		int stringLength = wordsDiff.Length;						// Length of the given string of user saved data
+		for (int x = 0; x < int.Parse (wordsDiff[1]); x++)			// For each Slider
+		{
+			for (int y = 0; y < int.Parse (wordsDiff[2]); y++)		// For each difficulty of the slider
+			{
+				if (z < stringLength)
+				{
+					// Converts each string element to an int in the 4D array
+					my2DArray [x,y] = int.Parse (wordsDiff [z]); ///
+					z++;
+				}
+			}
+		}
+					
+		// Associate each difficulty for each setting
+		int CurretDiff = 2;
+
+		numberOfTrackTargets = my2DArray[1,CurretDiff];
+		numberOfDummyTargets = my2DArray[2,CurretDiff];
+
+		targetScale = ((float)my2DArray[3,CurretDiff])/4;	// Target Size slider
+		targetOpacity = ((float)my2DArray[5,CurretDiff])/10;
+		targetSpeed = (float)my2DArray[7,CurretDiff]*2;
+		shuffleTime = (float)my2DArray[4,CurretDiff];
+		backgroundOpacity = ((float)my2DArray[6,CurretDiff])/10;
+
 		minChangeTime = TrackerSettings.minChangeTime;
 		maxChangeTime = TrackerSettings.maxChangeTime;
-		numberOfTrackTargets = TrackerSettings.numberOfTrackTargets;
-		numberOfDummyTargets = TrackerSettings.numberOfDummyTargets;
-		shuffleTime = TrackerSettings.shuffleTime;
 		startUpTime = TrackerSettings.startUpTime;
-		targetSpeed = TrackerSettings.targetSpeed;
-		backgroundOpacity = TrackerSettings.backgroundOpacity;
+
+
+//		targetScale = TrackerSettings.targetScale;
+//		targetOpacity = TrackerSettings.targetOpacity;
+//		minChangeTime = TrackerSettings.minChangeTime;
+//		maxChangeTime = TrackerSettings.maxChangeTime;
+//		numberOfTrackTargets = TrackerSettings.numberOfTrackTargets;
+//		numberOfDummyTargets = TrackerSettings.numberOfDummyTargets;
+//		shuffleTime = TrackerSettings.shuffleTime;
+//		startUpTime = TrackerSettings.startUpTime;
+//		targetSpeed = TrackerSettings.targetSpeed;
+//		backgroundOpacity = TrackerSettings.backgroundOpacity;
 
 		trackMan = GetComponent<TrackManager>();
 		targetMan = trackMan;

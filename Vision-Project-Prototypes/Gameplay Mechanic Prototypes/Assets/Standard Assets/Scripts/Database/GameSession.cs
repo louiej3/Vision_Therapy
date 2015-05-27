@@ -10,8 +10,10 @@ public class GameSession : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-        // This should be set by by something else
-        userID = "1";
+        // This is loaded from the players preference string "PlayerNumber" Set by LoadSCene script
+		userID = PlayerPrefs.GetInt("PlayerNumber").ToString();
+		Debug.Log("Player loaded is: " + userID);
+
 
         gameType = "default";
         DontDestroyOnLoad(this.gameObject);

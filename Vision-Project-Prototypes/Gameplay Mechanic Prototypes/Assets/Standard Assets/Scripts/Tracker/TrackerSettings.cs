@@ -5,6 +5,8 @@ using SQLite4Unity3d;
 /// <summary>
 /// Difficulty settings for tracker game
 /// </summary>
+/// 
+/// 
 public class TrackerSettings
 {
 
