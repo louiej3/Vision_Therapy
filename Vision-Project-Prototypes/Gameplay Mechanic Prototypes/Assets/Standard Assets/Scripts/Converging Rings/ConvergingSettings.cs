@@ -31,6 +31,9 @@ public class ConvergingSettings : MonoBehaviour
 	// The number of boomerangs for each converging object
 	public static int numberOfBoomerangs = 3;
 
+	// The transparency of the background
+	public static float backgroundOpacity = 1f;
+
 	// The amount of converging objects that need to be tapped
 	// before the user wins
 	public static int convergesToWin = 10;

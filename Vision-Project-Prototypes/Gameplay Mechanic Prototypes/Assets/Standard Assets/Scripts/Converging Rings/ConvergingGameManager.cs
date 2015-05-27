@@ -11,6 +11,8 @@ public class ConvergingGameManager : Mechanic
 	private TextMesh score;
 	private GameObject winText;
 
+	private Background background;
+
 	public ConvergingObjects convergePrefab;
 	
 	private float boomerangOpacity;
@@ -21,6 +23,8 @@ public class ConvergingGameManager : Mechanic
 	// Multiplies converge time by this value to determine how
 	// far off the user can be when they tap the object
 	private float marginOfError;
+	// The transperancy of the background
+	private float backgroundOpacity;
 
 	public enum ConvergeState
 	{
@@ -47,6 +51,7 @@ public class ConvergingGameManager : Mechanic
 		numberOfBoomerangs = ConvergingSettings.numberOfBoomerangs;
 		targetsToWin = ConvergingSettings.convergesToWin;
 		marginOfError = ConvergingSettings.marginOfError;
+		backgroundOpacity = ConvergingSettings.backgroundOpacity;
 		
 		conMan = GetComponent<ConObjectManager>();
         targetMan = conMan;
@@ -63,6 +68,9 @@ public class ConvergingGameManager : Mechanic
 
         gameSession = GameObject.Find("GameSession").GetComponent<GameSession>();
         dbConnection = GameObject.Find("Database").GetComponent<Database>();
+
+		background = GameObject.Find("Background").GetComponent<Background>();
+		background.Opacity = backgroundOpacity;
 
         mechanicType = "Converging Rings";
 		
