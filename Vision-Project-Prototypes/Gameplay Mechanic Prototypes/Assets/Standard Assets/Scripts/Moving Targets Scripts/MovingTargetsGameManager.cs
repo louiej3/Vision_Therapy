@@ -115,13 +115,12 @@ public class MovingTargetsGameManager : Mechanic
         float worldWidth = Mathf.Sqrt(Mathf.Pow(worldHeight, 2) - Mathf.Pow(x, 2));
         float y = Random.Range(-worldWidth, worldWidth);
 
-        Debug.Log(string.Format("X:{0}, Y:{1}", x, y));
         // Generate random speed
         float speed = Random.Range(minTargetSpeed, maxTargetSpeed);
 
         // Position and set target speed
         target.transform.position = new Vector2(x, y);
-
+		
         target.GetComponent<OrbitMove>().SpeedFactor = speed;
 		target.Scale = targetScale;
 		target.Opacity = targetOpacity;

@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class OrbitMove : Movement {
-
+public class OrbitMove : Movement 
+{
     private float _speedFactor = 1f;
 
     private float curTime;
@@ -16,19 +16,21 @@ public class OrbitMove : Movement {
 	public float Angle { get; private set; }
 
 	// Use this for initialization
-	void Start () {
-        Angle = Vector2.Angle(Center, location.position);
-        Radius = Vector2.Distance(Center, location.position);
+	void Start () 
+	{
 		Center = Vector2.zero;
+		Angle = Random.Range(1f, 360f);
+		Radius = Vector2.Distance(Center, location.position);
 	}
 	
 	// Update is called once per frame
-	public override void Update () {
-        Angle += Time.smoothDeltaTime * _speedFactor * (IsClockwise ? -1 : 1);
-        float x, y;
-        x = Center.x + (float)System.Math.Cos(Angle) * Radius;
-        y = Center.x + (float)System.Math.Sin(Angle) * Radius;
-        location.position = new Vector2(x, y);
+	public override void Update () 
+	{
+		Angle += Time.smoothDeltaTime * _speedFactor * (IsClockwise ? -1 : 1);
+		float x, y;
+		x = Center.x + Mathf.Cos(Angle) * Radius;
+		y = Center.x + Mathf.Sin(Angle) * Radius;
+		location.position = new Vector2(x, y);
 	}
 
     public override float Velocity
