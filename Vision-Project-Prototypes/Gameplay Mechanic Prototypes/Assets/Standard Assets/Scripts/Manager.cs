@@ -14,8 +14,11 @@ using UnityEngine;
 public class Manager : MonoBehaviour 
 {
     private string manID;
-    public int Hits { get; protected set; }
+    // The number of times the user touched a target
+	public int Hits { get; protected set; }
+	// The number of times the user completely missed a target
     public int Misses { get; protected set; }
+	// The number of times the user almost touched a target
     public int NearMisses { get; protected set; }
     public ArrayList Targets { get; protected set; }
 

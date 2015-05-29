@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Manages a set of converging objects. Keeps track of when the converging
+/// objects were touched and various user performance stats.
+/// </summary>
 public class ConObjectManager : Manager 
 {
 	// Multiplies converge time by this value to determine how
@@ -22,6 +26,7 @@ public class ConObjectManager : Manager
 	{
 		Touch[] taps = Input.touches;
 
+		// Move the boomerangs for each converging object
 		foreach (ConvergingObjects co in Targets)
 		{
 			co.converge();
@@ -35,22 +40,29 @@ public class ConObjectManager : Manager
 				{
 					bool hit = false;
 					
+					// Check every converging object to see if they were touched
 					foreach (ConvergingObjects co in Targets)
 					{
 						if (co.checkTouch(tap))
 						{
+							// Check if the touch was within the margin of error
 							if (co.TapPrecision <= co.ConvergeTime * _marginOfError)
 							{
 								SuccessfulHits++;
 								co.Success = true;
 							}
 
+							// Increment the total number of times the user touched an
+							// object. Touch does not have to be successful.
 							Hits++;
+							// The user touched something
 							hit = true;
 							break;
 						}
 					}
 
+					// If we looped through the list and hit was never flipped,
+					// the user missed completely.
 					if (!hit)
 					{
 						Misses++;

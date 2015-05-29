@@ -1,9 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// This script controls the various attributes of the objects that
+/// move back and forth through the center of a Converging Object
+/// </summary>
+
 public class Boomerang : MonoBehaviour 
 {
-
 	private float _speed;
 	private float _distance;
 	private float _opacity;

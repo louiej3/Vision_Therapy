@@ -5,13 +5,15 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-
-
+/// <summary>
+/// Base class for game manager scripts. This class has variables 
+/// and functions that most managers will likely need.
+/// </summary>
 public abstract class Mechanic : MonoBehaviour
 {
     protected string mechanicType;
-
     protected string mechanicID;
+
     // The maximum number of targets that can be on the
     // screen at once.
     protected int maxTargetsOnScreen;
@@ -29,7 +31,6 @@ public abstract class Mechanic : MonoBehaviour
     // The transperancy of the background
     protected int targetsToWin;
 
-    // game time
     protected StopWatch gameTime;
 
     // don't destroy on load stuff

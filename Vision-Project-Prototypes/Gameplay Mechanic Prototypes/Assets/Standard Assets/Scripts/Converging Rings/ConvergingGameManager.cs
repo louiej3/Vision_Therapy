@@ -15,6 +15,7 @@ public class ConvergingGameManager : Mechanic
 
 	public ConvergingObjects convergePrefab;
 	
+	// The opacity of the boomerangs
 	private float boomerangOpacity;
 	// The scale of the boomerangs, boomerangs are square
 	private float boomerangScale;
@@ -58,6 +59,7 @@ public class ConvergingGameManager : Mechanic
 		
 		conMan.MarginOfError = marginOfError;
 
+		// Put the score at the top center of the screen
 		score = GameObject.Find("Score").GetComponent<TextMesh>();
 		score.transform.position = new Vector3(0f, Camera.main.orthographicSize
 			- score.transform.localScale.y, score.transform.position.z);
@@ -98,11 +100,13 @@ public class ConvergingGameManager : Mechanic
 	{
 		score.text = conMan.SuccessfulHits + " / " + targetsToWin + " targets hit";
 		
+		// Reached the number of required targets
 		if (conMan.SuccessfulHits >= targetsToWin)
 		{
 			currentState = ConvergeState.WIN;
 		}
 		
+		// Spawn a new converging object
 		if (gameTime.lap() >= targetSpawnInterval 
 			&& conMan.NumberOfActiveObjects < maxTargetsOnScreen)
 		{
@@ -127,14 +131,17 @@ public class ConvergingGameManager : Mechanic
 
 		float convergeTime = Random.Range(minTargetSpeed, maxTargetSpeed);
 
+		// Make sure the converging object's x position does not leave the world
 		float worldHeight = Camera.main.orthographicSize - co.Scale / 2;
 		float x = Random.Range(-worldHeight, worldHeight);
 
+		// Make sure the converging object's y position does not leave the world
 		float worldWidth = (Camera.main.orthographicSize / Camera.main.aspect) - co.Scale / 2;
 		float y = Random.Range(-worldWidth, worldWidth);
 
+		// Set the center of the converging object and its boomerangs
 		co.set(numberOfBoomerangs, new Vector2(x, y), convergeTime, boomerangScale, boomerangOpacity);
-
+		
 		conMan.addTarget(co);
 
 		gameTime.start();

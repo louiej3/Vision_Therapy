@@ -4,6 +4,12 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
+/// <summary>
+/// This class allows the users to interact with game entities that use
+/// this script. Targets can be tapped and behavior can be defined for
+/// when they are tapped.
+/// </summary>
+
 public class Target : MonoBehaviour
 {
     // Timer for keeping track of the time alive

@@ -1,9 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// This class controls the center of the converging object as well as
+/// the boomerangs that move through its center.
+/// </summary>
+
 public class ConvergingObjects : Target 
 {
-
 	// List of boomerangs associated with this convergence point
 	protected ArrayList boomerangs;
 	// The time it takes for all of the boomerangs to converge
@@ -80,11 +84,21 @@ public class ConvergingObjects : Target
 		// Turn all of the boomerangs around to face the center point
 		foreach (Boomerang b in boomerangs)
 		{
+			// Find the direction of the center point compared to the boomerang
 			Vector2 convergeDirection = (Vector2)transform.position - (Vector2)b.transform.position;
+			// Add 1 in the z-axis so the boomerang's up position is facing the center point
 			b.transform.LookAt(b.transform.position + new Vector3(0, 0, 1), convergeDirection);
 		}
 	}
 
+	/// <summary>
+	/// Sets the attributes of the centerpoint and the boomerangs and positions them
+	/// </summary>
+	/// <param name="numberOfObjects">The number of boomerangs</param>
+	/// <param name="centerPoint">The location of the centerpoint</param>
+	/// <param name="time">The time it should take for a boomerang to reach the enter point</param>
+	/// <param name="boomerangScale">The scale of the boomerangs</param>
+	/// <param name="boomerangOpacity">The opacity of the boomerangs</param>
 	public void set(int numberOfObjects, Vector2 centerPoint, float time, 
 		float boomerangScale, float boomerangOpacity)
 	{
@@ -99,6 +113,8 @@ public class ConvergingObjects : Target
 			
 			ConvergeTime = time;
 			
+			// Determine the how far in the x and y direction that the boomerang can be
+			// before it goes off screen
 			float height = Camera.main.orthographicSize - Mathf.Abs(centerPoint.y + _scale / 2);
 			float width = (Camera.main.aspect * Camera.main.orthographicSize) - Mathf.Abs(centerPoint.x + _scale / 2);
 			float y = 0f;
