@@ -24,10 +24,11 @@ public class SliderUpdate : MonoBehaviour {
 		string units = "";
 
 		// Add the end units for some sliders
-		if (sliderName == "Time-Out: " || sliderName == "Spawn Rate: ")
+		if (sliderName == "Time-Out: " || sliderName == "Spawn Rate: " || sliderName == "Spawn Interval: "  || sliderName == "Shuffle Time: " )
 		{ units = " sec(s)";}
-		if (sliderName == "Target Opacity: " || sliderName == "Background Opacity: ")
-		{ units = " %";}
+		if (sliderName == "Target Opacity: " || sliderName == "Background Opacity: " || 
+		    sliderName == "Center Opacity: " || sliderName == "Ring Opacity: " )
+		{ units = "0%";}
 
 		// Prints the finalized updated string
 		textMesh.text = (sliderName + my_slider.value.ToString () + units);

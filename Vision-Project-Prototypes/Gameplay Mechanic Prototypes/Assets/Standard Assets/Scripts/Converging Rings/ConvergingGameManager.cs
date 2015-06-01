@@ -38,20 +38,73 @@ public class ConvergingGameManager : Mechanic
 	void Start () 
 	{
 		base.Start();
+
+		// Load the players setting preference string (all sliders and their difficulty level)
+		string playernum = PlayerPrefs.GetInt("PlayerNumber").ToString();
+		string playerdiff = PlayerPrefs.GetString("P" + playernum + "DIFF");
+		Debug.Log("PDIFF is: " + playernum );
 		
-		maxTargetsOnScreen = ConvergingSettings.maxConvergeOnScreen;
-		targetSpawnInterval = ConvergingSettings.convergeSpawnInterval;
-		minTargetSpeed = ConvergingSettings.minConvergeTime;
-		maxTargetSpeed = ConvergingSettings.maxConvergeTime;
-		targetOpacity = ConvergingSettings.centerOpacity;
-		targetTimeout = ConvergingSettings.convergeTimeOut;
-		targetScale = ConvergingSettings.centerScale;
-		boomerangOpacity = ConvergingSettings.boomerangOpacity;
-		boomerangScale = ConvergingSettings.boomerangScale;
-		numberOfBoomerangs = ConvergingSettings.numberOfBoomerangs;
-		targetsToWin = ConvergingSettings.convergesToWin;
-		marginOfError = ConvergingSettings.marginOfError;
-		backgroundOpacity = ConvergingSettings.backgroundOpacity;
+		// Unpack string into 2D array for settings
+		char[] delimiterChars = { ',' };							// Delimiter characters to look for and removes them
+		string[] wordsDiff = playerdiff.Split(delimiterChars);		// Splits the playerspref string into the individial bits (One big array)
+		
+		int [,] my2DArray;											// Create 2D array to hold the setting for this players game
+		my2DArray = new int[int.Parse (wordsDiff [1]),int.Parse (wordsDiff [2])]; // Length of the sizes in the 2nd and 3rd element of the array
+		
+		// Starts after the first 3 elements check (First 3 are game#, Slider#, and Diff#) & first 2 games' data
+		Debug.Log("Game number is: " + wordsDiff [0] );
+		int z = 3 + (2 * int.Parse (wordsDiff [1]) * int.Parse (wordsDiff [2]) ); // Times 2 to get to the 3rd part of the string
+		int stringLength = wordsDiff.Length;						// Length of the given string of user saved data
+		for (int x = 0; x < int.Parse (wordsDiff[1]); x++)			// For each Slider
+		{
+			for (int y = 0; y < int.Parse (wordsDiff[2]); y++)		// For each difficulty of the slider
+			{
+				if (z < stringLength)
+				{
+					// Converts each string element to an int in the 4D array
+					my2DArray [x,y] = int.Parse (wordsDiff [z]); ///
+					z++;
+				}
+			}
+		}
+		
+		// Associate each difficulty for each setting
+		int CurretDiff = 2;
+
+		// Difficulty settings assignment
+		maxTargetsOnScreen = my2DArray[1,CurretDiff];				// Maximum number of rings sets
+		minTargetSpeed = (float)my2DArray[2,CurretDiff];			// Minimum ring speed
+		maxTargetSpeed = (float)my2DArray[3,CurretDiff];			// Maximum ring speed
+		targetScale = ((float)my2DArray[4,CurretDiff])/4;			// Size of targets (scaled)
+		boomerangScale = ((float)my2DArray[4,CurretDiff])/4;		// Size of distractors
+		targetTimeout = (float)my2DArray[5,CurretDiff];				// Ring time out in seconds
+		boomerangOpacity = ((float)my2DArray[6,CurretDiff])/10;		// Clarity of distractors (scaled)
+		numberOfBoomerangs = my2DArray[7,CurretDiff];				// Number of distractors
+		targetSpawnInterval = (float)my2DArray[8,CurretDiff];		// Ring set spawn interval
+		targetsToWin = my2DArray[9,CurretDiff];						// Number of successful hits to win
+		targetOpacity = ((float)my2DArray[10,CurretDiff])/10;		// Clarity of the center point (scaled)
+		backgroundOpacity = ((float)my2DArray[11,CurretDiff])/10;	// Clarity of the background (scaled)
+
+		marginOfError = ConvergingSettings.marginOfError;  		// Not manually set
+
+		// To check for min max speed, if larger, set min speed to max speed (which is lower)
+		if(minTargetSpeed > maxTargetSpeed)
+		{ minTargetSpeed = maxTargetSpeed; }
+
+		// Original settings from ConvergingSettings
+//		maxTargetsOnScreen = ConvergingSettings.maxConvergeOnScreen;
+//		targetSpawnInterval = ConvergingSettings.convergeSpawnInterval;
+//		minTargetSpeed = ConvergingSettings.minConvergeTime;
+//		maxTargetSpeed = ConvergingSettings.maxConvergeTime;
+//		targetOpacity = ConvergingSettings.centerOpacity;
+//		targetTimeout = ConvergingSettings.convergeTimeOut;
+//		targetScale = ConvergingSettings.centerScale;
+//		boomerangOpacity = ConvergingSettings.boomerangOpacity;
+//		boomerangScale = ConvergingSettings.boomerangScale;
+//		numberOfBoomerangs = ConvergingSettings.numberOfBoomerangs;
+//		targetsToWin = ConvergingSettings.convergesToWin;
+//		marginOfError = ConvergingSettings.marginOfError;
+//		backgroundOpacity = ConvergingSettings.backgroundOpacity;
 		
 		conMan = GetComponent<ConObjectManager>();
         targetMan = conMan;

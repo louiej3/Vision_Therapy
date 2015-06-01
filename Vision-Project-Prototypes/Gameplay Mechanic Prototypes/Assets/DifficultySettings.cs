@@ -10,7 +10,7 @@ public class DifficultySettings : MonoBehaviour {
 	
 	static int TotalPlayers = 3;
 	static int TotalGames = 3;
-	static int MaxSliders = 10;						// Max number of difficulty sliders for the game(s) including master
+	static int MaxSliders = 12;						// Max number of difficulty sliders for the game(s) including master
 	static int MaxMasterLvl = 11;					// Max number of levels the Master slider has plus 1 more (ex. 1-10 = 11)
 
 	static bool PTOToSave = false;					// Need to save 4D array bools
@@ -81,22 +81,22 @@ public class DifficultySettings : MonoBehaviour {
 		// SlideNum is the particular slider number (for each slider) and the MasterSlider value is the particular difficulty
 		// These two comprise the location for the 2D array of difficulty values
 
-		int PlayerNum = PlayerInfo.playerNumber;		// Grabs the player number from the PlayerInfo script
+		int PlayerNum = PlayerInfo.playerNumber;			// Grabs the player number from the PlayerInfo script
 
-		if (GameNum == 0) // Poke the Owls / Moving Targets
+		if (GameNum == 0) // Moving Targets
 		{
 			int difficulty = AllDiff4D [PlayerNum, GameNum, SlideNum, (int)GameObject.Find ("PTOMasterSlider").GetComponent<Slider>().value];
-			if (my_slider) { my_slider.value = difficulty; }
+			if (my_slider) { my_slider.value = difficulty; } // For each individual difficulty slider
 		}
-		if (GameNum == 1) // Executive Delivery Boy / Crowd game
+		if (GameNum == 1) // Tracker
 		{
 			int difficulty = AllDiff4D [PlayerNum, GameNum, SlideNum, (int)GameObject.Find ("EDBMasterSlider").GetComponent<Slider>().value];
-			if (my_slider) { my_slider.value = difficulty; }
+			if (my_slider) { my_slider.value = difficulty; } // For each individual difficulty slider
 		}
 		if (GameNum == 2) // Converging Rings
 		{
 			int difficulty = AllDiff4D [PlayerNum, GameNum, SlideNum, (int)GameObject.Find ("RingsMasterSlider").GetComponent<Slider>().value];
-			if (my_slider) { my_slider.value = difficulty; }
+			if (my_slider) { my_slider.value = difficulty; } // For each individual difficulty slider
 		}
 	}
 

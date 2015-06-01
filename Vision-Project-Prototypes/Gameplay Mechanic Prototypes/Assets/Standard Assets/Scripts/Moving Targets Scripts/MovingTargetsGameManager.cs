@@ -33,16 +33,61 @@ public class MovingTargetsGameManager : Mechanic
 	public override void Start () 
 	{
         base.Start();
-		maxTargetsOnScreen = MovingTargetsSettings.maxTargetsOnScreen;
-		targetScale = MovingTargetsSettings.targetScale;
-		targetOpacity = MovingTargetsSettings.targetOpacity;
-		minTargetSpeed = MovingTargetsSettings.minTargetSpeed;
-		maxTargetSpeed = MovingTargetsSettings.maxTargetSpeed;
-		targetTimeout = MovingTargetsSettings.targetTimeout;
-		targetSpawnInterval = MovingTargetsSettings.targetSpawnInterval;
-		backgroundOpacity = MovingTargetsSettings.backgroundOpacity;
-		backgroundSpeed = MovingTargetsSettings.backgroundSpeed;
-		targetsToWin = MovingTargetsSettings.targetsToWin;
+
+		// Load the players setting preference string (all sliders and their difficulty level
+		string playernum = PlayerPrefs.GetInt("PlayerNumber").ToString();
+		string playerdiff = PlayerPrefs.GetString("P" + playernum + "DIFF");
+		Debug.Log("PDIFF is: " + playernum );
+		
+		// Unpack string into 2D array for settings
+		char[] delimiterChars = { ',' };							// Delimiter characters to look for and removes them
+		string[] wordsDiff = playerdiff.Split(delimiterChars);		// Splits the playerspref string into the individial bits (One big array)
+		
+		int [,] my2DArray;											// Create 2D array to hold the setting for this players game
+		my2DArray = new int[int.Parse (wordsDiff [1]),int.Parse (wordsDiff [2])]; // Length of the sizes in the 2nd and 3rd element of the array
+		
+		// Starts after the first 3 elements check (First 3 are game#, Slider#, and Diff#)
+		int z = 3;		// Game difficulty array data is right after the first 3 elements
+		int stringLength = wordsDiff.Length;						// Length of the given string of user saved data
+		for (int x = 0; x < int.Parse (wordsDiff[1]); x++)			// For each Slider
+		{
+			for (int y = 0; y < int.Parse (wordsDiff[2]); y++)		// For each difficulty of the slider
+			{
+				if (z < stringLength)
+				{
+					// Converts each string element to an int in the 4D array
+					my2DArray [x,y] = int.Parse (wordsDiff [z]); ///
+					z++;
+				}
+			}
+		}
+		
+		// Associate each difficulty for each setting
+		int CurretDiff = 2;
+
+		// Difficulty settings assignment
+		maxTargetsOnScreen = my2DArray[1,CurretDiff];				// Number of targets on the screen
+		minTargetSpeed = ((float)my2DArray[2,CurretDiff])/2;		// Minimum target speed
+		maxTargetSpeed = ((float)my2DArray[3,CurretDiff])/2;		// Maximum target speed
+		targetScale = ((float)my2DArray[4,CurretDiff])/4;			// Size of targets
+		targetTimeout = (float)my2DArray[5,CurretDiff];				// Target timeout in seconds
+		targetOpacity = ((float)my2DArray[6,CurretDiff])/10;		// Clarity of target
+		backgroundOpacity = ((float)my2DArray[7,CurretDiff])/10;	// Clarity of background
+		targetSpawnInterval = (float)my2DArray[8,CurretDiff];		// Spawn interval of targets
+		backgroundSpeed = (float)my2DArray[9,CurretDiff];			// Speed of background image
+		targetsToWin = my2DArray[10,CurretDiff];					// Number of successful hits to win
+
+		// Original settings
+//		maxTargetsOnScreen = MovingTargetsSettings.maxTargetsOnScreen;
+//		targetScale = MovingTargetsSettings.targetScale;
+//		targetOpacity = MovingTargetsSettings.targetOpacity;
+//		minTargetSpeed = MovingTargetsSettings.minTargetSpeed;
+//		maxTargetSpeed = MovingTargetsSettings.maxTargetSpeed;
+//		targetTimeout = MovingTargetsSettings.targetTimeout;
+//		targetSpawnInterval = MovingTargetsSettings.targetSpawnInterval;
+//		backgroundOpacity = MovingTargetsSettings.backgroundOpacity;
+//		backgroundSpeed = MovingTargetsSettings.backgroundSpeed;
+//		targetsToWin = MovingTargetsSettings.targetsToWin;
 		
 		targetMan = GetComponent<TargetManager>();
 		background = GameObject.Find("Background").GetComponent<Background>();
