@@ -8,7 +8,9 @@ using System.Collections;
 
 public class Boomerang : MonoBehaviour 
 {
+	// How fast this boomerang needs to travel to reach the center on time 
 	private float _speed;
+	// The farthest distance this boomerang can be from the center
 	private float _distance;
 	private float _opacity;
 	private float _scale;

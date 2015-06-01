@@ -1,15 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// A subclass of Movement that makes an object rotate around
+/// a central point
+/// </summary>
+
 public class OrbitMove : Movement 
 {
-    private float _speedFactor = 1f;
+    // The speed that the object rotates around the point
+	private float _speedFactor = 1f;
 
-    private float curTime;
-
-    /// <summary>
-    /// The point that is being orbited around
-    /// </summary>
+    // The point that is being orbited around
 	public Vector2 Center { get; set; }
 	public bool IsClockwise { get; set; }
 	public float Radius { get; private set; }
@@ -19,6 +21,7 @@ public class OrbitMove : Movement
 	void Start () 
 	{
 		Center = Vector2.zero;
+		// Selects a random angle for the object
 		Angle = Random.Range(1f, 360f);
 		Radius = Vector2.Distance(Center, location.position);
 	}

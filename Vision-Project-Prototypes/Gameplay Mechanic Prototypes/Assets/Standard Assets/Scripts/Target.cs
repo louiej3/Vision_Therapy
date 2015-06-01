@@ -57,9 +57,12 @@ public class Target : MonoBehaviour
     /// <returns>returns true if the target was tapped/touched</returns>
     public virtual bool checkTouch(Touch tap)
     {
-        Vector3 worldPoint = Camera.main.ScreenToWorldPoint(tap.position);
+        // Gets the location of the user's touch
+		Vector3 worldPoint = Camera.main.ScreenToWorldPoint(tap.position);
+		// Converts the location to a Vector2
         Vector2 touchPos = new Vector2(worldPoint.x, worldPoint.y);
 
+		// Checks to see if the user's touch collided with this target's collider
         if (GetComponent<Collider2D>() == Physics2D.OverlapPoint(touchPos)
                 && tap.phase == TouchPhase.Began)
         {

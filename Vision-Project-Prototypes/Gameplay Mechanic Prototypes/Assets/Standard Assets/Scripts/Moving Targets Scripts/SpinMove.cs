@@ -1,9 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// A subclass of Movement that makes an object spin in place.
+/// </summary>
+
 public class SpinMove : Movement 
 {
-
+	// The speed that the object rotates
 	private float _speed;
 
 	// Use this for initialization

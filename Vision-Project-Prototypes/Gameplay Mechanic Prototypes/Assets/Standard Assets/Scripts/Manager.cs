@@ -22,7 +22,6 @@ public class Manager : MonoBehaviour
     public int NearMisses { get; protected set; }
     public ArrayList Targets { get; protected set; }
 
-    public Movement moveType;
     public float nearMissThreshold = 1f;
 
 	void Awake()

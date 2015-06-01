@@ -15,6 +15,10 @@ public class ConvergingObjects : Target
 	// Tells whether accuracy was in the margin of error
 	public bool Success { get; set; }
 
+	// A boomerang prefab. This object is set in the Unity
+	// scene by dragging an existing boomerang prefab into
+	// the boomerang field in the prefab with this script
+	// attached to it.
 	public Boomerang boomerangPrefab;
 
 	void Awake()
@@ -35,21 +39,25 @@ public class ConvergingObjects : Target
 
 	public bool checkTouch(Touch tap)
 	{
+		// Get position of the user's touch
 		Vector3 worldPoint = Camera.main.ScreenToWorldPoint(tap.position);
+		// Convert the position of the touch to a Vector2
 		Vector2 touchPos = new Vector2(worldPoint.x, worldPoint.y);
 
+		// Check if the touch collides with this object's collider
 		if (GetComponent<Collider2D>() == Physics2D.OverlapPoint(touchPos))
 		{
 			// because the unit has been tapped, set the variables
 			LapTime = timeSinceSpawn.lap();
-			
 			IsTapped = true;
 
             // Mod the user's lapTime by the time it takes for a boomerang
             // to complete one cycle (convergeTime * 2), then subtract the
-            // convergeTime and get the absolute value
+            // convergeTime and get the absolute value. The calculated value
+			// will be a time in seconds that indicates how far off the user
+			// was the from perfect time when all of the boomerangs intersect
+			// (convergeTime).
             TapPrecision = Mathf.Abs((LapTime % (ConvergeTime * 2)) - ConvergeTime);
-
 
 			// If it is an inherited class, we can call the specific tap behavior
 			tapBehavior();
@@ -108,13 +116,17 @@ public class ConvergingObjects : Target
 		// Create the amount of boomerangs specified by numberOfObjects
 		for (int i = 0; i < numberOfObjects; i++)
 		{
-			// Instantiate boomerang
+			// Instantiate boomerang and set attributes
 			Boomerang b = Instantiate(boomerangPrefab) as Boomerang;
+			b.Scale = boomerangScale;
+			b.Opacity = boomerangOpacity;
 			
+			// The amount of time it takes for the boomerange to reach the
+			// center starting from the boomerangs farthest point
 			ConvergeTime = time;
 			
 			// Determine the how far in the x and y direction that the boomerang can be
-			// before it goes off screen
+			// placed before it goes off screen
 			float height = Camera.main.orthographicSize - Mathf.Abs(centerPoint.y + _scale / 2);
 			float width = (Camera.main.aspect * Camera.main.orthographicSize) - Mathf.Abs(centerPoint.x + _scale / 2);
 			float y = 0f;
@@ -132,7 +144,7 @@ public class ConvergingObjects : Target
 				float newHeight = Mathf.Sqrt(Mathf.Abs(Mathf.Pow(width, 2) - Mathf.Pow(x, 2)));
 				y = Random.Range(-newHeight, newHeight);
 			}
-			
+
 			// Position the boomerang
 			b.transform.position = new Vector2(centerPoint.x + x, centerPoint.y + y);
 
@@ -150,8 +162,6 @@ public class ConvergingObjects : Target
 			// Set variables in this boomerang
 			b.Distance = distance;
 			b.Speed = speed;
-			b.Scale = boomerangScale;
-			b.Opacity = boomerangOpacity;
 
 			boomerangs.Add(b);
 		}

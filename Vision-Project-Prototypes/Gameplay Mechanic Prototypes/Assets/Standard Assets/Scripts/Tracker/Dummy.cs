@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// A subclass of Target that defines tap behavior. This is the script for
+/// the decoy objects in the Tracker game.
+/// </summary>
+
 public class Dummy : Target 
 {
 	protected override void tapBehavior()

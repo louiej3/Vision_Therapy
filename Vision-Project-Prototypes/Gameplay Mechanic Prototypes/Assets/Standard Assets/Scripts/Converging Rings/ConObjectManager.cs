@@ -24,6 +24,7 @@ public class ConObjectManager : Manager
 	// Update is called once per frame
 	void Update () 
 	{
+		// An array of all of the user's touches currently on the screen
 		Touch[] taps = Input.touches;
 
 		// Move the boomerangs for each converging object
@@ -32,10 +33,13 @@ public class ConObjectManager : Manager
 			co.converge();
 		}
 
+		// If the user is touching the screen, check for collisions
 		if (Input.touchCount > 0)
 		{
 			foreach (Touch tap in taps)
 			{
+				// Prevents collisions from happening if the user drags their
+				// finger around
 				if (tap.phase == TouchPhase.Began)
 				{
 					bool hit = false;
@@ -74,7 +78,7 @@ public class ConObjectManager : Manager
 
 	/// <summary>
 	/// A percentage that determines how inaccurate users can be when they 
-	/// tap a converging object.
+	/// tap a converging object. Can be between 0 and 1.
 	/// </summary>
 	public float MarginOfError
 	{

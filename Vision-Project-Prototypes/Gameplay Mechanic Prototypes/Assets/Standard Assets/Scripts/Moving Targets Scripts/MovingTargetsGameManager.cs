@@ -7,20 +7,24 @@ using System.Collections;
 public class MovingTargetsGameManager : Mechanic 
 {
 	private Background background;
-
+	// The opacity of the background
     protected float backgroundOpacity;
     // The speed that the background spins
     protected float backgroundSpeed;
-    // The number of targets needed to win
 
 	private TextMesh score;
 	private GameObject winText;
 
+	// A target prefab. This object is set in the Unity
+	// scene by dragging an existing target prefab into
+	// the target field in the object with this script
+	// attached to it.
 	public Target targetPrefab;
 
 	// The current state of the game
 	public MovingTargetsState CurrentState { get; private set; }
 
+	// The different states of the Moving Targets game
 	public enum MovingTargetsState
 	{
 		PLAY,
@@ -45,15 +49,18 @@ public class MovingTargetsGameManager : Mechanic
 		targetsToWin = MovingTargetsSettings.targetsToWin;
 		
 		targetMan = GetComponent<TargetManager>();
+		
 		background = GameObject.Find("Background").GetComponent<Background>();
 		background.GetComponent<SpinMove>().Speed = backgroundSpeed;
 		background.Opacity = backgroundOpacity;
 
 		score = GameObject.Find("Score").GetComponent<TextMesh>();
 
+		// The height and width of the camera view
 		float height = Camera.main.orthographicSize;
 		float width = height * Camera.main.aspect;
-
+		
+		// Position the score in the top left of the screen
 		score.transform.position = new Vector3(-width + 2.5f, 
 			height - score.transform.localScale.y, score.transform.position.z);
 
@@ -80,13 +87,18 @@ public class MovingTargetsGameManager : Mechanic
 
 	protected override void playBehavior()
 	{
+		// Displays the user's current score
 		score.text = targetMan.Hits + " / " + targetsToWin + " targets hit";
 		
+		// Transition to WIN state if the required amount of targets
+		// has been hit
 		if (targetMan.Hits >= targetsToWin)
 		{
 			CurrentState = MovingTargetsState.WIN;
 		}
 
+		// Spawn a target if the spawn interval is over and the number of
+		// targets on the screen does not exceed the maximum number allowed
 		if (gameTime.lap() >= targetSpawnInterval && 
 			targetMan.NumberOfActiveObjects < maxTargetsOnScreen)
 		{
@@ -96,7 +108,9 @@ public class MovingTargetsGameManager : Mechanic
 
     protected override void winBehavior()
     {
-        targetMan.disableAllTargets();
+        // Clear the screen of targets so we don't collect extra data
+		targetMan.disableAllTargets();
+		// Position the win text in the center of the screen
 		winText.transform.position = Vector2.zero;
 		
 		base.winBehavior();
@@ -106,26 +120,25 @@ public class MovingTargetsGameManager : Mechanic
     {
         // Instantiate the target prefab
         Target target = Instantiate(targetPrefab) as Target;
-
-        // Generate random x position
-        float worldHeight = Camera.main.orthographicSize - target.transform.lossyScale.y / 2;
-		float x = Random.Range(-worldHeight, worldHeight);
-
-        // Generate random y position
-        float worldWidth = Mathf.Sqrt(Mathf.Pow(worldHeight, 2) - Mathf.Pow(x, 2));
-        float y = Random.Range(-worldWidth, worldWidth);
-
-        // Generate random speed
-        float speed = Random.Range(minTargetSpeed, maxTargetSpeed);
-
-        // Position and set target speed
-        target.transform.position = new Vector2(x, y);
-		
-        target.GetComponent<OrbitMove>().SpeedFactor = speed;
 		target.Scale = targetScale;
 		target.Opacity = targetOpacity;
 		target.TimeOut = targetTimeout;
 
+		// Generate random speed
+		float speed = Random.Range(minTargetSpeed, maxTargetSpeed);
+		target.GetComponent<OrbitMove>().SpeedFactor = speed;
+
+        // Generate random x position
+        float worldHeight = Camera.main.orthographicSize - target.Scale / 2;
+		float y = Random.Range(-worldHeight, worldHeight);
+
+        // Generate random y position within a circle with 'x' radius
+        float worldWidth = Mathf.Sqrt(Mathf.Pow(worldHeight, 2) - Mathf.Pow(y, 2));
+        float x = Random.Range(-worldWidth, worldWidth);
+
+        // Position target
+        target.transform.position = new Vector2(x, y);
+		
 		// Pick a float between 0 and 1, >= 0.5f clockwise
 		// counter clockwise is default
         if (Random.value >= 0.5f)
