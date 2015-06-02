@@ -14,6 +14,8 @@ public class Movement : MonoBehaviour
     
 	void Awake()
 	{
+		// Get the transform of the object so we can manipulate its
+		// position
 		location = GetComponent<Transform>();
 	}
 

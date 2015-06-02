@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// A subclass of ConvergingObjects that defines timeout and
+/// tap behavior.
+/// </summary>
+
 public class Ring : ConvergingObjects
 {
 	

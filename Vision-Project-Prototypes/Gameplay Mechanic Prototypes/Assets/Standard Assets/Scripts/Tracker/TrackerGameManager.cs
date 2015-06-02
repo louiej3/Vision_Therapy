@@ -6,7 +6,6 @@ using System.Collections;
 /// </summary>
 public class TrackerGameManager : Mechanic 
 {
-    
 	// The range that the targets' speed can be
 	private float minChangeTime;
 	private float maxChangeTime;
@@ -31,12 +30,17 @@ public class TrackerGameManager : Mechanic
 
 	private Background background;
 
+	// Prefabs for the dummy and track game objects. These prefabs
+	// are set in the Unity scene by dragging the appropriate prefab
+	// into either the trackPrefab or dummyPrefab field in the object
+	// with this script attached to it.
 	public Target trackPrefab;
 	public Target dummyPrefab;
 
-	// The current state of the game
+	// The current state of the Tracker game
 	public static TrackerState CurrentState { get; private set; }
 
+	// The different states for the Tracker game
 	public enum TrackerState
 	{
 		STARTUP,
@@ -144,8 +148,10 @@ public class TrackerGameManager : Mechanic
 
 	protected override void playBehavior()
 	{
+		// Displays the user's current score
 		score.text = trackMan.SuccessfulHits + " / " + numberOfTrackTargets + " targets found";
 		
+		// Transition to WIN state if the user finds all of the track objects
 		if (trackMan.SuccessfulHits == numberOfTrackTargets)
 		{
 			CurrentState = TrackerState.WIN;
@@ -154,7 +160,9 @@ public class TrackerGameManager : Mechanic
 
 	protected override void winBehavior()
 	{
+		// Clear the screen
 		trackMan.disableAllTargets();
+		// Move the win message to the center of the screen
 		winText.transform.position = Vector2.zero;
 
 		base.winBehavior();
@@ -162,53 +170,51 @@ public class TrackerGameManager : Mechanic
 
     private void spawnTrack()
     {
-        // Instantiate the target prefab
+        // Instantiate the track prefab and set attributes
         Target track = Instantiate(trackPrefab) as Target;
-
-        // Generate random x position
-        float worldHeight = Camera.main.orthographicSize - track.transform.lossyScale.y / 2;
-		float x = Random.Range(-worldHeight, worldHeight);
-
-        // Generate random y position
-        float worldWidth = Mathf.Sqrt(Mathf.Pow(worldHeight, 2) - Mathf.Pow(x, 2));
-        float y = Random.Range(-worldWidth, worldWidth);
-
-        // Position tracker object
-        track.transform.position = new Vector2(x, y);
 		track.Scale = targetScale;
 		track.Opacity = targetOpacity;
-
 		track.gameObject.GetComponent<RandomStraightMove>().MinimumChangeTime = minChangeTime;
 		track.gameObject.GetComponent<RandomStraightMove>().MaximumChangeTime = maxChangeTime;
 		track.gameObject.GetComponent<RandomStraightMove>().Speed = targetSpeed;
 
-        // Add target to target manager
+        // Generate random x position within camera view
+        float worldHeight = Camera.main.orthographicSize - track.Scale / 2;
+		float y = Random.Range(-worldHeight, worldHeight);
+
+		// Generate random y position within camera view
+		float worldWidth = (Camera.main.orthographicSize / Camera.main.aspect) - track.Scale / 2;
+		float x = Random.Range(-worldWidth, worldWidth);
+
+        // Position track object
+        track.transform.position = new Vector2(x, y);
+
+        // Add track to target manager
 		trackMan.addTarget(track);
     }
 
 	private void spawnDummy()
 	{
-		// Instantiate the target prefab
+		// Instantiate the dummy prefab and set attributes
 		Target dummy = Instantiate(dummyPrefab) as Target;
-
-		// Generate random x position
-		float worldHeight = Camera.main.orthographicSize - dummy.transform.lossyScale.y / 2;
-		float x = Random.Range(-worldHeight, worldHeight);
-
-		// Generate random y position
-		float worldWidth = Mathf.Sqrt(Mathf.Pow(worldHeight, 2) - Mathf.Pow(x, 2));
-		float y = Random.Range(-worldWidth, worldWidth);
-
-		// Position tracker object
-		dummy.transform.position = new Vector2(x, y);
 		dummy.Scale = targetScale;
 		dummy.Opacity = targetOpacity;
-
 		dummy.gameObject.GetComponent<RandomStraightMove>().MinimumChangeTime = minChangeTime;
 		dummy.gameObject.GetComponent<RandomStraightMove>().MaximumChangeTime = maxChangeTime;
 		dummy.gameObject.GetComponent<RandomStraightMove>().Speed = targetSpeed;
 
-		// Add target to target manager
+		// Generate random x position within camera view
+		float worldHeight = Camera.main.orthographicSize - dummy.Scale / 2;
+		float y = Random.Range(-worldHeight, worldHeight);
+
+		// Generate random y position within camera view
+		float worldWidth = (Camera.main.orthographicSize * Camera.main.aspect) - dummy.Scale / 2;
+		float x = Random.Range(-worldWidth, worldWidth);
+
+		// Position dummy object
+		dummy.transform.position = new Vector2(x, y);
+
+		// Add dummy to target manager
 		trackMan.addTarget(dummy);
 	}
 

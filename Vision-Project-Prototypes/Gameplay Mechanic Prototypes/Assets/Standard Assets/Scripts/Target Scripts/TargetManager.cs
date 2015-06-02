@@ -10,46 +10,41 @@ using SQLite4Unity3d;
 /// </summary>
 public class TargetManager : Manager
 {
-
-    private float NearMissThreshold;
-
-	// Use this for initialization
-    public override void Start()
-    {
-        base.Start();
-		NearMissThreshold = 5f;
-    }
-	
 	// Update is called once per frame
 	void Update () 
     {
-        Touch[] taps = Input.touches;
-        if (Input.touchCount > 0)
+        // An array containing all of the user's touches that are on the screen
+		Touch[] taps = Input.touches;
+        
+		if (Input.touchCount > 0)
         {
             foreach (Touch tap in taps)
             {
                 if (tap.phase == TouchPhase.Began)
                 {
-                    bool hit = false;
+                    // If this is true, then something was hit, but if
+					// this remains false, nothing was hit
+					bool hit = false;
 
+					// Check if touch collided with any objects in Target
                     foreach (Target target in Targets)
                     {
-                        if (target.checkTouch(tap))
+                        // Something was hit
+						if (target.checkTouch(tap))
                         {
                             hit = true;
+							Hits++;
                             break;
                         } else {
-                            if (target.checkNearMiss(tap, nearMissThreshold))
+                            // Check if the touch resulted in a near miss
+							if (target.checkNearMiss(tap, nearMissThreshold))
                             {
                                 ++NearMisses;
                             }
                         }
                     }
-                    if (hit)
-                    {
-                        Hits++;
-                    }
-                    else
+					// Nothing was hit, increment Misses
+                    if (!hit)
                     {
                         Misses++;
                     }

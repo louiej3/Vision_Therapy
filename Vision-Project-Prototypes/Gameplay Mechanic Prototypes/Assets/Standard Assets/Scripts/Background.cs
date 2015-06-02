@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
+/// <summary>
+/// Base class for backgrounds
+/// </summary>
 public class Background : MonoBehaviour
 {
-
 	protected float _opacity;
 
 	public float Opacity
