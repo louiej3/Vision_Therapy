@@ -84,7 +84,7 @@ public class TrackerGameManager : Mechanic
 		}
 					
 		// Associate each difficulty for each setting
-		int CurretDiff = 2;
+		int CurretDiff = 1;
 
 		// Difficulty settings assignment
 		numberOfTrackTargets = my2DArray[1,CurretDiff];			// Number of targets
@@ -98,18 +98,6 @@ public class TrackerGameManager : Mechanic
 		minChangeTime = TrackerSettings.minChangeTime;
 		maxChangeTime = TrackerSettings.maxChangeTime;
 		startUpTime = TrackerSettings.startUpTime;
-
-		// Original values connecting to TrackerSettings
-//		targetScale = TrackerSettings.targetScale;
-//		targetOpacity = TrackerSettings.targetOpacity;
-//		minChangeTime = TrackerSettings.minChangeTime;
-//		maxChangeTime = TrackerSettings.maxChangeTime;
-//		numberOfTrackTargets = TrackerSettings.numberOfTrackTargets;
-//		numberOfDummyTargets = TrackerSettings.numberOfDummyTargets;
-//		shuffleTime = TrackerSettings.shuffleTime;
-//		startUpTime = TrackerSettings.startUpTime;
-//		targetSpeed = TrackerSettings.targetSpeed;
-//		backgroundOpacity = TrackerSettings.backgroundOpacity;
 
 		trackMan = GetComponent<TrackManager>();
 		targetMan = trackMan;

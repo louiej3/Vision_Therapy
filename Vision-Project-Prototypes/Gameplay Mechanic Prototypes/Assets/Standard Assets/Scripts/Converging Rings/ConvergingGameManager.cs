@@ -75,7 +75,7 @@ public class ConvergingGameManager : Mechanic
 		}
 		
 		// Associate each difficulty for each setting
-		int CurretDiff = 2;
+		int CurretDiff = 1;
 
 		// Difficulty settings assignment
 		maxTargetsOnScreen = my2DArray[1,CurretDiff];				// Maximum number of rings sets
@@ -93,24 +93,9 @@ public class ConvergingGameManager : Mechanic
 
 		marginOfError = ConvergingSettings.marginOfError;  		// Not manually set
 
-		// To check for min max speed, if larger, set min speed to max speed (which is lower)
+		// To check for min/max speed, if min speed is larger, set min speed to max speed (which is lower)
 		if(minTargetSpeed > maxTargetSpeed)
 		{ minTargetSpeed = maxTargetSpeed; }
-
-		// Original settings from ConvergingSettings
-//		maxTargetsOnScreen = ConvergingSettings.maxConvergeOnScreen;
-//		targetSpawnInterval = ConvergingSettings.convergeSpawnInterval;
-//		minTargetSpeed = ConvergingSettings.minConvergeTime;
-//		maxTargetSpeed = ConvergingSettings.maxConvergeTime;
-//		targetOpacity = ConvergingSettings.centerOpacity;
-//		targetTimeout = ConvergingSettings.convergeTimeOut;
-//		targetScale = ConvergingSettings.centerScale;
-//		boomerangOpacity = ConvergingSettings.boomerangOpacity;
-//		boomerangScale = ConvergingSettings.boomerangScale;
-//		numberOfBoomerangs = ConvergingSettings.numberOfBoomerangs;
-//		targetsToWin = ConvergingSettings.convergesToWin;
-//		marginOfError = ConvergingSettings.marginOfError;
-//		backgroundOpacity = ConvergingSettings.backgroundOpacity;
 		
 		conMan = GetComponent<ConObjectManager>();
         targetMan = conMan;

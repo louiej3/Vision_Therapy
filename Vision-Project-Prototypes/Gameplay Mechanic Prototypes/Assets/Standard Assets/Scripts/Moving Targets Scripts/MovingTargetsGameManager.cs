@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 /// <summary>
 /// Game manager for moving targets game
@@ -67,7 +68,7 @@ public class MovingTargetsGameManager : Mechanic
 		}
 		
 		// Associate each difficulty for each setting
-		int CurretDiff = 2;
+		int CurretDiff = 1;
 
 		// Difficulty settings assignment
 		maxTargetsOnScreen = my2DArray[1,CurretDiff];				// Number of targets on the screen
@@ -81,18 +82,6 @@ public class MovingTargetsGameManager : Mechanic
 		backgroundSpeed = (float)my2DArray[9,CurretDiff];			// Speed of background image
 		targetsToWin = my2DArray[10,CurretDiff];					// Number of successful hits to win
 
-		// Original settings
-//		maxTargetsOnScreen = MovingTargetsSettings.maxTargetsOnScreen;
-//		targetScale = MovingTargetsSettings.targetScale;
-//		targetOpacity = MovingTargetsSettings.targetOpacity;
-//		minTargetSpeed = MovingTargetsSettings.minTargetSpeed;
-//		maxTargetSpeed = MovingTargetsSettings.maxTargetSpeed;
-//		targetTimeout = MovingTargetsSettings.targetTimeout;
-//		targetSpawnInterval = MovingTargetsSettings.targetSpawnInterval;
-//		backgroundOpacity = MovingTargetsSettings.backgroundOpacity;
-//		backgroundSpeed = MovingTargetsSettings.backgroundSpeed;
-//		targetsToWin = MovingTargetsSettings.targetsToWin;
-		
 		targetMan = GetComponent<TargetManager>();
 		
 		background = GameObject.Find("Background").GetComponent<Background>();
@@ -157,7 +146,7 @@ public class MovingTargetsGameManager : Mechanic
 		targetMan.disableAllTargets();
 		// Position the win text in the center of the screen
 		winText.transform.position = Vector2.zero;
-		
+
 		base.winBehavior();
     }
 
