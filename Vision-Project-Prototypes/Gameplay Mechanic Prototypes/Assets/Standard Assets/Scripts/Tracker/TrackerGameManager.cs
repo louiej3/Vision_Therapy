@@ -26,7 +26,7 @@ public class TrackerGameManager : Mechanic
 	private TrackManager trackMan;
 
 	private TextMesh score;
-	private GameObject winText;
+	private GameObject winMenu;
 
 	private Background background;
 
@@ -104,7 +104,7 @@ public class TrackerGameManager : Mechanic
 
 		score = GameObject.Find("Score").GetComponent<TextMesh>();
 
-		winText = GameObject.Find("WinText");
+		winMenu = GameObject.Find("WinMenu");
 
 		background = GameObject.Find("Background").GetComponent<Background>();
 		background.Opacity = backgroundOpacity;
@@ -151,7 +151,7 @@ public class TrackerGameManager : Mechanic
 		// Clear the screen
 		trackMan.disableAllTargets();
 		// Move the win message to the center of the screen
-		winText.transform.position = Vector2.zero;
+		winMenu.transform.position = Vector2.zero;
 
 		base.winBehavior();
 	}

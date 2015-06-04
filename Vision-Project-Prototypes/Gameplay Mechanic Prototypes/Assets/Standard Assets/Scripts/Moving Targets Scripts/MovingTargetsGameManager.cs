@@ -14,7 +14,7 @@ public class MovingTargetsGameManager : Mechanic
     protected float backgroundSpeed;
 
 	private TextMesh score;
-	private GameObject winText;
+	private GameObject winMenu;
 
 	// A target prefab. This object is set in the Unity
 	// scene by dragging an existing target prefab into
@@ -98,7 +98,7 @@ public class MovingTargetsGameManager : Mechanic
 		score.transform.position = new Vector3(-width + 2.5f, 
 			height - score.transform.localScale.y, score.transform.position.z);
 
-		winText = GameObject.Find("WinText");
+		winMenu = GameObject.Find("WinMenu");
 
 		CurrentState = MovingTargetsState.PLAY;
         mechanicType = "Moving Targets";
@@ -145,7 +145,7 @@ public class MovingTargetsGameManager : Mechanic
         // Clear the screen of targets so we don't collect extra data
 		targetMan.disableAllTargets();
 		// Position the win text in the center of the screen
-		winText.transform.position = Vector2.zero;
+		winMenu.transform.position = Vector2.zero;
 
 		base.winBehavior();
     }

@@ -9,7 +9,7 @@ public class ConvergingGameManager : Mechanic
     private ConObjectManager conMan;
 
 	private TextMesh score;
-	private GameObject winText;
+	private GameObject winMenu;
 
 	private Background background;
 
@@ -107,7 +107,7 @@ public class ConvergingGameManager : Mechanic
 		score.transform.position = new Vector3(0f, Camera.main.orthographicSize
 			- score.transform.localScale.y, score.transform.position.z);
 
-		winText = GameObject.Find("WinText");
+		winMenu = GameObject.Find("WinMenu");
 
 		currentState = ConvergeState.PLAY;
 
@@ -165,7 +165,7 @@ public class ConvergingGameManager : Mechanic
 		// Clear the screen of all targets so extra data is not collected
 		conMan.disableAllTargets();
 		// Move the win message into place
-		winText.transform.position = Vector2.zero;
+		winMenu.transform.position = Vector2.zero;
 		
 		base.winBehavior();
 	}
