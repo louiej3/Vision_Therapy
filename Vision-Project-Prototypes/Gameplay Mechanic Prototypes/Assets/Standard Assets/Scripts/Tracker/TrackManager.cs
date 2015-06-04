@@ -7,8 +7,6 @@ using System.Collections;
 /// </summary>
 public class TrackManager : Manager 
 {
-	public int SuccessfulHits { get; private set; }
-	public int UnsuccessfulHits { get; private set; }
 	public float NearMissThreshold { get; private set; }
 	
 	// Use this for initialization
@@ -36,12 +34,11 @@ public class TrackManager : Manager
 						if (t.checkTouch(tap))
 						{
 							hit = true;
-							Hits++;
 
 							if (t.tag == "Track")
 							{
-								SuccessfulHits++;
-								Debug.Log("SuccessfulHits = " + SuccessfulHits);
+								Hits++;
+								Debug.Log("SuccessfulHits = " + Hits);
 							}
 							else
 							{

@@ -31,6 +31,7 @@ public class GameSession : MonoBehaviour {
         data.gameInstanceID = gameInstanceID;
         data.userID = userID;
         data.completionDate = System.DateTime.Now;
+        data.startDate = startTime;
         data.gameType = gameType;
         return data;
     }

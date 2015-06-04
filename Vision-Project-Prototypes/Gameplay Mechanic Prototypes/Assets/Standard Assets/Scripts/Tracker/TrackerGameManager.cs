@@ -99,9 +99,9 @@ public class TrackerGameManager : Mechanic
 
 	protected override void playBehavior()
 	{
-		score.text = trackMan.SuccessfulHits + " / " + numberOfTrackTargets + " targets found";
+		score.text = trackMan.Hits + " / " + numberOfTrackTargets + " targets found";
 		
-		if (trackMan.SuccessfulHits == numberOfTrackTargets)
+		if (trackMan.Hits == numberOfTrackTargets)
 		{
 			CurrentState = TrackerState.WIN;
 		}

@@ -14,7 +14,7 @@ using System.Collections.Generic;
 /// </summary>
 public class Database : MonoBehaviour {
 
-    const string MYSQLCONNECTIONSTRING = "server=vergil.u.washington.edu;uid=basic;pwd=ChildVision;database=ChildVision;port=50290;";
+    const string MYSQLCONNECTIONSTRING = "server=128.95.242.208;uid=basic;pwd=ChildVision;database=ChildVision;port=50290;";
 
     const string DatabaseName = "testDB.db";
 

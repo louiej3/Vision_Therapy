@@ -5,8 +5,6 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-
-
 public abstract class Mechanic : MonoBehaviour
 {
     protected string mechanicType;
@@ -29,6 +27,7 @@ public abstract class Mechanic : MonoBehaviour
     // The transperancy of the background
     protected int targetsToWin;
 
+    protected float backgroundOpacity;
     // game time
     protected StopWatch gameTime;
 
@@ -45,6 +44,8 @@ public abstract class Mechanic : MonoBehaviour
         gameSession = GameObject.Find("GameSession").GetComponent<GameSession>();
         dbConnection = GameObject.Find("Database").GetComponent<Database>();
 
+
+        gameSession.startTime = System.DateTime.Now;
         mechanicID = System.Guid.NewGuid().ToString();
 
         
@@ -63,18 +64,21 @@ public abstract class Mechanic : MonoBehaviour
         }
 
         MechanicData man = packData();
+        Debug.Log(man.generateInsert());
         if (!dbConnection.insert(man))
         {
             Debug.Log("game manager insert failed");
         }
 
         ManagerData targetManData = targetMan.packData(mechanicID);
+        Debug.Log(targetManData.generateInsert());
         if (!dbConnection.insert(targetManData))
         {
             Debug.Log("target Manager insert failed");
         }
 
         IEnumerable targets = targetMan.packTargetData();
+        Debug.Log("Target Inserts");
         if (!dbConnection.insertAll(targets))
         {
             Debug.Log("targets insert failed");
@@ -99,6 +103,7 @@ public abstract class Mechanic : MonoBehaviour
         data.targetSpawnInterval = targetSpawnInterval;
         data.targetsToWin = targetsToWin;
         data.mechanicType = mechanicType;
+        data.backgroundOpacity = backgroundOpacity;
         return data;
     }
 }

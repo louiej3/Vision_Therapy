@@ -8,8 +8,6 @@ public class MovingTargetsGameManager : Mechanic
 {
 	private Background background;
 
-    protected float backgroundOpacity;
-    // The speed that the background spins
     protected float backgroundSpeed;
     // The number of targets needed to win
 

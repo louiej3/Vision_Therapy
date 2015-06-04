@@ -16,6 +16,7 @@ public class Manager : MonoBehaviour
     private string manID;
     public int Hits { get; protected set; }
     public int Misses { get; protected set; }
+    public int UnsuccessfulHits { get; protected set; }
     public int NearMisses { get; protected set; }
     public ArrayList Targets { get; protected set; }
 
@@ -30,6 +31,10 @@ public class Manager : MonoBehaviour
     public virtual void Start()
     {
         manID = System.Guid.NewGuid().ToString();
+        Hits = 0;
+        Misses = 0;
+        NearMisses = 0;
+        UnsuccessfulHits = 0;
     }
 
     /// <summary>
@@ -145,6 +150,7 @@ public class Manager : MonoBehaviour
         data.mechanicID = gameManID;
         data.totalTargets = Targets.Count;
         data.hits = Hits;
+        data.unsuccessfulHits = UnsuccessfulHits;
         data.misses = Misses;
         data.nearMisses = NearMisses;
 
