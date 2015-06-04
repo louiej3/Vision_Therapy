@@ -21,7 +21,7 @@ public class TrackerGameManager : Mechanic
 	// The max speed of the targets
 	private float targetSpeed;
 	// The transperancy of the background
-	private float backgroundOpacity = 1f;
+	private float backgroundOpacity;
 
 	private TrackManager trackMan;
 
@@ -84,20 +84,20 @@ public class TrackerGameManager : Mechanic
 		}
 					
 		// Associate each difficulty for each setting
-		int CurretDiff = 1;
+		int CurrentDiff = 1;
 
 		// Difficulty settings assignment
-		numberOfTrackTargets = my2DArray[1,CurretDiff];			// Number of targets
-		numberOfDummyTargets = my2DArray[2,CurretDiff];			// Number of false targets
-		targetScale = ((float)my2DArray[3,CurretDiff])/4;		// Target Size slider
-		shuffleTime = (float)my2DArray[4,CurretDiff];			// Time spent mixing together
-		targetOpacity = ((float)my2DArray[5,CurretDiff])/10;	// Clarity of targets
-		backgroundOpacity = ((float)my2DArray[6,CurretDiff])/10;// Clarity of background
-		targetSpeed = (float)my2DArray[7,CurretDiff]*2;			// Speed of the targets movement
+		numberOfTrackTargets = my2DArray[1,CurrentDiff];			// Number of targets
+		numberOfDummyTargets = my2DArray[2,CurrentDiff];			// Number of false targets
+		targetScale = ((float)my2DArray[3,CurrentDiff])/4;		// Target Size slider
+		shuffleTime = (float)my2DArray[4,CurrentDiff];			// Time spent mixing together
+		targetOpacity = ((float)my2DArray[5,CurrentDiff])/10;	// Clarity of targets
+		backgroundOpacity = ((float)my2DArray[6,CurrentDiff])/10;// Clarity of background
+		targetSpeed = (float)my2DArray[7,CurrentDiff]*2;			// Speed of the targets movement
 
-		minChangeTime = TrackerSettings.minChangeTime;
-		maxChangeTime = TrackerSettings.maxChangeTime;
-		startUpTime = TrackerSettings.startUpTime;
+		minChangeTime = 0.5f;
+		maxChangeTime = 1.5f;
+		startUpTime = 3f;
 
 		trackMan = GetComponent<TrackManager>();
 		targetMan = trackMan;
