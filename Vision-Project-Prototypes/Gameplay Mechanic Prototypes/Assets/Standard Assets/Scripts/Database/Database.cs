@@ -67,8 +67,8 @@ public class Database : MonoBehaviour {
 
         var dbPath = filepath;
 #endif
+		Debug.Log("Final PATH: " + dbPath);
         _connection = new SQLiteConnection(dbPath, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create);
-        Debug.Log("Final PATH: " + dbPath);
 	}
 
     void Start()
