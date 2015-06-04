@@ -75,23 +75,23 @@ public class ConvergingGameManager : Mechanic
 		}
 		
 		// Associate each difficulty for each setting
-		int CurretDiff = 1;
+		int CurrentDiff = 1;
 
 		// Difficulty settings assignment
-		maxTargetsOnScreen = my2DArray[1,CurretDiff];				// Maximum number of rings sets
-		minTargetSpeed = (float)my2DArray[2,CurretDiff];			// Minimum ring speed
-		maxTargetSpeed = (float)my2DArray[3,CurretDiff];			// Maximum ring speed
-		targetScale = ((float)my2DArray[4,CurretDiff])/4;			// Size of targets (scaled)
-		boomerangScale = ((float)my2DArray[4,CurretDiff])/4;		// Size of distractors
-		targetTimeout = (float)my2DArray[5,CurretDiff];				// Ring time out in seconds
-		boomerangOpacity = ((float)my2DArray[6,CurretDiff])/10;		// Clarity of distractors (scaled)
-		numberOfBoomerangs = my2DArray[7,CurretDiff];				// Number of distractors
-		targetSpawnInterval = (float)my2DArray[8,CurretDiff];		// Ring set spawn interval
-		targetsToWin = my2DArray[9,CurretDiff];						// Number of successful hits to win
-		targetOpacity = ((float)my2DArray[10,CurretDiff])/10;		// Clarity of the center point (scaled)
-		backgroundOpacity = ((float)my2DArray[11,CurretDiff])/10;	// Clarity of the background (scaled)
+		maxTargetsOnScreen = my2DArray[1,CurrentDiff];				// Maximum number of rings sets
+		minTargetSpeed = (float)my2DArray[2,CurrentDiff];			// Minimum ring speed
+		maxTargetSpeed = (float)my2DArray[3,CurrentDiff];			// Maximum ring speed
+		targetScale = ((float)my2DArray[4,CurrentDiff])/4;			// Size of targets (scaled)
+		boomerangScale = ((float)my2DArray[4,CurrentDiff])/4;		// Size of distractors
+		targetTimeout = (float)my2DArray[5,CurrentDiff];				// Ring time out in seconds
+		boomerangOpacity = ((float)my2DArray[6,CurrentDiff])/10;		// Clarity of distractors (scaled)
+		numberOfBoomerangs = my2DArray[7,CurrentDiff];				// Number of distractors
+		targetSpawnInterval = (float)my2DArray[8,CurrentDiff];		// Ring set spawn interval
+		targetsToWin = my2DArray[9,CurrentDiff];						// Number of successful hits to win
+		targetOpacity = ((float)my2DArray[10,CurrentDiff])/10;		// Clarity of the center point (scaled)
+		backgroundOpacity = ((float)my2DArray[11,CurrentDiff])/10;	// Clarity of the background (scaled)
 
-		marginOfError = ConvergingSettings.marginOfError;  		// Not manually set
+		marginOfError = 0.1f;  		// Not manually set
 
 		// To check for min/max speed, if min speed is larger, set min speed to max speed (which is lower)
 		if(minTargetSpeed > maxTargetSpeed)
