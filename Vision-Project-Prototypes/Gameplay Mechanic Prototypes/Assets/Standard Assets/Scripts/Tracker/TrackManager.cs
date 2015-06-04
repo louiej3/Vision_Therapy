@@ -7,17 +7,7 @@ using System.Collections;
 /// </summary>
 
 public class TrackManager : Manager 
-{
-<<<<<<< HEAD
-	// Keeps track of the number of correct track objects the user has found
-	public int SuccessfulHits { get; private set; }
-	// Keeps track of the number of times the user has mistaken a dummy
-	// object for a correct track object
-	public int UnsuccessfulHits { get; private set; }
-=======
-	public float NearMissThreshold { get; private set; }
->>>>>>> Database
-	
+{	
 	// Update is called once per frame
 	void Update()
 	{
