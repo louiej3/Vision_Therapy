@@ -182,12 +182,12 @@ public class ConvergingGameManager : Mechanic
 		// starting from their farthest point
 		float convergeTime = Random.Range(minTargetSpeed, maxTargetSpeed);
 
-		// Make sure the converging object's x position does not leave the world
-		float worldHeight = Camera.main.orthographicSize - co.Scale / 2;
+		// Spawn the converging object within the inner 80% of the screen
+		float worldHeight = 0.8f * (Camera.main.orthographicSize - co.Scale / 2);
 		float y = Random.Range(-worldHeight, worldHeight);
 
-		// Make sure the converging object's y position does not leave the world
-		float worldWidth = (Camera.main.orthographicSize * Camera.main.aspect) - co.Scale / 2;
+		// Spawn the converging object within the inner 80% of the screen
+		float worldWidth = 0.8f * ((Camera.main.orthographicSize * Camera.main.aspect) - co.Scale / 2);
 		float x = Random.Range(-worldWidth, worldWidth);
 
 		// Set the center of the converging object and its boomerangs
