@@ -6,37 +6,42 @@ using System.Collections;
 /// </summary>
 public class TrackerGameManager : Mechanic 
 {
-    
 	// The range that the targets' speed can be
-	private float minChangeTime;
-	private float maxChangeTime;
+	private float minChangeTime = 0.5f;
+	private float maxChangeTime = 1.5f;
+	// The time between tracks spawning, dummies spawning, and the
+	// game starting
+	private float startUpTime = 3f;
+
 	// Number of targets that the user needs to track
 	private int numberOfTrackTargets;
 	// Number of dummy targets in the scene
 	private int numberOfDummyTargets;
 	// The amount of time that targets are allowed to move around
 	private float shuffleTime;
-	// The time between tracks spawning, dummies spawning, and the
-	// game starting
-	private float startUpTime;
 	// The max speed of the targets
 	private float targetSpeed;
 	// The transperancy of the background
-	private float backgroundOpacity = 1f;
+	private float backgroundOpacity;
 
 	private TrackManager trackMan;
 
 	private TextMesh score;
-	private GameObject winText;
+	private GameObject winMenu;
 
 	private Background background;
 
+	// Prefabs for the dummy and track game objects. These prefabs
+	// are set in the Unity scene by dragging the appropriate prefab
+	// into either the trackPrefab or dummyPrefab field in the object
+	// with this script attached to it.
 	public Target trackPrefab;
 	public Target dummyPrefab;
 
-	// The current state of the game
+	// The current state of the Tracker game
 	public static TrackerState CurrentState { get; private set; }
 
+	// The different states for the Tracker game
 	public enum TrackerState
 	{
 		STARTUP,
@@ -50,24 +55,53 @@ public class TrackerGameManager : Mechanic
 	void Start () 
 	{
 		base.Start();
-		
-		targetScale = TrackerSettings.targetScale;
-		targetOpacity = TrackerSettings.targetOpacity;
-		minChangeTime = TrackerSettings.minChangeTime;
-		maxChangeTime = TrackerSettings.maxChangeTime;
-		numberOfTrackTargets = TrackerSettings.numberOfTrackTargets;
-		numberOfDummyTargets = TrackerSettings.numberOfDummyTargets;
-		shuffleTime = TrackerSettings.shuffleTime;
-		startUpTime = TrackerSettings.startUpTime;
-		targetSpeed = TrackerSettings.targetSpeed;
-		backgroundOpacity = TrackerSettings.backgroundOpacity;
+
+		// Load the players setting preference string (all sliders and their difficulty level
+		string playernum = PlayerPrefs.GetInt("PlayerNumber").ToString();
+		string playerdiff = PlayerPrefs.GetString("P" + playernum + "DIFF");
+		Debug.Log("PDIFF is: " + playernum );
+
+		// Unpack string into 2D array for settings
+		char[] delimiterChars = { ',' };							// Delimiter characters to look for and removes them
+		string[] wordsDiff = playerdiff.Split(delimiterChars);		// Splits the playerspref string into the individial bits (One big array)
+
+		int [,] my2DArray;											// Create 2D array to hold the setting for this players game
+		my2DArray = new int[int.Parse (wordsDiff [1]),int.Parse (wordsDiff [2])]; // Length of the sizes in the 2nd and 3rd element of the array
+
+		// Starts after the first 3 elements check (First 3 are game#, Slider#, and Diff#)
+		int z = 3 + ( int.Parse (wordsDiff [1]) * int.Parse (wordsDiff [2]) );
+		int stringLength = wordsDiff.Length;						// Length of the given string of user saved data
+		for (int x = 0; x < int.Parse (wordsDiff[1]); x++)			// For each Slider
+		{
+			for (int y = 0; y < int.Parse (wordsDiff[2]); y++)		// For each difficulty of the slider
+			{
+				if (z < stringLength)
+				{
+					// Converts each string element to an int in the 4D array
+					my2DArray [x,y] = int.Parse (wordsDiff [z]); ///
+					z++;
+				}
+			}
+		}
+					
+		// Associate each difficulty for each setting
+		int CurrentDiff = 1;
+
+		// Difficulty settings assignment
+		numberOfTrackTargets = my2DArray[1,CurrentDiff];			// Number of targets
+		numberOfDummyTargets = my2DArray[2,CurrentDiff];			// Number of false targets
+		targetScale = ((float)my2DArray[3,CurrentDiff])/4;		// Target Size slider
+		shuffleTime = (float)my2DArray[4,CurrentDiff];			// Time spent mixing together
+		targetOpacity = ((float)my2DArray[5,CurrentDiff])/10;	// Clarity of targets
+		backgroundOpacity = ((float)my2DArray[6,CurrentDiff])/10;// Clarity of background
+		targetSpeed = (float)my2DArray[7,CurrentDiff]*2;			// Speed of the targets movement
 
 		trackMan = GetComponent<TrackManager>();
 		targetMan = trackMan;
 
 		score = GameObject.Find("Score").GetComponent<TextMesh>();
 
-		winText = GameObject.Find("WinText");
+		winMenu = GameObject.Find("WinMenu");
 
 		background = GameObject.Find("Background").GetComponent<Background>();
 		background.Opacity = backgroundOpacity;
@@ -99,8 +133,10 @@ public class TrackerGameManager : Mechanic
 
 	protected override void playBehavior()
 	{
+		// Displays the user's current score
 		score.text = trackMan.SuccessfulHits + " / " + numberOfTrackTargets + " targets found";
 		
+		// Transition to WIN state if the user finds all of the track objects
 		if (trackMan.SuccessfulHits == numberOfTrackTargets)
 		{
 			CurrentState = TrackerState.WIN;
@@ -109,61 +145,61 @@ public class TrackerGameManager : Mechanic
 
 	protected override void winBehavior()
 	{
+		// Clear the screen
 		trackMan.disableAllTargets();
-		winText.transform.position = Vector2.zero;
+		// Move the win message to the center of the screen
+		winMenu.transform.position = Vector2.zero;
 
 		base.winBehavior();
 	}
 
     private void spawnTrack()
     {
-        // Instantiate the target prefab
+        // Instantiate the track prefab and set attributes
         Target track = Instantiate(trackPrefab) as Target;
-
-        // Generate random x position
-        float worldHeight = Camera.main.orthographicSize - track.transform.lossyScale.y / 2;
-		float x = Random.Range(-worldHeight, worldHeight);
-
-        // Generate random y position
-        float worldWidth = Mathf.Sqrt(Mathf.Pow(worldHeight, 2) - Mathf.Pow(x, 2));
-        float y = Random.Range(-worldWidth, worldWidth);
-
-        // Position tracker object
-        track.transform.position = new Vector2(x, y);
 		track.Scale = targetScale;
 		track.Opacity = targetOpacity;
-
 		track.gameObject.GetComponent<RandomStraightMove>().MinimumChangeTime = minChangeTime;
 		track.gameObject.GetComponent<RandomStraightMove>().MaximumChangeTime = maxChangeTime;
 		track.gameObject.GetComponent<RandomStraightMove>().Speed = targetSpeed;
 
-        // Add target to target manager
+        // Generate random x position within camera view
+        float worldHeight = Camera.main.orthographicSize - track.Scale / 2;
+		float y = Random.Range(-worldHeight, worldHeight);
+
+		// Generate random y position within camera view
+		float worldWidth = (Camera.main.orthographicSize / Camera.main.aspect) - track.Scale / 2;
+		float x = Random.Range(-worldWidth, worldWidth);
+
+        // Position track object
+        track.transform.position = new Vector2(x, y);
+
+        // Add track to target manager
 		trackMan.addTarget(track);
     }
 
 	private void spawnDummy()
 	{
-		// Instantiate the target prefab
+		// Instantiate the dummy prefab and set attributes
 		Target dummy = Instantiate(dummyPrefab) as Target;
-
-		// Generate random x position
-		float worldHeight = Camera.main.orthographicSize - dummy.transform.lossyScale.y / 2;
-		float x = Random.Range(-worldHeight, worldHeight);
-
-		// Generate random y position
-		float worldWidth = Mathf.Sqrt(Mathf.Pow(worldHeight, 2) - Mathf.Pow(x, 2));
-		float y = Random.Range(-worldWidth, worldWidth);
-
-		// Position tracker object
-		dummy.transform.position = new Vector2(x, y);
 		dummy.Scale = targetScale;
 		dummy.Opacity = targetOpacity;
-
 		dummy.gameObject.GetComponent<RandomStraightMove>().MinimumChangeTime = minChangeTime;
 		dummy.gameObject.GetComponent<RandomStraightMove>().MaximumChangeTime = maxChangeTime;
 		dummy.gameObject.GetComponent<RandomStraightMove>().Speed = targetSpeed;
 
-		// Add target to target manager
+		// Generate random x position within camera view
+		float worldHeight = Camera.main.orthographicSize - dummy.Scale / 2;
+		float y = Random.Range(-worldHeight, worldHeight);
+
+		// Generate random y position within camera view
+		float worldWidth = (Camera.main.orthographicSize * Camera.main.aspect) - dummy.Scale / 2;
+		float x = Random.Range(-worldWidth, worldWidth);
+
+		// Position dummy object
+		dummy.transform.position = new Vector2(x, y);
+
+		// Add dummy to target manager
 		trackMan.addTarget(dummy);
 	}
 

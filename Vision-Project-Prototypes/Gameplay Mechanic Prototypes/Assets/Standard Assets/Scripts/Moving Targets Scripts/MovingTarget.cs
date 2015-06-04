@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// A subclass of Target that defines timeout and tap behavior.
+/// </summary>
+
 public class MovingTarget : Target 
 {
     public override void Start()
