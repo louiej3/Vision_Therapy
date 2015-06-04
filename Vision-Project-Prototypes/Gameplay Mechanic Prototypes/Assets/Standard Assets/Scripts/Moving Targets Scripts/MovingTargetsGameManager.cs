@@ -68,19 +68,19 @@ public class MovingTargetsGameManager : Mechanic
 		}
 		
 		// Associate each difficulty for each setting
-		int CurretDiff = 1;
+		int CurrentDiff = 1;
 
 		// Difficulty settings assignment
-		maxTargetsOnScreen = my2DArray[1,CurretDiff];				// Number of targets on the screen
-		minTargetSpeed = ((float)my2DArray[2,CurretDiff])/2;		// Minimum target speed
-		maxTargetSpeed = ((float)my2DArray[3,CurretDiff])/2;		// Maximum target speed
-		targetScale = ((float)my2DArray[4,CurretDiff])/4;			// Size of targets
-		targetTimeout = (float)my2DArray[5,CurretDiff];				// Target timeout in seconds
-		targetOpacity = ((float)my2DArray[6,CurretDiff])/10;		// Clarity of target
-		backgroundOpacity = ((float)my2DArray[7,CurretDiff])/10;	// Clarity of background
-		targetSpawnInterval = (float)my2DArray[8,CurretDiff];		// Spawn interval of targets
-		backgroundSpeed = (float)my2DArray[9,CurretDiff];			// Speed of background image
-		targetsToWin = my2DArray[10,CurretDiff];					// Number of successful hits to win
+		maxTargetsOnScreen = my2DArray[1,CurrentDiff];				// Number of targets on the screen
+		minTargetSpeed = ((float)my2DArray[2,CurrentDiff])/2;		// Minimum target speed
+		maxTargetSpeed = ((float)my2DArray[3,CurrentDiff])/2;		// Maximum target speed
+		targetScale = ((float)my2DArray[4,CurrentDiff])/4;			// Size of targets
+		targetTimeout = (float)my2DArray[5,CurrentDiff];				// Target timeout in seconds
+		targetOpacity = ((float)my2DArray[6,CurrentDiff])/10;		// Clarity of target
+		backgroundOpacity = ((float)my2DArray[7,CurrentDiff])/10;	// Clarity of background
+		targetSpawnInterval = (float)my2DArray[8,CurrentDiff];		// Spawn interval of targets
+		backgroundSpeed = (float)my2DArray[9,CurrentDiff];			// Speed of background image
+		targetsToWin = my2DArray[10,CurrentDiff];					// Number of successful hits to win
 
 		targetMan = GetComponent<TargetManager>();
 		
