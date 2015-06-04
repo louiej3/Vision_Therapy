@@ -8,11 +8,15 @@ using System.Collections;
 
 public class TrackManager : Manager 
 {
+<<<<<<< HEAD
 	// Keeps track of the number of correct track objects the user has found
 	public int SuccessfulHits { get; private set; }
 	// Keeps track of the number of times the user has mistaken a dummy
 	// object for a correct track object
 	public int UnsuccessfulHits { get; private set; }
+=======
+	public float NearMissThreshold { get; private set; }
+>>>>>>> Database
 	
 	// Update is called once per frame
 	void Update()
@@ -38,15 +42,12 @@ public class TrackManager : Manager
 						// This target was touched
 						if (t.checkTouch(tap))
 						{
-							hit = true;
-							// Keep track of the number of times the user
-							// touched any target
-							Hits++;
 
 							// The user touched the correct target
 							if (t.tag == "Track")
 							{
-								SuccessfulHits++;
+								Hits++;
+								Debug.Log("SuccessfulHits = " + Hits);
 							}
 							// The user touched the incorrect target
 							else

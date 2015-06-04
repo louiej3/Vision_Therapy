@@ -2,7 +2,6 @@
 using System.Collections;
 using SQLite4Unity3d;
 
-
 // Target Data
 // timeAlive
 // hitPrecision
@@ -70,7 +69,7 @@ public class ObjectData
 
 
     
-    const string targetTable = "Targets";
+    const string targetTable = "Target";
 
     /// <summary>
     /// Generate an SQL insert statement for the Class
@@ -83,7 +82,7 @@ public class ObjectData
         // Generate first segment
         var insert = "INSERT into ";
         insert += targetTable;
-        insert += "(targetID, managerID, timeAlive, hitPrecision, wasHit, velocity, opacity, red, green, blue, scale) ";
+        insert += "(objectID, managerID, timeAlive, hitPrecision, wasHit, velocity, opacity, red, green, blue, scale) ";
         insert += "Values";
         insert += string.Format("( '{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10});",
             objectID, managerID, timeAlive, hitPrecision, wasHit, velocity
@@ -113,9 +112,10 @@ public class ManagerData
     public int hits { get; set; }
     [NotNull]
     public int misses { get; set; }
+    public int unsuccessfulHits { get; set; }
     public int nearMisses { get; set; }
 
-    const string targetTable = "TargetManagers";
+    const string targetTable = "Manager";
     IEnumerable Targets {get; set;}
 
 
@@ -129,10 +129,10 @@ public class ManagerData
     {
         var insert = "INSERT into ";
         insert += targetTable;
-        insert += "(targetManID, gameManID, totalTargets, hits, misses, nearMisses) ";
+        insert += "(managerID, mechanicID, totalTargets, hits, unsuccessfulHits, misses, nearMisses) ";
         insert += "Values";
-        insert += string.Format("( '{0}', '{1}', {2}, {3}, {4}, {5});",
-            managerID, mechanicID, totalTargets, hits, misses, nearMisses);
+        insert += string.Format("( '{0}', '{1}', {2}, {3}, {4}, {5}, {6});",
+            managerID, mechanicID, totalTargets, hits, unsuccessfulHits, misses, nearMisses);
 
         return insert;
     }
@@ -169,7 +169,7 @@ public class MechanicData
     public int targetsToWin { get; set; }
     public string mechanicType { get; set; }
     
-    const string targetTable = "Mechanics";
+    const string targetTable = "Mechanic";
     
     IEnumerable Managers;
     
@@ -183,7 +183,7 @@ public class MechanicData
     {
         var insert = "INSERT into ";
         insert += targetTable;
-        insert += "(gameManID, gameInstanceID, maxOnScreen, targetScale, targetOpacity, minTargetSpeed";
+        insert += "(mechanicID, gameInstanceID, maxOnScreen, targetScale, targetOpacity, minTargetSpeed";
         insert += ", maxTargetSpeed, targetTimeout, targetSpawnInterval,";
         insert += "backgroundOpacity, backgroundSpeed, targetToWin, mechanicType) ";
         insert += " Values";
@@ -247,7 +247,7 @@ public class GameInstance
     public System.DateTime startDate { get; set; }
 
     
-    const string targetTable = "GameInstances";
+    const string targetTable = "GameInstance";
     // when queried, contains all mechanics from the game, like movingtargetsman
 
     public string generateInsert()
@@ -275,7 +275,7 @@ public class User
 
     public System.DateTime creationDate { get; set; }
 
-    const string targetTable = "Users";
+    const string targetTable = "User";
 
     public string generateInsert()
     {
