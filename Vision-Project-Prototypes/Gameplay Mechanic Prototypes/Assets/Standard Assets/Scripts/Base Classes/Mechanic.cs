@@ -11,6 +11,8 @@ using UnityEngine;
 /// </summary>
 public abstract class Mechanic : MonoBehaviour
 {
+    protected bool hasSynced;
+
     protected string mechanicType;
     protected string mechanicID;
 
@@ -43,51 +45,54 @@ public abstract class Mechanic : MonoBehaviour
 
     public virtual void Start()
     {
+        hasSynced = false;
+
         gameTime = new StopWatch();
 
         gameSession = GameObject.Find("GameSession").GetComponent<GameSession>();
         dbConnection = GameObject.Find("Database").GetComponent<Database>();
 
-
         gameSession.startTime = System.DateTime.Now;
         mechanicID = System.Guid.NewGuid().ToString();
 
-        
     }
 
     protected abstract void playBehavior();
 
     protected virtual void winBehavior()
     {
-
-        GameInstance inst = gameSession.packData();
-        Debug.Log(inst.generateInsert());
-        if (!dbConnection.insert(inst))
+        if (!hasSynced)
         {
-            Debug.Log("game instance insert failed");
-        }
+            GameInstance inst = gameSession.packData();
+            Debug.Log(inst.generateInsert());
+            if (!dbConnection.insert(inst))
+            {
+                Debug.Log("game instance insert failed");
+            }
 
-        MechanicData man = packData();
-        Debug.Log(man.generateInsert());
-        if (!dbConnection.insert(man))
-        {
-            Debug.Log("game manager insert failed");
-        }
+            MechanicData man = packData();
+            Debug.Log(man.generateInsert());
+            if (!dbConnection.insert(man))
+            {
+                Debug.Log("game manager insert failed");
+            }
 
-        ManagerData targetManData = targetMan.packData(mechanicID);
-        Debug.Log(targetManData.generateInsert());
-        if (!dbConnection.insert(targetManData))
-        {
-            Debug.Log("target Manager insert failed");
-        }
+            ManagerData targetManData = targetMan.packData(mechanicID);
+            Debug.Log(targetManData.generateInsert());
+            if (!dbConnection.insert(targetManData))
+            {
+                Debug.Log("target Manager insert failed");
+            }
 
-        IEnumerable targets = targetMan.packTargetData();
-        Debug.Log("Target Inserts");
-        if (!dbConnection.insertAll(targets))
-        {
-            Debug.Log("targets insert failed");
+            IEnumerable targets = targetMan.packTargetData();
+            Debug.Log("Target Inserts");
+            if (!dbConnection.insertAll(targets))
+            {
+                Debug.Log("targets insert failed");
+            }
+            dbConnection.syncData();
+            hasSynced = true;
         }
-        dbConnection.syncData();
     }
 
     public virtual MechanicData packData()
