@@ -7,17 +7,18 @@ using System.Collections;
 public class TrackerGameManager : Mechanic 
 {
 	// The range that the targets' speed can be
-	private float minChangeTime;
-	private float maxChangeTime;
+	private float minChangeTime = 0.5f;
+	private float maxChangeTime = 1.5f;
+	// The time between tracks spawning, dummies spawning, and the
+	// game starting
+	private float startUpTime = 3f;
+
 	// Number of targets that the user needs to track
 	private int numberOfTrackTargets;
 	// Number of dummy targets in the scene
 	private int numberOfDummyTargets;
 	// The amount of time that targets are allowed to move around
 	private float shuffleTime;
-	// The time between tracks spawning, dummies spawning, and the
-	// game starting
-	private float startUpTime;
 	// The max speed of the targets
 	private float targetSpeed;
 	// The transperancy of the background
@@ -94,10 +95,6 @@ public class TrackerGameManager : Mechanic
 		targetOpacity = ((float)my2DArray[5,CurrentDiff])/10;	// Clarity of targets
 		backgroundOpacity = ((float)my2DArray[6,CurrentDiff])/10;// Clarity of background
 		targetSpeed = (float)my2DArray[7,CurrentDiff]*2;			// Speed of the targets movement
-
-		minChangeTime = 0.5f;
-		maxChangeTime = 1.5f;
-		startUpTime = 3f;
 
 		trackMan = GetComponent<TrackManager>();
 		targetMan = trackMan;

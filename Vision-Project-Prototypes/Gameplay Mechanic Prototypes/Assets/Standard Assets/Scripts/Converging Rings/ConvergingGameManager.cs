@@ -25,11 +25,12 @@ public class ConvergingGameManager : Mechanic
 	private float boomerangScale;
 	// The number of boomerangs for each converging object
 	private int numberOfBoomerangs;
-	// Multiplies converge time by this value to determine how
-	// far off the user can be when they tap the object
-	private float marginOfError;
 	// The transperancy of the background
 	private float backgroundOpacity;
+
+	// Multiplies converge time by this value to determine how
+	// far off the user can be when they tap the object
+	private float marginOfError = 0.1f;
 
 	// Game states for this mechanic
 	public enum ConvergeState
@@ -90,8 +91,6 @@ public class ConvergingGameManager : Mechanic
 		targetsToWin = my2DArray[9,CurrentDiff];						// Number of successful hits to win
 		targetOpacity = ((float)my2DArray[10,CurrentDiff])/10;		// Clarity of the center point (scaled)
 		backgroundOpacity = ((float)my2DArray[11,CurrentDiff])/10;	// Clarity of the background (scaled)
-
-		marginOfError = 0.1f;  		// Not manually set
 
 		// To check for min/max speed, if min speed is larger, set min speed to max speed (which is lower)
 		if(minTargetSpeed > maxTargetSpeed)
