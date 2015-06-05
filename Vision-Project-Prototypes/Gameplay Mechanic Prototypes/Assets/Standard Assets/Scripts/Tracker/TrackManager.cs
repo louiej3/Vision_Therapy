@@ -36,8 +36,6 @@ public class TrackManager : Manager
 							if (t.tag == "Track")
 							{
 								Hits++;
-								Debug.Log("IsTapped = " + t.IsTapped);
-								Debug.Log("SuccessfulHits = " + Hits);
 							}
 							// The user touched the incorrect target
 							else
