@@ -26,17 +26,6 @@ public class ConvergingObjects : Target
 		boomerangs = new ArrayList();
 	}
 
-	// Use this for initialization
-	public override void Start () 
-	{
-        base.Start();
-	}
-	
-	// For subclasses that would like to implement behavior upon tap
-	protected virtual void tapBehavior() 
-    {
-    }
-
 	public bool checkTouch(Touch tap)
 	{
 		// Get position of the user's touch

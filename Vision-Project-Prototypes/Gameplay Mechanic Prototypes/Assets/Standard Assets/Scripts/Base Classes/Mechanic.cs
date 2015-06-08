@@ -32,8 +32,8 @@ public abstract class Mechanic : MonoBehaviour
     protected float targetSpawnInterval;
     // The transperancy of the background
     protected int targetsToWin;
-
-   protected float backgroundOpacity;
+	// The transparency of the background
+    protected float backgroundOpacity;
     // game time
     protected StopWatch gameTime;
 

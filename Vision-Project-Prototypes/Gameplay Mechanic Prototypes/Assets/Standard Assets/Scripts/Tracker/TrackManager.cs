@@ -30,14 +30,12 @@ public class TrackManager : Manager
 					foreach (Target t in Targets)
 					{
 						// This target was touched
-						if (t.checkTouch(tap))
+						if (!t.IsTapped && t.checkTouch(tap))
 						{
-
 							// The user touched the correct target
 							if (t.tag == "Track")
 							{
 								Hits++;
-								Debug.Log("SuccessfulHits = " + Hits);
 							}
 							// The user touched the incorrect target
 							else

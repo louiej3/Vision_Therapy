@@ -21,8 +21,6 @@ public class TrackerGameManager : Mechanic
 	private float shuffleTime;
 	// The max speed of the targets
 	private float targetSpeed;
-	// The transperancy of the background
-	private float backgroundOpacity;
 
 	private TrackManager trackMan;
 

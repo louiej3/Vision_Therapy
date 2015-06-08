@@ -25,8 +25,6 @@ public class ConvergingGameManager : Mechanic
 	private float boomerangScale;
 	// The number of boomerangs for each converging object
 	private int numberOfBoomerangs;
-	// The transperancy of the background
-	private float backgroundOpacity;
 
 	// Multiplies converge time by this value to determine how
 	// far off the user can be when they tap the object
