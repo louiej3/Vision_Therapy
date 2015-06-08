@@ -3,7 +3,7 @@ using System.Collections;
 
 public class LoadScene : MonoBehaviour {
 
-	static int thisPlayer;
+	//static int thisPlayer;
 
 	// Use this for initialization
 	void Start () {
@@ -15,23 +15,26 @@ public class LoadScene : MonoBehaviour {
 	
 	}
 
-	// Loads the game/therapy application
+	// Loads the MOVING TARGETS/Poke the Owls game/therapy application
 	public void LoadMovingTargets ()
 	{
+		// Sets the player number in PlayerInfo for the GameManager to know which players difficulty settings to load
 		PlayerPrefs.SetInt("PlayerNumber", PlayerInfo.playerNumber);
 		Application.LoadLevel("Moving Targets");
 	}
 
-	// Loads the game/therapy application
+	// Loads the TRACKER game/therapy application
 	public void LoadTracker ()
 	{
+		// Sets the player number in PlayerInfo for the GameManager to know which players difficulty settings to load
 		PlayerPrefs.SetInt("PlayerNumber", PlayerInfo.playerNumber);
 		Application.LoadLevel("Tracker");
 	}
 
-	// Loads the game/therapy application
+	// Loads the CONVERGING RINGS game/therapy application
 	public void LoadRings ()
 	{
+		// Sets the player number in PlayerInfo for the GameManager to know which players difficulty settings to load
 		PlayerPrefs.SetInt("PlayerNumber", PlayerInfo.playerNumber);
 		Application.LoadLevel("Converging Rings");
 	}
