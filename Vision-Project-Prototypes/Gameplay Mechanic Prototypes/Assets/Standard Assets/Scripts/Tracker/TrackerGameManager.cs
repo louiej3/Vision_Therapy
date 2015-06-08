@@ -7,26 +7,25 @@ using System.Collections;
 public class TrackerGameManager : Mechanic 
 {
 	// The range that the targets' speed can be
-	private float minChangeTime;
-	private float maxChangeTime;
+	private float minChangeTime = 0.5f;
+	private float maxChangeTime = 1.5f;
+	// The time between tracks spawning, dummies spawning, and the
+	// game starting
+	private float startUpTime = 3f;
+
 	// Number of targets that the user needs to track
 	private int numberOfTrackTargets;
 	// Number of dummy targets in the scene
 	private int numberOfDummyTargets;
 	// The amount of time that targets are allowed to move around
 	private float shuffleTime;
-	// The time between tracks spawning, dummies spawning, and the
-	// game starting
-	private float startUpTime;
 	// The max speed of the targets
 	private float targetSpeed;
-	// The transperancy of the background
-	private float backgroundOpacity = 1f;
 
 	private TrackManager trackMan;
 
 	private TextMesh score;
-	private GameObject winText;
+	private GameObject winMenu;
 
 	private Background background;
 
@@ -104,7 +103,7 @@ public class TrackerGameManager : Mechanic
 
 		score = GameObject.Find("Score").GetComponent<TextMesh>();
 
-		winText = GameObject.Find("WinText");
+		winMenu = GameObject.Find("WinMenu");
 
 		background = GameObject.Find("Background").GetComponent<Background>();
 		background.Opacity = backgroundOpacity;
@@ -136,11 +135,9 @@ public class TrackerGameManager : Mechanic
 
 	protected override void playBehavior()
 	{
-		// Displays the user's current score
-		score.text = trackMan.SuccessfulHits + " / " + numberOfTrackTargets + " targets found";
+		score.text = trackMan.Hits + " / " + numberOfTrackTargets + " targets found";
 		
-		// Transition to WIN state if the user finds all of the track objects
-		if (trackMan.SuccessfulHits == numberOfTrackTargets)
+		if (trackMan.Hits == numberOfTrackTargets)
 		{
 			CurrentState = TrackerState.WIN;
 		}
@@ -151,7 +148,7 @@ public class TrackerGameManager : Mechanic
 		// Clear the screen
 		trackMan.disableAllTargets();
 		// Move the win message to the center of the screen
-		winText.transform.position = Vector2.zero;
+		winMenu.transform.position = Vector2.zero;
 
 		base.winBehavior();
 	}

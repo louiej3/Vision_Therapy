@@ -21,7 +21,6 @@ public class TraceManager : MonoBehaviour
 	{
 		if (Input.touchCount > 0)
 		{
-			Touch touch = Input.GetTouch(0);
 			Vector3 worldPoint = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 			Vector2 touchPos = new Vector2(worldPoint.x, worldPoint.y);
 

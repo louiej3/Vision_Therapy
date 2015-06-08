@@ -9,7 +9,7 @@ public class ConvergingGameManager : Mechanic
     private ConObjectManager conMan;
 
 	private TextMesh score;
-	private GameObject winText;
+	private GameObject winMenu;
 
 	private Background background;
 
@@ -25,11 +25,10 @@ public class ConvergingGameManager : Mechanic
 	private float boomerangScale;
 	// The number of boomerangs for each converging object
 	private int numberOfBoomerangs;
+
 	// Multiplies converge time by this value to determine how
 	// far off the user can be when they tap the object
-	private float marginOfError;
-	// The transperancy of the background
-	private float backgroundOpacity;
+	private float marginOfError = 0.1f;
 
 	// Game states for this mechanic
 	public enum ConvergeState
@@ -107,7 +106,7 @@ public class ConvergingGameManager : Mechanic
 		score.transform.position = new Vector3(0f, Camera.main.orthographicSize
 			- score.transform.localScale.y, score.transform.position.z);
 
-		winText = GameObject.Find("WinText");
+		winMenu = GameObject.Find("WinMenu");
 
 		currentState = ConvergeState.PLAY;
 
@@ -165,7 +164,7 @@ public class ConvergingGameManager : Mechanic
 		// Clear the screen of all targets so extra data is not collected
 		conMan.disableAllTargets();
 		// Move the win message into place
-		winText.transform.position = Vector2.zero;
+		winMenu.transform.position = Vector2.zero;
 		
 		base.winBehavior();
 	}
@@ -183,12 +182,12 @@ public class ConvergingGameManager : Mechanic
 		// starting from their farthest point
 		float convergeTime = Random.Range(minTargetSpeed, maxTargetSpeed);
 
-		// Make sure the converging object's x position does not leave the world
-		float worldHeight = Camera.main.orthographicSize - co.Scale / 2;
+		// Spawn the converging object within the inner 80% of the screen
+		float worldHeight = 0.8f * (Camera.main.orthographicSize - co.Scale / 2);
 		float y = Random.Range(-worldHeight, worldHeight);
 
-		// Make sure the converging object's y position does not leave the world
-		float worldWidth = (Camera.main.orthographicSize * Camera.main.aspect) - co.Scale / 2;
+		// Spawn the converging object within the inner 80% of the screen
+		float worldWidth = 0.8f * ((Camera.main.orthographicSize * Camera.main.aspect) - co.Scale / 2);
 		float x = Random.Range(-worldWidth, worldWidth);
 
 		// Set the center of the converging object and its boomerangs
