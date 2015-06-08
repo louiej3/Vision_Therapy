@@ -94,9 +94,9 @@ public class TrackerGameManager : Mechanic
 		backgroundOpacity = ((float)my2DArray[6,CurrentDiff])/10;	// Clarity of background
 		targetSpeed = (float)my2DArray[7,CurrentDiff]*2;			// Speed of the targets movement
 
-		minChangeTime = TrackerSettings.minChangeTime;
-		maxChangeTime = TrackerSettings.maxChangeTime;
-		startUpTime = TrackerSettings.startUpTime;
+		minChangeTime = 0.5f;
+		maxChangeTime = 1.5f;
+		startUpTime = 3f;
 
 		trackMan = GetComponent<TrackManager>();
 		targetMan = trackMan;

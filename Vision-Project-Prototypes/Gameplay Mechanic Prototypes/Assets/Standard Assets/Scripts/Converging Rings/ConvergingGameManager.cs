@@ -90,7 +90,7 @@ public class ConvergingGameManager : Mechanic
 		targetOpacity = ((float)my2DArray[10,CurrentDiff])/10;		// Clarity of the center point (scaled)
 		backgroundOpacity = ((float)my2DArray[11,CurrentDiff])/10;	// Clarity of the background (scaled)
 
-		marginOfError = ConvergingSettings.marginOfError;  			// Not manually set
+		marginOfError = 0.1f;  										// Margin of Error times the time to merge center
 
 		// To check for min/max speed, if min speed is larger, set min speed to max speed (which is lower)
 		if(minTargetSpeed > maxTargetSpeed)
