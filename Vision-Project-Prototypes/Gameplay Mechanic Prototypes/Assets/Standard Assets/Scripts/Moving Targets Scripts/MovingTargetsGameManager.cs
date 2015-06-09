@@ -39,10 +39,10 @@ public class MovingTargetsGameManager : Mechanic
 	{
         base.Start();
 
-		// Load the players setting preference string (all sliders and their difficulty level
+		// Load the players setting preference string (all sliders and their difficulty levels)
 		string playernum = PlayerPrefs.GetInt("PlayerNumber").ToString();
-		string playerdiff = PlayerPrefs.GetString("P" + playernum + "DIFF");
-		Debug.Log("PDIFF is: " + playernum );
+		string playerdiff = PlayerPrefs.GetString("P" + playernum + "DIFFTEMP");
+		Debug.Log("PDIFFTEMP is: " + playernum );
 		
 		// Unpack string into 2D array for settings
 		char[] delimiterChars = { ',' };							// Delimiter characters to look for and removes them
@@ -60,7 +60,7 @@ public class MovingTargetsGameManager : Mechanic
 			{
 				if (z < stringLength)
 				{
-					// Converts each string element to an int in the 4D array
+					// Converts each string element to an int in the 2D array
 					my2DArray [x,y] = int.Parse (wordsDiff [z]); ///
 					z++;
 				}
@@ -68,14 +68,14 @@ public class MovingTargetsGameManager : Mechanic
 		}
 		
 		// Associate each difficulty for each setting
-		int CurrentDiff = 1;
+		int CurrentDiff = PlayerPrefs.GetInt("P" + playernum + "G0LVL");
 
 		// Difficulty settings assignment
 		maxTargetsOnScreen = my2DArray[1,CurrentDiff];				// Number of targets on the screen
 		minTargetSpeed = ((float)my2DArray[2,CurrentDiff])/2;		// Minimum target speed
 		maxTargetSpeed = ((float)my2DArray[3,CurrentDiff])/2;		// Maximum target speed
 		targetScale = ((float)my2DArray[4,CurrentDiff])/4;			// Size of targets
-		targetTimeout = (float)my2DArray[5,CurrentDiff];				// Target timeout in seconds
+		targetTimeout = (float)my2DArray[5,CurrentDiff];			// Target timeout in seconds
 		targetOpacity = ((float)my2DArray[6,CurrentDiff])/10;		// Clarity of target
 		backgroundOpacity = ((float)my2DArray[7,CurrentDiff])/10;	// Clarity of background
 		targetSpawnInterval = (float)my2DArray[8,CurrentDiff];		// Spawn interval of targets

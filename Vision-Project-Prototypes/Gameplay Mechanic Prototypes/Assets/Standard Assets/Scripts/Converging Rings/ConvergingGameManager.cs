@@ -46,8 +46,8 @@ public class ConvergingGameManager : Mechanic
 
 		// Load the players setting preference string (all sliders and their difficulty level)
 		string playernum = PlayerPrefs.GetInt("PlayerNumber").ToString();
-		string playerdiff = PlayerPrefs.GetString("P" + playernum + "DIFF");
-		Debug.Log("PDIFF is: " + playernum );
+		string playerdiff = PlayerPrefs.GetString("P" + playernum + "DIFFTEMP");
+		Debug.Log("PDIFFTEMP is: " + playernum );
 		
 		// Unpack string into 2D array for settings
 		char[] delimiterChars = { ',' };							// Delimiter characters to look for and removes them
@@ -66,7 +66,7 @@ public class ConvergingGameManager : Mechanic
 			{
 				if (z < stringLength)
 				{
-					// Converts each string element to an int in the 4D array
+					// Converts each string element to an int in the 2D array
 					my2DArray [x,y] = int.Parse (wordsDiff [z]); ///
 					z++;
 				}
@@ -74,7 +74,7 @@ public class ConvergingGameManager : Mechanic
 		}
 		
 		// Associate each difficulty for each setting
-		int CurrentDiff = 1;
+		int CurrentDiff = PlayerPrefs.GetInt("P" + playernum + "G2LVL");
 
 		// Difficulty settings assignment
 		maxTargetsOnScreen = my2DArray[1,CurrentDiff];				// Maximum number of rings sets
@@ -82,11 +82,11 @@ public class ConvergingGameManager : Mechanic
 		maxTargetSpeed = (float)my2DArray[3,CurrentDiff];			// Maximum ring speed
 		targetScale = ((float)my2DArray[4,CurrentDiff])/4;			// Size of targets (scaled)
 		boomerangScale = ((float)my2DArray[4,CurrentDiff])/4;		// Size of distractors
-		targetTimeout = (float)my2DArray[5,CurrentDiff];				// Ring time out in seconds
-		boomerangOpacity = ((float)my2DArray[6,CurrentDiff])/10;		// Clarity of distractors (scaled)
+		targetTimeout = (float)my2DArray[5,CurrentDiff];			// Ring time out in seconds
+		boomerangOpacity = ((float)my2DArray[6,CurrentDiff])/10;	// Clarity of distractors (scaled)
 		numberOfBoomerangs = my2DArray[7,CurrentDiff];				// Number of distractors
 		targetSpawnInterval = (float)my2DArray[8,CurrentDiff];		// Ring set spawn interval
-		targetsToWin = my2DArray[9,CurrentDiff];						// Number of successful hits to win
+		targetsToWin = my2DArray[9,CurrentDiff];					// Number of successful hits to win
 		targetOpacity = ((float)my2DArray[10,CurrentDiff])/10;		// Clarity of the center point (scaled)
 		backgroundOpacity = ((float)my2DArray[11,CurrentDiff])/10;	// Clarity of the background (scaled)
 

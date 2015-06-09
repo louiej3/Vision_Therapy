@@ -36,14 +36,14 @@ public class SliderUpdate : MonoBehaviour {
 	
 	public void UpdateValueFromFloat(float value)
 	{
-		Debug.Log("float value changed: " + value);
+		//Debug.Log("float value changed: " + value);
 		if (my_slider) { my_slider.value = value; }
 		if (my_field) { my_field.text = value.ToString(); } //(For Buttons)
 	}
 
 	public void UpdateValueFromString(string value)
 	{
-		Debug.Log("string value changed: " + value);
+		//Debug.Log("string value changed: " + value);
 		if (my_slider) { my_slider.value = float.Parse(value); }
 		if (my_field) { my_field.text = value; } 			// (For Buttons)
 	}
@@ -53,7 +53,7 @@ public class SliderUpdate : MonoBehaviour {
 		if (my_slider) { my_slider.value = my_slider.value + changeby; }
 		// Convert to a string and add to log
 		string newvalue = (my_slider.value.ToString());
-		Debug.Log("float value changed UP to: " + newvalue);
+		//Debug.Log("float value changed UP to: " + newvalue);
 	}
 
 	public void UpdateValueDECREASE() // (For Buttons)
@@ -61,7 +61,7 @@ public class SliderUpdate : MonoBehaviour {
 		if (my_slider) { my_slider.value = my_slider.value - changeby; }
 		// Convert to a string and add to log
 		string newvalue = (my_slider.value.ToString());
-		Debug.Log("float value changed DOWN to: " + newvalue);
+		//Debug.Log("float value changed DOWN to: " + newvalue);
 	}
 
 }

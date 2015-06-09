@@ -56,8 +56,8 @@ public class TrackerGameManager : Mechanic
 
 		// Load the players setting preference string (all sliders and their difficulty level
 		string playernum = PlayerPrefs.GetInt("PlayerNumber").ToString();
-		string playerdiff = PlayerPrefs.GetString("P" + playernum + "DIFF");
-		Debug.Log("PDIFF is: " + playernum );
+		string playerdiff = PlayerPrefs.GetString("P" + playernum + "DIFFTEMP");
+		Debug.Log("PDIFFTEMP is: " + playernum );
 
 		// Unpack string into 2D array for settings
 		char[] delimiterChars = { ',' };							// Delimiter characters to look for and removes them
@@ -83,15 +83,15 @@ public class TrackerGameManager : Mechanic
 		}
 					
 		// Associate each difficulty for each setting
-		int CurrentDiff = 1;
+		int CurrentDiff = PlayerPrefs.GetInt("P" + playernum + "G1LVL");
 
 		// Difficulty settings assignment
 		numberOfTrackTargets = my2DArray[1,CurrentDiff];			// Number of targets
 		numberOfDummyTargets = my2DArray[2,CurrentDiff];			// Number of false targets
-		targetScale = ((float)my2DArray[3,CurrentDiff])/4;		// Target Size slider
-		shuffleTime = (float)my2DArray[4,CurrentDiff];			// Time spent mixing together
-		targetOpacity = ((float)my2DArray[5,CurrentDiff])/10;	// Clarity of targets
-		backgroundOpacity = ((float)my2DArray[6,CurrentDiff])/10;// Clarity of background
+		targetScale = ((float)my2DArray[3,CurrentDiff])/4;			// Target Size slider
+		shuffleTime = (float)my2DArray[4,CurrentDiff];				// Time spent mixing together
+		targetOpacity = ((float)my2DArray[5,CurrentDiff])/10;		// Clarity of targets
+		backgroundOpacity = ((float)my2DArray[6,CurrentDiff])/10;	// Clarity of background
 		targetSpeed = (float)my2DArray[7,CurrentDiff]*2;			// Speed of the targets movement
 
 		trackMan = GetComponent<TrackManager>();
