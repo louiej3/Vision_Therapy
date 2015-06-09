@@ -1,9 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// TraceManager controls a group of prefabricated GameObjects that act
+/// as the path for the user to trace.
+/// This class relies on a GameManager type class to provide it with GameObjects
+/// in order to keep coupling low.
+/// </summary>
 public class TraceManager : MonoBehaviour
 {
 
+	// Keeps track of every segment in the trace route
 	private ArrayList traceRoute;
 
 	// Use this for initialization
@@ -17,13 +24,21 @@ public class TraceManager : MonoBehaviour
 	{
 	}
 
+	/// <summary>
+	/// Checks every segment in the trace route to see if any of them collide
+	/// with the user's touch.
+	/// </summary>
+	/// <returns>True on collision, false if not colliding.</returns>
 	public bool onRoute()
 	{
 		if (Input.touchCount > 0)
 		{
+			// Get the user's touch position
+			Touch touch = Input.GetTouch(0);
 			Vector3 worldPoint = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 			Vector2 touchPos = new Vector2(worldPoint.x, worldPoint.y);
 
+			// Check each segment to see if it collided with the user's touch
 			foreach (GameObject g in traceRoute)
 			{
 				if (g.GetComponent<Collider2D>() == Physics2D.OverlapPoint(touchPos))
@@ -39,6 +54,12 @@ public class TraceManager : MonoBehaviour
 		return false;
 	}
 
+	/// <summary>
+	/// Positions a GameObject between two points and adds it to the trace route.
+	/// </summary>
+	/// <param name="segment">The segment being added to the trace route.</param>
+	/// <param name="point1">The point at the start of this segment.</param>
+	/// <param name="point2">The point at the end of thie segment.</param>
 	public void addSegment(GameObject segment, Vector2 point1, Vector2 point2)
 	{
 		// Position the segment halfway between point1 and point2
