@@ -164,7 +164,7 @@ public class TrackerGameManager : Mechanic
 		float y = Random.Range(-worldHeight, worldHeight);
 
 		// Generate random y position within camera view
-		float worldWidth = (Camera.main.orthographicSize / Camera.main.aspect) - track.Scale / 2;
+		float worldWidth = (Camera.main.orthographicSize * Camera.main.aspect) - track.Scale / 2;
 		float x = Random.Range(-worldWidth, worldWidth);
 
         // Position track object

@@ -8,8 +8,6 @@ using UnityEngine.UI;
 public class MovingTargetsGameManager : Mechanic 
 {
 	private Background background;
-	// The opacity of the background
-    protected float backgroundOpacity;
     // The speed that the background spins
     protected float backgroundSpeed;
 

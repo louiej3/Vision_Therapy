@@ -2,7 +2,6 @@
 using MySql.Data;
 using UnityEngine;
 #if !UNITY_EDITOR
-using System.Collections;
 using System.IO;
 #endif
 using System.Collections;
@@ -73,7 +72,10 @@ public class Database : MonoBehaviour {
 
     void Start()
     {
+        // Make sure the database gameobject is always up
         DontDestroyOnLoad(this.gameObject);
+
+        // Create all the talbes (if they don't exist)
         _connection.CreateTable<ObjectData>();
         _connection.CreateTable<ManagerData>();
         _connection.CreateTable<MechanicData>();
@@ -261,6 +263,10 @@ public class Database : MonoBehaviour {
         last = _connection.Table<Sync>().OrderByDescending( x => x.syncDate).First().syncDate;
         return last;
     }
+
+    /// <summary>
+    /// A function that can be called in case you need todrop all tables, all information will be lost.
+    /// </summary>
     private void DropallTables()
     {
         _connection.DropTable<ObjectData>();

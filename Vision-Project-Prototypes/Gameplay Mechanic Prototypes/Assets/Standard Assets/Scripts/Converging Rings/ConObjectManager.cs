@@ -10,16 +10,6 @@ public class ConObjectManager : Manager
 	// Multiplies converge time by this value to determine how
 	// far off the user can be when they tap the object
 	private float _marginOfError;
-
-	// Records the number of targets that were tapped within the
-	// margin of error. Starts at 0.
-    public int SuccessfulHits { get; protected set; }
-
-	// Use this for initialization
-	void Start () 
-	{
-        base.Start();
-	}
 	
 	// Update is called once per frame
 	void Update () 
@@ -52,13 +42,12 @@ public class ConObjectManager : Manager
 							// Check if the touch was within the margin of error
 							if (co.TapPrecision <= co.ConvergeTime * _marginOfError)
 							{
-								SuccessfulHits++;
+                                Hits++;
 								co.Success = true;
 							}
 
 							// Increment the total number of times the user touched an
 							// object. Touch does not have to be successful.
-							Hits++;
 							// The user touched something
 							hit = true;
 							break;

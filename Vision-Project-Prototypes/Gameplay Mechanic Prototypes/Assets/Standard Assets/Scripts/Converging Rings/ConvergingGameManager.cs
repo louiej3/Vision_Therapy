@@ -4,7 +4,7 @@ using System.Collections;
 public class ConvergingGameManager : Mechanic 
 {
 	// The current state of the game
-	private ConvergeState currentState;
+	public static ConvergeState currentState { get; private set; }
 
     private ConObjectManager conMan;
 
@@ -139,10 +139,10 @@ public class ConvergingGameManager : Mechanic
 	protected override void playBehavior()
 	{
 		// Displays the user's current score while they are playing
-		score.text = conMan.SuccessfulHits + " / " + targetsToWin + " targets hit";
+		score.text = conMan.Hits + " / " + targetsToWin + " targets hit";
 		
 		// Reached the number of required targets, go to WIN state
-		if (conMan.SuccessfulHits >= targetsToWin)
+		if (conMan.Hits >= targetsToWin)
 		{
 			currentState = ConvergeState.WIN;
 		}

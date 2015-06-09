@@ -193,6 +193,7 @@ public class Target : MonoBehaviour
         data.managerID = manID;
         data.timeAlive = LapTime;
         data.wasHit = IsTapped;
+        // Check that there is a movement
         if (m != null)
         {
             data.velocity = m.Velocity;
@@ -202,6 +203,7 @@ public class Target : MonoBehaviour
             data.velocity = 0f;
         }
 
+        // Check that there is a sprite renderer
         if (r != null)
         {
             data.opacity = r.color.a;

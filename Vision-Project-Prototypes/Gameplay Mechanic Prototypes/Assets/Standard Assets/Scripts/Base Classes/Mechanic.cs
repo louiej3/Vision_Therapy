@@ -46,7 +46,7 @@ public abstract class Mechanic : MonoBehaviour
     public virtual void Start()
     {
         hasSynced = false;
-
+ 
         gameTime = new StopWatch();
 
         gameSession = GameObject.Find("GameSession").GetComponent<GameSession>();
@@ -61,31 +61,32 @@ public abstract class Mechanic : MonoBehaviour
 
     protected virtual void winBehavior()
     {
+        // Sync the data if it has not been synced
         if (!hasSynced)
         {
+            // Sync the Game Instance data
             GameInstance inst = gameSession.packData();
-            Debug.Log(inst.generateInsert());
             if (!dbConnection.insert(inst))
             {
                 Debug.Log("game instance insert failed");
             }
 
+            // Sync the Mechanic Data
             MechanicData man = packData();
-            Debug.Log(man.generateInsert());
             if (!dbConnection.insert(man))
             {
                 Debug.Log("game manager insert failed");
             }
 
+            // Sync the Manager Data
             ManagerData targetManData = targetMan.packData(mechanicID);
-            Debug.Log(targetManData.generateInsert());
             if (!dbConnection.insert(targetManData))
             {
                 Debug.Log("target Manager insert failed");
             }
 
+            // Sync all the target data
             IEnumerable targets = targetMan.packTargetData();
-            Debug.Log("Target Inserts");
             if (!dbConnection.insertAll(targets))
             {
                 Debug.Log("targets insert failed");
@@ -95,6 +96,10 @@ public abstract class Mechanic : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Gathers all the data from the mechanic together.
+    /// </summary>
+    /// <returns>A MechanicData object containing the data to be added to a database</returns>
     public virtual MechanicData packData()
     {
         MechanicData data = new MechanicData();

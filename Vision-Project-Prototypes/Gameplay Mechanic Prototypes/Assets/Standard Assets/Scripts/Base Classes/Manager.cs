@@ -125,6 +125,10 @@ public class Manager : MonoBehaviour
 		}
 	}
 	
+    /// <summary>
+    /// Gathers together data classes for all the targets in the target manager.
+    /// </summary>
+    /// <returns>An IEnumerable of TargetData objects</returns>
     public IEnumerable packTargetData()
     {
         if (Targets.Count == 0)
@@ -140,6 +144,11 @@ public class Manager : MonoBehaviour
         return data;
     }
 
+    /// <summary>
+    /// Gathers all the data for the manager class.
+    /// </summary>
+    /// <param name="gameManID">The ID for this mechanic that the manager will link to</param>
+    /// <returns>A managerData object to be inserted into a a database</returns>
     public ManagerData packData(string gameManID)
     {
         ManagerData data = new ManagerData();
